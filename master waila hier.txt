@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-kut
-hallo hallo versie 3.0
-=======
-ik ben gay :D
->>>>>>> master
