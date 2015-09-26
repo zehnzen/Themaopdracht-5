@@ -10,6 +10,7 @@ public:
 	Terrain();
 	void setText(sf::Texture & texture);
 	void draw(sf::RenderWindow & window);
+	void Terrain::draw(sf::RenderWindow & window, sf::Vector2f position);	// draw methode met position erbij
 	
 private:
 	sf::Sprite sprite;

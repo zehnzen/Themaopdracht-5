@@ -14,3 +14,8 @@ void Terrain::setText(sf::Texture & text) {
 void Terrain::draw(sf::RenderWindow & window) {
 	window.draw(sprite);
 }
+
+void Terrain::draw(sf::RenderWindow & window, sf::Vector2f position) {		// draw methode met position erbij
+	sprite.setPosition(position);
+	window.draw(sprite);
+}
