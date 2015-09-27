@@ -131,6 +131,7 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ResourceHolder.h" />
+    <ClInclude Include="ResourceIdentifier.h" />
     <ClInclude Include="Terrain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
