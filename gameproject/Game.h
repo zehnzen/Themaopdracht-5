@@ -10,6 +10,7 @@
 class Game {
 public:
 	Game(sf::Texture & texList);
+	void makePlayfield();
 	void run();
 
 private:
