@@ -8,8 +8,12 @@
 Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
 {
-	textureList.load(textureID::GRASS, "grass.jpg");
-	grass.setTexture(textureList.find(textureID::GRASS));
+	loadTextures();
+}
+
+void Game::loadTextures() {
+	textures.load(textureID::GRASS, "grass.jpg");
+	grass.setTexture(textures.get(textureID::GRASS));
 }
 
 void Game::handleInput(sf::Keyboard::Key key, bool b) {

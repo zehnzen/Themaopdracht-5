@@ -4,6 +4,8 @@
 #define _GAME_H
 
 #include <SFML\Graphics.hpp>
+#include "ResourceHolder.h"
+#include "ResourceIdentifier.h"
 #include "Terrain.h"
 #include "Enums.h"
 
@@ -17,11 +19,14 @@ private:
 	void update();
 	void render();
 
+	void loadTextures();
+
 	void handleInput(sf::Keyboard::Key, bool);
 
 	sf::RenderWindow window;
 	Terrain grass;
-	TextureHolder textureList;
+
+	textureHolder	textures;
 };
 
 #endif
