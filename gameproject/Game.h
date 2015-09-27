@@ -25,8 +25,8 @@ private:
 	void handleInput(sf::Keyboard::Key, bool);
 
 	sf::RenderWindow window;
-	Terrain grass;
 
+	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
 };
 

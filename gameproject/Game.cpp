@@ -14,21 +14,24 @@ Game::Game():
 
 void Game::loadTextures() {
 	textures.load(textureID::GRASS, "grass.jpg");
-	grass.setTexture(textures.get(textureID::GRASS));
->>>>>>> master
+	textures.load(textureID::ROAD, "tile.jpg");
 }
 
-
-// playfield aanmaken: (array van arrays) deze heeft de posities van alle plekken van het veld dus die kan je makkelijk geven aan je units enzo op deze manier-------
-const int playfieldX = 10;	// zo kunnen ze bij het tekenen makkelijk worden meegegeven
-const int playfieldY = 5;
-sf::Vector2f playfield[playfieldY][playfieldX];
-
 void Game::makePlayfield() {
-	float tileSize = 40;
-	for (int y = 0; y < playfieldY; y++) {
-		for (int x = 0; x < playfieldX; x++) {
-			playfield[y][x] = sf::Vector2f{ x * tileSize,y *tileSize };
+	const int playfieldX = 10;
+	const int playfieldY = 8;
+	float tileSize = 50;
+
+	for (float y = 0; y < playfieldY; y++) {
+		for (float x = 0; x < playfieldX; x++) {
+			if (x == 3 || x == 6) {
+				std::unique_ptr<Terrain> terrain(new Terrain(textureID::ROAD, textures, sf::Vector2f{ x * tileSize, y * tileSize }));
+				terrainContainer.push_back(std::move(terrain));
+			}
+			else {
+				std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{x * tileSize, y * tileSize}));
+				terrainContainer.push_back(std::move(terrain));
+			}
 		}
 	}
 };
@@ -78,14 +81,8 @@ void Game::update() {
 
 void Game::render() {
 	window.clear();
-
-	// op elke plek in het playfield gras tekenen:------------------------
-	for (int y = 0; y < playfieldY; y++) {
-		for (int x = 0; x < playfieldX; x++) {
-			grass.draw(window, playfield[y][x]);
-		}
+	for (std::vector<int>::size_type i = 0; i != terrainContainer.size(); i++) {
+		terrainContainer[i]->draw(window);
 	}
-	// -------------------------------------------------------------------
-	//grass.draw(window);
 	window.display();
 }

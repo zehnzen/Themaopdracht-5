@@ -4,17 +4,20 @@
 #define _TERRAIN_H
 
 #include <SFML/Graphics.hpp>
+#include "ResourceIdentifier.h"
+#include "Enums.h"
 
 class Terrain {
 public:
-	Terrain();
-	void setTexture(sf::Texture & texture);
+	Terrain(textureID, const textureHolder& textures);
+	Terrain(textureID, const textureHolder& textures, sf::Vector2f);
+	void setPosition(sf::Vector2f);
 	void draw(sf::RenderWindow & window);
 	void Terrain::draw(sf::RenderWindow & window, sf::Vector2f position);	// draw methode met position erbij
 	
 private:
+	textureID id;
 	sf::Sprite sprite;
-	sf::Texture texture;
 };
 
 #endif
