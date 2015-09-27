@@ -44,7 +44,11 @@
     <ClInclude Include="Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Unit.h">
+=======
+    <ClInclude Include="ResourceIdentifier.h">
+>>>>>>> 73664124bfc7a440c8a4c49aaf0ae3a510b983c3
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -132,6 +132,7 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ResourceHolder.h" />
+    <ClInclude Include="ResourceIdentifier.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>

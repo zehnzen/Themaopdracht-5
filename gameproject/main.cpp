@@ -5,11 +5,7 @@
 #include "ResourceHolder.h"
 
 int main() {
-	ResourceHolder<sf::Texture, textureID> textures;
-	//textures.load(textureID::GRASS, "grass.jpg");
-	textures.load(textureID::GRASS, "grass.jpg");
-
-	Game game(textures.get(textureID::GRASS));
+	Game game;
 	game.run();
 	return 0;
 }

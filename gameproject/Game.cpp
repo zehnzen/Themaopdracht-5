@@ -5,11 +5,17 @@
 #include "ResourceHolder.h"
 #include <array>
 
-Game::Game(sf::Texture & texList):
+Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
 {
-	grass.setText(texList);
+	loadTextures();
 	makePlayfield();
+}
+
+void Game::loadTextures() {
+	textures.load(textureID::GRASS, "grass.jpg");
+	grass.setTexture(textures.get(textureID::GRASS));
+>>>>>>> master
 }
 
 
