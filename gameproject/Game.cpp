@@ -3,7 +3,6 @@
 #include <SFML\Graphics.hpp>
 #include "Game.h"
 #include "ResourceHolder.h"
-#include "TextureHolder.h"
 
 Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
