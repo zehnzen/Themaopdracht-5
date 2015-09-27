@@ -8,11 +8,8 @@
 Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
 {
-<<<<<<< HEAD
-	grass.setText(texList);
-	makePlayfield();
-=======
 	loadTextures();
+	makePlayfield();
 }
 
 void Game::loadTextures() {

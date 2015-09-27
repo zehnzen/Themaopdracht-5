@@ -11,12 +11,8 @@
 
 class Game {
 public:
-<<<<<<< HEAD
-	Game(sf::Texture & texList);
-	void makePlayfield();
-=======
 	Game();
->>>>>>> master
+	void makePlayfield();
 	void run();
 
 private:
