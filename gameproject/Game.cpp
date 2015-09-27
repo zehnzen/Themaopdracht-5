@@ -3,11 +3,13 @@
 #include <SFML\Graphics.hpp>
 #include "Game.h"
 #include "ResourceHolder.h"
+#include "TextureHolder.h"
 
-Game::Game(sf::Texture & texList):
+Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
 {
-	grass.setText(texList);
+	textureList.load(textureID::GRASS, "grass.jpg");
+	grass.setTexture(textureList.find(textureID::GRASS));
 }
 
 void Game::handleInput(sf::Keyboard::Key key, bool b) {

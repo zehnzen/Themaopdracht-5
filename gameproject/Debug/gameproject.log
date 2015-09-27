@@ -1,17 +1,22 @@
-﻿Build started 25-9-2015 22:33:34.
-     1>Project "C:\Users\Zehna\documents\visual studio 2015\Projects\gameproject\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
+﻿Build started 26-9-2015 0:40:41.
+     1>Project "C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Terrain.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp main.cpp
          main.cpp
-         Terrain.cpp
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.h(24): error C3646: 'textureList': unknown override specifier
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+         Game.cpp
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.h(24): error C3646: 'textureList': unknown override specifier
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(11): error C2065: 'textureList': undeclared identifier
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(11): error C2228: left of '.load' must have class/struct/union
+         c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(11): note: type is 'unknown-type'
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(12): error C2065: 'textureList': undeclared identifier
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(12): error C2228: left of '.find' must have class/struct/union
+         c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(12): note: type is 'unknown-type'
          Generating Code...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zehna\documents\visual studio 2015\Projects\gameproject\Debug\gameproject.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:/SFML/lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Zehna\documents\visual studio 2015\Projects\gameproject\Debug\gameproject.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zehna\documents\visual studio 2015\Projects\gameproject\Debug\gameproject.lib" /MACHINE:X86 Debug\Game.obj
-         Debug\main.obj
-         Debug\Terrain.obj
-         gameproject.vcxproj -> C:\Users\Zehna\documents\visual studio 2015\Projects\gameproject\Debug\gameproject.exe
-     1>Done Building Project "C:\Users\Zehna\documents\visual studio 2015\Projects\gameproject\gameproject\gameproject.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\gameproject\gameproject.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:02.11
+Time Elapsed 00:00:01.12

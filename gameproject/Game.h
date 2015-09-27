@@ -9,7 +9,7 @@
 
 class Game {
 public:
-	Game(sf::Texture & texList);
+	Game();
 	void run();
 
 private:
@@ -21,6 +21,7 @@ private:
 
 	sf::RenderWindow window;
 	Terrain grass;
+	TextureHolder textureList;
 };
 
 #endif
