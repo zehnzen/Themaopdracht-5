@@ -2,9 +2,8 @@
 
 #include <SFML\Graphics.hpp>
 #include "Game.h"
-#include "ResourceHolder.h"
 #include <array>
-#include "v2f_from_v2i.h"
+#include "V2Functions.h"
 
 Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
@@ -15,9 +14,8 @@ Game::Game():
 
 void Game::loadTextures() {
 	textures.load(textureID::GRASS, "grass.jpg");
-	textures.load(textureID::ROAD, "tile.jpg");
+	textures.load(textureID::ROAD, "road.jpg");
 	textures.load(textureID::UNIT, "unit.jpg");
-	unit.setTexture(textures.get(textureID::UNIT));
 }
 
 void Game::makePlayfield() {
@@ -42,23 +40,28 @@ void Game::makePlayfield() {
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 void Game::handleInput(sf::Keyboard::Key key, bool b) {
-	/*if (key == sf::Keyboard::W)
-		mIsMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
+	if (key == sf::Keyboard::W) {
+		sf::Vector2i pos = (sf::Mouse::getPosition(window));
+		v2i_MOD(pos, 50);
+		std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(pos)));
+		unitContainer.push_back(std::move(unit));
+	}
+	/*else if (key == sf::Keyboard::S)
 		mIsMovingDown = isPressed;
 	else if (key == sf::Keyboard::A)
 		mIsMovingLeft = isPressed;
 	else if (key == sf::Keyboard::D)
 		mIsMovingRight = isPressed;
-		*/
+		//*/
 }
+
 void Game::handleMouse(sf::Mouse::Button button) {
 	if (button == sf::Mouse::Left) {
 		// hier wat er moet gebeuren bij linker muisklik:
 		// - check position van muis
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			for (auto const & p : container) {								// container is de container van jou
+			for (auto const & p : unitContainer) {								// container is de container van jou
 				p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
 			}
 		}
@@ -87,7 +90,7 @@ void Game::processEvents() {
 				handleInput(event.key.code, false);
 				break;
 			case sf::Event::MouseButtonPressed:
-				handleMouse(sf::Mouse::Button, sf::Mouse::getPosition());
+				handleMouse(event.mouseButton.button);
 				break;
 			case sf::Event::Closed:
 				window.close();
@@ -104,6 +107,9 @@ void Game::render() {
 	window.clear();
 	for (std::vector<int>::size_type i = 0; i != terrainContainer.size(); i++) {
 		terrainContainer[i]->draw(window);
+	}
+	for (std::vector<int>::size_type i = 0; i != unitContainer.size(); i++) {
+		unitContainer[i]->draw(window);
 	}
 	window.display();
 }

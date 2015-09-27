@@ -126,6 +126,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="V2Functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h" />
@@ -135,7 +136,7 @@
     <ClInclude Include="ResourceIdentifier.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
-    <ClInclude Include="v2f_from_v2i.h" />
+    <ClInclude Include="V2Functions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

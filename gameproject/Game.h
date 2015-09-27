@@ -28,7 +28,7 @@ private:
 
 	sf::RenderWindow window;
 
-	Unit unit;
+	std::vector<std::unique_ptr<Unit>> unitContainer;
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
 };
