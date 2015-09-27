@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "ResourceHolder.h"
 #include <array>
+#include "v2f_from_v2i.h"
 
 Game::Game():
 	window(sf::VideoMode(640,480), "SFML window")
@@ -15,14 +16,15 @@ Game::Game():
 void Game::loadTextures() {
 	textures.load(textureID::GRASS, "grass.jpg");
 	grass.setTexture(textures.get(textureID::GRASS));
->>>>>>> master
+	textures.load(textureID::UNIT, "unit.jpg");
+	unit.setTexture(textures.get(textureID::UNIT));
 }
 
 
 // playfield aanmaken: (array van arrays) deze heeft de posities van alle plekken van het veld dus die kan je makkelijk geven aan je units enzo op deze manier-------
 const int playfieldX = 10;	// zo kunnen ze bij het tekenen makkelijk worden meegegeven
 const int playfieldY = 5;
-sf::Vector2f playfield[playfieldY][playfieldX];
+static sf::Vector2f playfield[playfieldY][playfieldX];
 
 void Game::makePlayfield() {
 	float tileSize = 40;
@@ -46,6 +48,21 @@ void Game::handleInput(sf::Keyboard::Key key, bool b) {
 		mIsMovingRight = isPressed;
 		*/
 }
+void Game::handleMouse(sf::Mouse::Button button) {
+	if (button == sf::Mouse::Left) {
+		// hier wat er moet gebeuren bij linker muisklik:
+		// - check position van muis
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			for (auto const & p : container) {								// container is de container van jou
+				p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+			}
+		}
+
+		// - check op deze position overeenkomt met object uit container (unit)
+		// - doe actie die bij die unit hoort! (doorsturen naar de unit en die handelt het verder af)      (unit).mouseAction()
+	}
+}
 
 void Game::run() {
 	while (window.isOpen()) {
@@ -64,6 +81,9 @@ void Game::processEvents() {
 				break;
 			case sf::Event::KeyReleased:
 				handleInput(event.key.code, false);
+				break;
+			case sf::Event::MouseButtonPressed:
+				handleMouse(sf::Mouse::Button, sf::Mouse::getPosition());
 				break;
 			case sf::Event::Closed:
 				window.close();

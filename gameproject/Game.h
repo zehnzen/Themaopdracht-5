@@ -8,6 +8,7 @@
 #include "ResourceIdentifier.h"
 #include "Terrain.h"
 #include "Enums.h"
+#include "Unit.h"
 
 class Game {
 public:
@@ -23,9 +24,11 @@ private:
 	void loadTextures();
 
 	void handleInput(sf::Keyboard::Key, bool);
+	void handleMouse(sf::Mouse::Button);
 
 	sf::RenderWindow window;
 	Terrain grass;
+	Unit unit;
 
 	textureHolder	textures;
 };
