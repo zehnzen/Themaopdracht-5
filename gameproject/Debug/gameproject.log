@@ -1,41 +1,20 @@
-<<<<<<< HEAD
-﻿Build started 27-9-2015 17:07:31.
+﻿Build started 27-9-2015 18:25:03.
      1>Project "C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp
-         Game.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\Debug\gameproject.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:/SFML/lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\Debug\gameproject.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\Debug\gameproject.lib" /MACHINE:X86 Debug\Game.obj
-         Debug\main.obj
-         Debug\Terrain.obj
-         gameproject.vcxproj -> C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\Debug\gameproject.exe
-     1>Done Building Project "C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\gameproject\gameproject.vcxproj" (Build target(s)).
-=======
-﻿Build started 9/27/2015 5:02:06 PM.
-     1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp Unit.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp Unit.cpp
          Unit.cpp
          Game.cpp
-     1>c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(57): error C2065: 'container': undeclared identifier
-     1>c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(57): error C3312: no callable 'begin' function found for type 'unknown-type'
-     1>c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(57): error C3312: no callable 'end' function found for type 'unknown-type'
-     1>c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(58): error C2065: 'p': undeclared identifier
-     1>c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(58): error C2227: left of '->handleMouse' must point to class/struct/union/generic type
-         c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(58): note: type is 'unknown-type'
-     1>c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(86): error C2275: 'sf::Mouse::Button': illegal use of this type as an expression
-         c:\users\remco\documents\github\themaopdracht-5\gameproject\game.cpp(86): note: see declaration of 'sf::Mouse::Button'
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(61): error C2065: 'container': undeclared identifier
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(61): error C3312: no callable 'begin' function found for type 'unknown-type'
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(61): error C3312: no callable 'end' function found for type 'unknown-type'
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(62): error C2065: 'p': undeclared identifier
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(62): error C2227: left of '->handleMouse' must point to class/struct/union/generic type
+         c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(62): note: type is 'unknown-type'
+     1>c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(90): error C2275: 'sf::Mouse::Button': illegal use of this type as an expression
+         c:\users\zehna\documents\visual studio 2015\projects\gameprojectgit\gameproject\game.cpp(90): note: see declaration of 'sf::Mouse::Button'
          Generating Code...
-         Compiling...
-         main.cpp
-         Generating Code...
-     1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" (Build target(s)) -- FAILED.
->>>>>>> fa92fb83f807d7b6b2233110094a06b5b1a9fca4
+     1>Done Building Project "C:\Users\Zehna\Documents\Visual Studio 2015\Projects\gameprojectGit\gameproject\gameproject.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-<<<<<<< HEAD
-Time Elapsed 00:00:01.17
-=======
-Time Elapsed 00:00:02.99
->>>>>>> fa92fb83f807d7b6b2233110094a06b5b1a9fca4
+Time Elapsed 00:00:01.22
