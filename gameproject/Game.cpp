@@ -21,16 +21,15 @@ void Game::loadTextures() {
 void Game::makePlayfield() {
 	const int playfieldX = 10;
 	const int playfieldY = 8;
-	float tileSize = 50;
 
 	for (float y = 0; y < playfieldY; y++) {
 		for (float x = 0; x < playfieldX; x++) {
 			if (x == 3 || x == 6) {
-				std::unique_ptr<Terrain> terrain(new Terrain(textureID::ROAD, textures, sf::Vector2f{ x * tileSize, y * tileSize }));
+				std::unique_ptr<Terrain> terrain(new Terrain(textureID::ROAD, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
 				terrainContainer.push_back(std::move(terrain));
 			}
 			else {
-				std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{x * tileSize, y * tileSize}));
+				std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{x * TILESIZE, y * TILESIZE}));
 				terrainContainer.push_back(std::move(terrain));
 			}
 		}
@@ -42,7 +41,7 @@ void Game::makePlayfield() {
 void Game::handleInput(sf::Keyboard::Key key, bool b) {
 	if (key == sf::Keyboard::W) {
 		sf::Vector2i pos = (sf::Mouse::getPosition(window));
-		v2i_MOD(pos, 50);
+		v2i_MOD(pos, TILESIZE);
 		std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(pos)));
 		unitContainer.push_back(std::move(unit));
 	}
