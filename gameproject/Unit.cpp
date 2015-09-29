@@ -14,7 +14,8 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos) :
 }
 
 void Unit::setTexture(sf::Texture & text) {
-	sprite.setTexture(text, sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10));
+	sprite.setTexture(text, true);
+	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10));
 }
 
 void Unit::setPos(sf::Vector2f pos) {
