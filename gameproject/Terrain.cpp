@@ -11,7 +11,7 @@ Terrain::Terrain(textureID id, const textureHolder & textures) :
 
 Terrain::Terrain(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	id{ id },
-	sprite{ textures.get(id), sf::IntRect{0,0,50,50} }
+	sprite{ textures.get(id), sf::IntRect{0,0,TILESIZE,TILESIZE} }
 {
 	sprite.setPosition(pos);
 }
@@ -32,6 +32,6 @@ void Terrain::draw(sf::RenderWindow & window) {
 
 void Terrain::draw(sf::RenderWindow & window, sf::Vector2f position) {		// draw methode met position erbij
 	sprite.setPosition(position);
-	sprite.setTextureRect((sf::IntRect(0, 0, 40, 40)));
+	sprite.setTextureRect((sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10)));
 	window.draw(sprite);
 }

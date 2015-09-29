@@ -34,13 +34,13 @@ void Unit::handleMouse(sf::Vector2f pos) {
 	if (selected) { // als al geselecteerd dan afhandelen of hij wil lopen of toch wil afbreken)
 		sprite.setColor(sf::Color::Red);
 		// IK WIL NU DAT HIJ IN ALLE RICHTINGEN MAXIMAAL 1 VAKJE MAG VERSPRINGEN (BLAUW IS DESELECTED, ROOD SELECTED)
-		if ((pos.x - sprite.getPosition().x >= -50)	&& (pos.x - sprite.getPosition().x <= 0) && (sprite.getPosition().y - pos.y <= 50 )) {		// rechts
-				setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), 50)));	//Lelijkste stukje code van allemaal, gaat zoveel afronding fout wss
+		if ((pos.x - sprite.getPosition().x >= -TILESIZE)	&& (pos.x - sprite.getPosition().x <= 0) && (sprite.getPosition().y - pos.y <= TILESIZE )) {		// rechts
+				setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));	//Lelijkste stukje code van allemaal, gaat zoveel afronding fout wss
 		}
 
 		// BIJ DEZE MAG HIJ BLIJKBAAR NOG ONBEPERKT VER NAAR BENEDEN "SPRINGEN"
-		else if ((pos.x - sprite.getPosition().x <= 100) && (pos.x - sprite.getPosition().x >= 0) && (sprite.getPosition().y - pos.y <= 50)) {		// links
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), 50)));	//Lelijkste stukje code van allemaal, gaat zoveel afronding fout wss
+		else if ((pos.x - sprite.getPosition().x <= 100) && (pos.x - sprite.getPosition().x >= 0) && (sprite.getPosition().y - pos.y <= TILESIZE)) {		// links
+			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));	//Lelijkste stukje code van allemaal, gaat zoveel afronding fout wss
 		}
 
 		selected = false;
