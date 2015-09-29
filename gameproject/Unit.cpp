@@ -5,12 +5,13 @@
 #include "V2Functions.h"
 
 
-Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos) :
+Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	id{ id },
-	sprite{ textures.get(id), sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10) }
+	sprite{ textures.get(id), sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10) },
+	side {color}
 {
 	setPos(pos);
-	sprite.setColor(sf::Color::Blue);
+	sprite.setColor(color);
 }
 
 void Unit::setTexture(sf::Texture & text) {
@@ -50,7 +51,7 @@ void Unit::handleMouse(sf::Vector2f pos) {
 		}
 
 		selected = false;
-		sprite.setColor(sf::Color::Blue);
+		sprite.setColor(side);
 	}
 	else {		// als niet geselecteerd kijken of je hem alsnog wilt selecteren
 		selected = sprite.getGlobalBounds().contains(pos);
@@ -58,7 +59,7 @@ void Unit::handleMouse(sf::Vector2f pos) {
 			sprite.setColor(sf::Color::Yellow);
 		}
 		else {
-			sprite.setColor(sf::Color::Blue);
+			sprite.setColor(side);
 		}
 	}
 }

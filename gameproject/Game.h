@@ -9,11 +9,11 @@
 #include "Terrain.h"
 #include "Enums.h"
 #include "Unit.h"
+#include "Player.h"
 
 class Game {
 public:
 	Game();
-	void makePlayfield();
 	void run();
 
 private:
@@ -22,13 +22,22 @@ private:
 	void render();
 
 	void loadTextures();
+	void makePlayfield();
 
 	void handleInput(sf::Keyboard::Key, bool);
 	void handleMouse(sf::Mouse::Button);
 
+	void switchPlayer();
+	Player getActivePlayer();
+
 	sf::RenderWindow window;
 
-	std::vector<std::unique_ptr<Unit>> unitContainer;
+	Player playerB;
+	Player playerR;
+	std::vector<std::unique_ptr<Unit>> unitBContainer;
+	std::vector<std::unique_ptr<Unit>> unitRContainer;
+
+	//errstd::vector<std::unique_ptr<Unit>> unitContainer;
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
 };

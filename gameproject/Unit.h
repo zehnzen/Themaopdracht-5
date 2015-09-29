@@ -10,7 +10,7 @@
 
 class Unit{
 public:
-	Unit(textureID, const textureHolder& textures, sf::Vector2f);
+	Unit(textureID, const textureHolder& textures, sf::Vector2f, sf::Color);
 	void setTexture(sf::Texture & text);
 	void setPos(sf::Vector2f pos);
 	void draw(sf::RenderWindow & window);
@@ -22,6 +22,7 @@ public:
 private:
 	textureID id;
 	sf::Sprite sprite;
+	sf::Color side;
 	bool selected = false;
 };
 

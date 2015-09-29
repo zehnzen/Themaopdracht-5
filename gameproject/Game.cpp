@@ -5,8 +5,10 @@
 #include <array>
 #include "V2Functions.h"
 
-Game::Game():
-	window(sf::VideoMode(640,480), "SFML window")
+Game::Game() :
+	window(sf::VideoMode(640, 480), "SFML window"),
+	playerB{ sf::Color::Blue, true},
+	playerR{ sf::Color::Red, false}
 {
 	loadTextures();
 	makePlayfield();
@@ -41,12 +43,16 @@ void Game::makePlayfield() {
 void Game::handleInput(sf::Keyboard::Key key, bool b) {
 	if (key == sf::Keyboard::W) {
 		sf::Vector2i pos = (sf::Mouse::getPosition(window));
-		v2i_MOD(pos, TILESIZE);
-		std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(pos)));
-		unitContainer.push_back(std::move(unit));
+		std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
+		if(playerB.getActive())	unitBContainer.push_back(std::move(unit));
+		else unitRContainer.push_back(std::move(unit));
 	}
-	/*else if (key == sf::Keyboard::S)
-		mIsMovingDown = isPressed;
+	else if (key == sf::Keyboard::S) {
+		switchPlayer();
+		std::cout << "switch player";
+		//KEYBOARD ALLEEN PRESS AFVANGEN NOG DOEN
+	}
+	/*
 	else if (key == sf::Keyboard::A)
 		mIsMovingLeft = isPressed;
 	else if (key == sf::Keyboard::D)
@@ -60,14 +66,40 @@ void Game::handleMouse(sf::Mouse::Button button) {
 		// - check position van muis
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			for (auto const & p : unitContainer) {								// container is de container van jou
-				p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+			if (playerB.getActive()) {
+				for (auto const & p : unitBContainer) {								// container is de container van jou
+					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+				}
 			}
+			else {
+				for (auto const & p : unitRContainer) {								// container is de container van jou
+					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+				}
+			}
+			
 		}
 
 		// - check op deze position overeenkomt met object uit container (unit)
 		// - doe actie die bij die unit hoort! (doorsturen naar de unit en die handelt het verder af)      (unit).mouseAction()
 	}
+	//doet momenteel de switchplayer voor rechtermuisklik
+	if (button == sf::Mouse::Right) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+			switchPlayer();
+		}
+	}
+}
+
+Player Game::getActivePlayer() {
+	if (playerB.getActive()) {
+		return playerB;
+	}
+	else return playerR;
+}
+
+void Game::switchPlayer() {
+	playerB.setActive(!playerB.getActive());
+	playerR.setActive(!playerR.getActive());
 }
 
 void Game::run() {
@@ -107,8 +139,11 @@ void Game::render() {
 	for (std::vector<int>::size_type i = 0; i != terrainContainer.size(); i++) {
 		terrainContainer[i]->draw(window);
 	}
-	for (std::vector<int>::size_type i = 0; i != unitContainer.size(); i++) {
-		unitContainer[i]->draw(window);
+	for (std::vector<int>::size_type i = 0; i != unitBContainer.size(); i++) {
+		unitBContainer[i]->draw(window);
+	}
+	for (std::vector<int>::size_type i = 0; i != unitRContainer.size(); i++) {
+		unitRContainer[i]->draw(window);
 	}
 	window.display();
 }

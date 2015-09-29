@@ -4,6 +4,7 @@
 #define _TERRAIN_H
 
 #include <SFML/Graphics.hpp>
+#include "ResourceHolder.h"
 #include "ResourceIdentifier.h"
 #include "Enums.h"
 
