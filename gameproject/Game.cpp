@@ -136,14 +136,14 @@ void Game::update() {
 
 void Game::render() {
 	window.clear();
-	for (std::vector<int>::size_type i = 0; i != terrainContainer.size(); i++) {
-		terrainContainer[i]->draw(window);
+	for (const auto & p : terrainContainer) {
+		p->draw(window);
 	}
-	for (std::vector<int>::size_type i = 0; i != unitBContainer.size(); i++) {
-		unitBContainer[i]->draw(window);
+	for (const auto & p : unitBContainer) {
+		p->draw(window);
 	}
-	for (std::vector<int>::size_type i = 0; i != unitRContainer.size(); i++) {
-		unitRContainer[i]->draw(window);
+	for (const auto & p : unitRContainer) {
+		p->draw(window);
 	}
 	window.display();
 }
