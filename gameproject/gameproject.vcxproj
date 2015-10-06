@@ -122,20 +122,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Soldier.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="V2Functions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomber.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifier.h" />
+    <ClInclude Include="Soldier.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="V2Functions.h" />

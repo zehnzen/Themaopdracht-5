@@ -4,6 +4,7 @@
 #include "Game.h"
 #include <array>
 #include "V2Functions.h"
+#include "Soldier.h"
 
 Game::Game() :
 	window(sf::VideoMode(640, 480), "SFML window"),
@@ -78,9 +79,6 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			}
 			
 		}
-
-		// - check op deze position overeenkomt met object uit container (unit)
-		// - doe actie die bij die unit hoort! (doorsturen naar de unit en die handelt het verder af)      (unit).mouseAction()
 	}
 	//doet momenteel de switchplayer voor rechtermuisklik
 	if (button == sf::Mouse::Right) {
@@ -99,8 +97,25 @@ Player Game::getActivePlayer() {
 
 void Game::switchPlayer() {
 	playerB.setActive(!playerB.getActive());
+	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
+		p->setSelected(false);
+	}
 	playerR.setActive(!playerR.getActive());
+	for (auto const & p : unitRContainer) {						// alle units van R deselecteren
+		p->setSelected(false);
+	}
 }
+
+/*void Game::markField() {									// mark the field (1 terrain) in order to show a units walking limit
+	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
+		if (p->getSelected()) {
+			for (auto const & t : terrainContainer) {
+				t->changeColor(sf::Color::Yellow);
+			}
+			// terrain(textureID::ROAD, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
+		}
+	}
+} */
 
 void Game::run() {
 	while (window.isOpen()) {
