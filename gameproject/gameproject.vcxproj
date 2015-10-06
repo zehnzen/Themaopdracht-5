@@ -124,7 +124,9 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Music.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="V2Functions.cpp" />
@@ -133,9 +135,11 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Music.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifier.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="V2Functions.h" />

@@ -10,6 +10,8 @@
 #include "Enums.h"
 #include "Unit.h"
 #include "Player.h"
+#include "Music.h"
+#include "Sound.h"
 
 class Game {
 public:
@@ -37,9 +39,11 @@ private:
 	std::vector<std::unique_ptr<Unit>> unitBContainer;
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
-	//errstd::vector<std::unique_ptr<Unit>> unitContainer;
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
+
+	Music music;
+	Sound sound;
 };
 
 #endif

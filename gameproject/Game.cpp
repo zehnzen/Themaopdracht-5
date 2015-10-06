@@ -12,6 +12,8 @@ Game::Game() :
 {
 	loadTextures();
 	makePlayfield();
+	music.play(musicID::MENUTHEME);
+	music.setVolume(10);
 }
 
 void Game::loadTextures() {
