@@ -5,8 +5,8 @@
 
 Player::Player(sf::Color side, bool set):
 	side {side},
-	points {0},
-	money {0},
+	points {100},
+	money {1000},
 	active{set}
 {}
 

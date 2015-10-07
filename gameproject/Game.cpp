@@ -21,7 +21,7 @@ void Game::initText() {
 	// Create a text
 	text.setString("standaardtekst, graag vervangen");
 	text.setFont(font);
-	text.setCharacterSize(30);
+	text.setCharacterSize(20);
 	text.setStyle(sf::Text::Bold);
 	text.setColor(sf::Color::Black);
 	
@@ -163,9 +163,12 @@ void Game::update() {
 }
 
 void Game::HUD() {
-	text.setString("test");
-	text.setPosition(500, 0);
 	text.setColor(getActivePlayer().getPlayer());
+	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));
+	text.setPosition(510, 0);
+	window.draw(text);
+	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));
+	text.setPosition(510, 40);
 	// Draw it
 	window.draw(text);
 
