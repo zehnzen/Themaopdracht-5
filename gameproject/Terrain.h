@@ -13,6 +13,7 @@ public:
 	Terrain(textureID, const textureHolder& textures);
 	Terrain(textureID, const textureHolder& textures, sf::Vector2f);
 	void setPosition(sf::Vector2f);
+	sf::Vector2f getPosition();
 	void draw(sf::RenderWindow & window);
 	void changeColor(sf::Color col);
 	

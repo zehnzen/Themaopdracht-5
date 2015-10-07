@@ -70,12 +70,14 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			if (playerB.getActive()) {
 				for (auto const & p : unitBContainer) {								// container is de container van jou
 					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+					//markField(*p);
 					markField(*p);
 				}
 			}
 			else {
 				for (auto const & p : unitRContainer) {								// container is de container van jou
 					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+					markField(*p);
 				}
 			}
 			
@@ -111,7 +113,25 @@ void Game::switchPlayer() {
 void Game::markField(Unit p) {									// mark the field (1 terrain) in order to show a units walking limit
 		if (p.getSelected()) {
 			for (auto const & t : terrainContainer) {
-				t->changeColor(sf::Color::Yellow);
+				for (int i = 0; i <= p.getWalklimit(); i ++) {
+					if ((t->getPosition().x == ((p.getPosition().x - 7) - (TILESIZE * i))) && (t->getPosition().y == (p.getPosition().y - 7))) {		// rechts
+						t->changeColor(sf::Color::Blue);
+					}
+					if ((t->getPosition().x == ((p.getPosition().x - 7) + (TILESIZE * i))) && (t->getPosition().y == (p.getPosition().y - 7))) {		// links
+						t->changeColor(sf::Color::Blue);
+					}
+					if ((t->getPosition().y == ((p.getPosition().y - 7) - (TILESIZE * i))) && (t->getPosition().x == (p.getPosition().x - 7))) {		// boven
+						t->changeColor(sf::Color::Blue);
+					}
+					if ((t->getPosition().y == ((p.getPosition().y - 7) + (TILESIZE * i))) && (t->getPosition().x == (p.getPosition().x - 7))) {		// onder
+						t->changeColor(sf::Color::Blue);
+					}
+				}
+			}
+		}
+		else {
+			for (auto const & t : terrainContainer) {
+					t->changeColor(sf::Color::White);
 			}
 		}
 }

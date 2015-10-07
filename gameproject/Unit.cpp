@@ -24,6 +24,14 @@ void Unit::setPos(sf::Vector2f pos) {
 	sprite.setPosition(pos.x + 7, pos.y + 7);
 }
 
+sf::Vector2f Unit::getPosition() {
+	return sprite.getPosition();
+}
+
+int Unit::getWalklimit() {
+	return walklimit;
+}
+
 void Unit::draw(sf::RenderWindow & window) {
 	window.draw(sprite);
 }

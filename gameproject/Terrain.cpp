@@ -28,6 +28,10 @@ void Terrain::setPosition(sf::Vector2f pos) {
 	sprite.setPosition(pos);
 }
 
+sf::Vector2f Terrain::getPosition() {
+	return sprite.getPosition();
+}
+
 void Terrain::draw(sf::RenderWindow & window) {
 	window.draw(sprite);
 }
