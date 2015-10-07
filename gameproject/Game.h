@@ -30,7 +30,7 @@ private:
 	void switchPlayer();
 	Player getActivePlayer();
 
-	void markField();		// mark the field (1 terrain) in order to show a units walking limit
+	void markField(Unit p);		// mark the field (1 terrain) in order to show a units walking limit
 
 	sf::RenderWindow window;
 

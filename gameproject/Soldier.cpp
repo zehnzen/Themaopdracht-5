@@ -18,3 +18,15 @@ void Soldier::action() {
 	// Terrain.changeColor(sf::Color::Green);
 	//}
 }
+
+int Soldier::getHP() {
+	return hp;
+}
+
+int Soldier::getDP() {
+	return dp;
+}
+
+int Soldier::getWalklimit() {
+	return walklimit;
+}

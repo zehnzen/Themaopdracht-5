@@ -70,6 +70,7 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			if (playerB.getActive()) {
 				for (auto const & p : unitBContainer) {								// container is de container van jou
 					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
+					markField(*p);
 				}
 			}
 			else {
@@ -106,16 +107,14 @@ void Game::switchPlayer() {
 	}
 }
 
-/*void Game::markField() {									// mark the field (1 terrain) in order to show a units walking limit
-	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
-		if (p->getSelected()) {
+
+void Game::markField(Unit p) {									// mark the field (1 terrain) in order to show a units walking limit
+		if (p.getSelected()) {
 			for (auto const & t : terrainContainer) {
 				t->changeColor(sf::Color::Yellow);
 			}
-			// terrain(textureID::ROAD, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
 		}
-	}
-} */
+}
 
 void Game::run() {
 	while (window.isOpen()) {

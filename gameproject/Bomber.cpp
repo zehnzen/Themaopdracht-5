@@ -18,3 +18,15 @@ void Bomber::action() {
 	// Terrain.changeColor(sf::Color::Green);
 	//}
 }
+
+int Bomber::getHP() {
+	return hp;
+}
+
+int Bomber::getDP() {
+	return dp;
+}
+
+int Bomber::getWalklimit() {
+	return walklimit;
+}
