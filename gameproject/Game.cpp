@@ -10,9 +10,22 @@ Game::Game() :
 	window(sf::VideoMode(640, 480), "SFML window"),
 	playerB{ sf::Color::Blue, true},
 	playerR{ sf::Color::Red, false}
-{
+	{
+	initText();
 	loadTextures();
 	makePlayfield();
+}
+
+void Game::initText() {
+	font.loadFromFile("arial.ttf");
+	// Create a text
+	text.setString("standaardtekst, graag vervangen");
+	text.setFont(font);
+	text.setCharacterSize(30);
+	text.setStyle(sf::Text::Bold);
+	text.setColor(sf::Color::Black);
+	
+
 }
 
 void Game::loadTextures() {
@@ -149,6 +162,15 @@ void Game::update() {
 
 }
 
+void Game::HUD() {
+	text.setString("test");
+	text.setPosition(500, 0);
+	text.setColor(getActivePlayer().getPlayer());
+	// Draw it
+	window.draw(text);
+
+}
+
 void Game::render() {
 	window.clear();
 	for (const auto & p : terrainContainer) {
@@ -160,5 +182,8 @@ void Game::render() {
 	for (const auto & p : unitRContainer) {
 		p->draw(window);
 	}
+
+	HUD();
+
 	window.display();
 }

@@ -20,12 +20,14 @@ private:
 	void processEvents();
 	void update();
 	void render();
+	void HUD();
 
 	void loadTextures();
 	void makePlayfield();
 
 	void handleInput(sf::Keyboard::Key, bool);
 	void handleMouse(sf::Mouse::Button);
+	void initText();
 
 	void switchPlayer();
 	Player getActivePlayer();
@@ -42,6 +44,8 @@ private:
 	//errstd::vector<std::unique_ptr<Unit>> unitContainer;
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
-};
+	sf::Font font;
+	sf::Text text;
 
 #endif
+};
