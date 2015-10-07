@@ -22,15 +22,19 @@ private:
 	void processEvents();
 	void update();
 	void render();
+	void HUD();
 
 	void loadTextures();
 	void makePlayfield();
 
 	void handleInput(sf::Keyboard::Key, bool);
 	void handleMouse(sf::Mouse::Button);
+	void initText();
 
 	void switchPlayer();
 	Player getActivePlayer();
+
+	void markField();		// mark the field (1 terrain) in order to show a units walking limit
 
 	sf::RenderWindow window;
 
@@ -44,6 +48,9 @@ private:
 
 	Music music;
 	Sound sound;
-};
+
+	sf::Font font;
+	sf::Text text;
 
 #endif
+};

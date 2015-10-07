@@ -4,16 +4,30 @@
 #include "Game.h"
 #include <array>
 #include "V2Functions.h"
+#include "Soldier.h"
 
 Game::Game() :
 	window(sf::VideoMode(640, 480), "SFML window"),
 	playerB{ sf::Color::Blue, true},
 	playerR{ sf::Color::Red, false}
-{
+	{
+	initText();
 	loadTextures();
 	makePlayfield();
 	music.play(musicID::MENUTHEME);
 	music.setVolume(10);
+}
+
+void Game::initText() {
+	font.loadFromFile("arial.ttf");
+	// Create a text
+	text.setString("standaardtekst, graag vervangen");
+	text.setFont(font);
+	text.setCharacterSize(20);
+	text.setStyle(sf::Text::Bold);
+	text.setColor(sf::Color::Black);
+	
+
 }
 
 void Game::loadTextures() {
@@ -80,9 +94,6 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			}
 			
 		}
-
-		// - check op deze position overeenkomt met object uit container (unit)
-		// - doe actie die bij die unit hoort! (doorsturen naar de unit en die handelt het verder af)      (unit).mouseAction()
 	}
 	//doet momenteel de switchplayer voor rechtermuisklik
 	if (button == sf::Mouse::Right) {
@@ -101,8 +112,25 @@ Player Game::getActivePlayer() {
 
 void Game::switchPlayer() {
 	playerB.setActive(!playerB.getActive());
+	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
+		p->setSelected(false);
+	}
 	playerR.setActive(!playerR.getActive());
+	for (auto const & p : unitRContainer) {						// alle units van R deselecteren
+		p->setSelected(false);
+	}
 }
+
+/*void Game::markField() {									// mark the field (1 terrain) in order to show a units walking limit
+	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
+		if (p->getSelected()) {
+			for (auto const & t : terrainContainer) {
+				t->changeColor(sf::Color::Yellow);
+			}
+			// terrain(textureID::ROAD, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
+		}
+	}
+} */
 
 void Game::run() {
 	while (window.isOpen()) {
@@ -136,6 +164,18 @@ void Game::update() {
 
 }
 
+void Game::HUD() {
+	text.setColor(getActivePlayer().getPlayer());
+	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));
+	text.setPosition(510, 0);
+	window.draw(text);
+	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));
+	text.setPosition(510, 40);
+	// Draw it
+	window.draw(text);
+
+}
+
 void Game::render() {
 	window.clear();
 	for (const auto & p : terrainContainer) {
@@ -147,5 +187,8 @@ void Game::render() {
 	for (const auto & p : unitRContainer) {
 		p->draw(window);
 	}
+
+	HUD();
+
 	window.display();
 }

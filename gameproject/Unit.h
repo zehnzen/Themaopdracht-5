@@ -14,16 +14,18 @@ public:
 	void setTexture(sf::Texture & text);
 	void setPos(sf::Vector2f pos);
 	void draw(sf::RenderWindow & window);
-	void draw(sf::RenderWindow & window, sf::Vector2f position);	// draw methode met position erbij
 	void handleMouse(sf::Vector2f pos);
-	void action();											// dit is de actie die je unit uit kan voeren
+	virtual void action();											// dit is de actie die je unit uit kan voeren
+	void setSelected(bool sel);
+	bool getSelected();
 
 
-private:
+protected:
 	textureID id;
 	sf::Sprite sprite;
 	sf::Color side;
 	bool selected = false;
+	int walklimit = 2;
 };
 
 #endif

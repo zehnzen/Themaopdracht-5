@@ -5,8 +5,8 @@
 
 Player::Player(sf::Color side, bool set):
 	side {side},
-	points {0},
-	money {0},
+	points {100},
+	money {1000},
 	active{set}
 {}
 
@@ -20,4 +20,12 @@ bool Player::getActive() {
 
 void Player::setActive(bool set) {
 	active = set;
+}
+
+int	Player::getPoints() {
+	return points;
+}
+
+int Player::getMoney() {
+	return money;
 }
