@@ -21,3 +21,11 @@ bool Player::getActive() {
 void Player::setActive(bool set) {
 	active = set;
 }
+
+int	Player::getPoints() {
+	return points;
+}
+
+int Player::getMoney() {
+	return money;
+}
