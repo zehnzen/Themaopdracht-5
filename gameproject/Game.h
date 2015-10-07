@@ -30,7 +30,7 @@ private:
 	void switchPlayer();
 	Player getActivePlayer();
 
-	void markField(Unit p);		// mark the field (1 terrain) in order to show a units walking limit
+	void markField(int walklimit, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
 
 	sf::RenderWindow window;
 
@@ -42,6 +42,9 @@ private:
 	//errstd::vector<std::unique_ptr<Unit>> unitContainer;
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
+
+	sf::Vector2f oldUnitPosition;			// nodig voor het deselecteren van de tiles
+	int oldUnitWalklimit;					// nodig voor het deselecteren van de tiles
 };
 
 #endif
