@@ -10,6 +10,8 @@
 #include "Enums.h"
 #include "Unit.h"
 #include "Player.h"
+#include "Music.h"
+#include "Sound.h"
 
 class Game {
 public:
@@ -20,12 +22,14 @@ private:
 	void processEvents();
 	void update();
 	void render();
+	void HUD();
 
 	void loadTextures();
 	void makePlayfield();
 
 	void handleInput(sf::Keyboard::Key, bool);
 	void handleMouse(sf::Mouse::Button);
+	void initText();
 
 	void switchPlayer();
 	Player getActivePlayer();
@@ -39,12 +43,17 @@ private:
 	std::vector<std::unique_ptr<Unit>> unitBContainer;
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
-	//errstd::vector<std::unique_ptr<Unit>> unitContainer;
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	textureHolder	textures;
 
 	sf::Vector2f oldUnitPosition;			// nodig voor het deselecteren van de tiles
 	int oldUnitWalklimit;					// nodig voor het deselecteren van de tiles
-};
+
+	Music music;
+	Sound sound;
+
+	sf::Font font;
+	sf::Text text;
 
 #endif
+};

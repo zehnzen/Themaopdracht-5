@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{13061155-5132-4F37-86B6-833E9E3332AE}</ProjectGuid>
+    <ProjectGuid>{F8BA00D1-A632-41A8-86DC-F053FC6FF514}</ProjectGuid>
     <RootNamespace>gameproject</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -122,27 +122,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bomber.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Soldier.cpp" />
-    <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="Unit.cpp" />
-    <ClCompile Include="V2Functions.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Bomber.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Music.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifier.h" />
     <ClInclude Include="Soldier.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="V2Functions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bomber.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Music.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Soldier.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="V2Functions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,9 +13,9 @@ public:
 	sf::Color getPlayer();
 	bool getActive();
 	void setActive(bool);
-	//int getPoints();
+	int getPoints();
 	//void diffPoints(int);
-	//int getMoney();
+	int getMoney();
 	//void diffMoney(int);
 
 
