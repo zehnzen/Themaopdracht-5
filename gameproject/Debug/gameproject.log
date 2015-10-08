@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-﻿Build started 10/8/2015 11:28:27 AM.
-=======
-﻿Build started 10/8/2015 12:03:36 PM.
->>>>>>> master
+﻿Build started 10/8/2015 12:09:58 PM.
      1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Bomber.cpp Game.cpp main.cpp Music.cpp Player.cpp Soldier.cpp Sound.cpp Terrain.cpp Unit.cpp V2Functions.cpp
-         V2Functions.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Bomber.cpp Game.cpp main.cpp Music.cpp Player.cpp Soldier.cpp Sound.cpp Terrain.cpp Unit.cpp
          Unit.cpp
          Terrain.cpp
          Sound.cpp
@@ -29,13 +24,10 @@
          Debug\Unit.obj
          Debug\V2Functions.obj
          LINK : C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Debug\gameproject.exe not found or not built by the last incremental link; performing full link
+     1>V2Functions.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'V2Functions.obj' or at 'C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Debug\vc140.pdb'; linking object as if no debug info
          gameproject.vcxproj -> C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Debug\gameproject.exe
      1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-<<<<<<< HEAD
-Time Elapsed 00:00:02.25
-=======
-Time Elapsed 00:00:09.22
->>>>>>> master
+Time Elapsed 00:00:09.77
