@@ -11,11 +11,11 @@ Game::Game() :
 	playerB{ sf::Color::Blue, true},
 	playerR{ sf::Color::Red, false}
 	{
-	initText();
-	loadTextures();
-	makePlayfield();
-	music.play(musicID::MENUTHEME);
-	music.setVolume(10);
+		loadMenu();
+		//initText();
+		//makePlayfield();
+		music.play(musicID::MENUTHEME);
+		music.setVolume(7);
 }
 
 void Game::initText() {
@@ -26,14 +26,39 @@ void Game::initText() {
 	text.setCharacterSize(20);
 	text.setStyle(sf::Text::Bold);
 	text.setColor(sf::Color::Black);
-	
+}
+
+void Game::loadMenu()
+{
+	inMenu = true;
+	//texture voor menu
+	textures.load(textureID::BACKGROUND, "images//background.jpg");
+	textures.load(textureID::START, "images//start.png");
+	textures.load(textureID::OPTION, "images//option.png");
+	textures.load(textureID::EXIT, "images//exit.png");
+	textures.load(textureID::MUTE, "images//muteSound.png");
+	textures.load(textureID::BACK, "images//back.png");
+
+	std::unique_ptr<Menu> background(new Menu(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
+	menuContainer.push_back(std::move(background));
+
+	std::unique_ptr<Menu> startButton(new Menu(textureID::START, textures, sf::Vector2f(50, 260)));
+	menuContainer.push_back(std::move(startButton));
+
+	std::unique_ptr<Menu> optionButton(new Menu(textureID::OPTION, textures, sf::Vector2f(50, 330)));
+	menuContainer.push_back(std::move(optionButton));
+
+	std::unique_ptr<Menu> exitButton(new Menu(textureID::EXIT, textures, sf::Vector2f(50, 400)));
+	menuContainer.push_back(std::move(exitButton));
 
 }
 
+
 void Game::loadTextures() {
+
 	textures.load(textureID::GRASS, "grass.jpg");
 	textures.load(textureID::ROAD, "road.jpg");
-	textures.load(textureID::UNIT, "unit.jpg");
+	textures.load(textureID::UNIT, "unit.jpg");	
 }
 
 void Game::makePlayfield() {
@@ -82,6 +107,13 @@ void Game::handleMouse(sf::Mouse::Button button) {
 		// - check position van muis
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			if(inMenu)
+			{
+				for (auto const & p : menuContainer) {
+					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window);
+			}
+				}
+
 			if (playerB.getActive()) {
 				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
 				for (auto const & p : unitBContainer) {							
@@ -199,6 +231,9 @@ void Game::HUD() {
 
 void Game::render() {
 	window.clear();
+	for (const auto & p : menuContainer) {
+		p->draw(window);
+	}
 	for (const auto & p : terrainContainer) {
 		p->draw(window);
 	}

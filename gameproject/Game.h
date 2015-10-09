@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Music.h"
 #include "Sound.h"
+#include "Menu.h"
 
 class Game {
 public:
@@ -23,6 +24,8 @@ private:
 	void update();
 	void render();
 	void HUD();
+
+	void loadMenu();
 
 	void loadTextures();
 	void makePlayfield();
@@ -44,7 +47,9 @@ private:
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
-	textureHolder	textures;
+	std::vector<std::unique_ptr<Menu>> menuContainer;
+
+	textureHolder textures;
 
 	sf::Vector2f oldUnitPosition;			// nodig voor het deselecteren van de tiles
 	int oldUnitWalklimit;					// nodig voor het deselecteren van de tiles
@@ -52,6 +57,7 @@ private:
 	Music music;
 	Sound sound;
 
+	bool inMenu = false;
 	sf::Font font;
 	sf::Text text;
 
