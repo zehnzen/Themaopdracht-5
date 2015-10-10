@@ -12,7 +12,8 @@
 #include "Player.h"
 #include "Music.h"
 #include "Sound.h"
-#include "Menu.h"
+#include "MenuButton.h"
+
 
 class Game {
 public:
@@ -47,7 +48,7 @@ private:
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
-	std::vector<std::unique_ptr<Menu>> menuContainer;
+	std::vector<std::unique_ptr<MenuButton>> menuContainer;
 
 	textureHolder textures;
 
@@ -61,5 +62,6 @@ private:
 	sf::Font font;
 	sf::Text text;
 
-#endif
 };
+
+#endif

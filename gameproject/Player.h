@@ -22,8 +22,8 @@ public:
 private:
 	bool active;
 	sf::Color side;
-	int points;
-	int money;
+	int points = 100;
+	int money = 1000;
 };
 
 

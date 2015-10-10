@@ -11,9 +11,10 @@ Game::Game() :
 	playerB{ sf::Color::Blue, true},
 	playerR{ sf::Color::Red, false}
 	{
+		loadTextures();
 		loadMenu();
-		//initText();
-		//makePlayfield();
+		initText();
+		makePlayfield();
 		music.play(musicID::MENUTHEME);
 		music.setVolume(7);
 }
@@ -32,33 +33,30 @@ void Game::loadMenu()
 {
 	inMenu = true;
 	//texture voor menu
+	std::unique_ptr<MenuButton> background(new MenuButton(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
+	menuContainer.push_back(std::move(background));
+
+	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, sf::Vector2f(50, 260)));
+	menuContainer.push_back(std::move(startButton));
+
+	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
+	menuContainer.push_back(std::move(optionButton));
+
+	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, sf::Vector2f(50, 400)));
+	menuContainer.push_back(std::move(exitButton));
+
+}
+
+void Game::loadTextures() {
+	textures.load(textureID::GRASS, "grass.jpg");
+	textures.load(textureID::ROAD, "road.jpg");
+	textures.load(textureID::UNIT, "unit.jpg");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
 	textures.load(textureID::EXIT, "images//exit.png");
 	textures.load(textureID::MUTE, "images//muteSound.png");
 	textures.load(textureID::BACK, "images//back.png");
-
-	std::unique_ptr<Menu> background(new Menu(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
-	menuContainer.push_back(std::move(background));
-
-	std::unique_ptr<Menu> startButton(new Menu(textureID::START, textures, sf::Vector2f(50, 260)));
-	menuContainer.push_back(std::move(startButton));
-
-	std::unique_ptr<Menu> optionButton(new Menu(textureID::OPTION, textures, sf::Vector2f(50, 330)));
-	menuContainer.push_back(std::move(optionButton));
-
-	std::unique_ptr<Menu> exitButton(new Menu(textureID::EXIT, textures, sf::Vector2f(50, 400)));
-	menuContainer.push_back(std::move(exitButton));
-
-}
-
-
-void Game::loadTextures() {
-
-	textures.load(textureID::GRASS, "grass.jpg");
-	textures.load(textureID::ROAD, "road.jpg");
-	textures.load(textureID::UNIT, "unit.jpg");	
 }
 
 void Game::makePlayfield() {
@@ -82,23 +80,21 @@ void Game::makePlayfield() {
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 void Game::handleInput(sf::Keyboard::Key key, bool b) {
-	if (key == sf::Keyboard::W) {
-		sf::Vector2i pos = (sf::Mouse::getPosition(window));
-		std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
-		if(playerB.getActive())	unitBContainer.push_back(std::move(unit));
-		else unitRContainer.push_back(std::move(unit));
+	//Deze commands alleen bij indrukken
+	if (b) {
+		if (key == sf::Keyboard::W) {
+			sf::Vector2i pos = (sf::Mouse::getPosition(window));
+			std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
+			if(playerB.getActive())	unitBContainer.push_back(std::move(unit));
+			else unitRContainer.push_back(std::move(unit));
+		}
+		else if (key == sf::Keyboard::S) {
+			switchPlayer();
+		}
+		else if (key == sf::Keyboard::P) {
+			inMenu = true;
+		}
 	}
-	else if (key == sf::Keyboard::S) {
-		switchPlayer();
-		std::cout << "switch player";
-		//KEYBOARD ALLEEN PRESS AFVANGEN NOG DOEN
-	}
-	/*
-	else if (key == sf::Keyboard::A)
-		mIsMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		mIsMovingRight = isPressed;
-		//*/
 }
 
 void Game::handleMouse(sf::Mouse::Button button) {
@@ -110,9 +106,11 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			if(inMenu)
 			{
 				for (auto const & p : menuContainer) {
-					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window);
-			}
+					if (p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window) == 1) {//TODO test voor start
+						inMenu = false;
+					}
 				}
+			}
 
 			if (playerB.getActive()) {
 				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
@@ -206,6 +204,9 @@ void Game::processEvents() {
 			case sf::Event::MouseButtonPressed:
 				handleMouse(event.mouseButton.button);
 				break;
+			case sf::Event::LostFocus:
+				inMenu = true;
+				break;
 			case sf::Event::Closed:
 				window.close();
 				break;
@@ -214,7 +215,13 @@ void Game::processEvents() {
 }
 
 void Game::update() {
-
+	//TODO implement Command message structure which will be iterated here and each command delivered to it's target where it'll handle it's implementation
+	if (inMenu) {
+		//TODO game doesn't update but handles menu
+	}
+	else {
+		//TODO the game updates
+	}
 }
 
 void Game::HUD() {
@@ -231,20 +238,23 @@ void Game::HUD() {
 
 void Game::render() {
 	window.clear();
-	for (const auto & p : menuContainer) {
-		p->draw(window);
+	if (inMenu) {
+		for (const auto & p : menuContainer) {
+			p->draw(window);
+		}
 	}
-	for (const auto & p : terrainContainer) {
-		p->draw(window);
-	}
-	for (const auto & p : unitBContainer) {
-		p->draw(window);
-	}
-	for (const auto & p : unitRContainer) {
-		p->draw(window);
-	}
+	else {
+		for (const auto & p : terrainContainer) {
+			p->draw(window);
+		}
+		for (const auto & p : unitBContainer) {
+			p->draw(window);
+		}
+		for (const auto & p : unitRContainer) {
+			p->draw(window);
+		}
 
-	HUD();
-
+		HUD();
+	}
 	window.display();
 }
