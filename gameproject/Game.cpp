@@ -39,17 +39,17 @@ void Game::loadMenu()
 
 	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, sf::Vector2f(50, 260)));
 	menuContainer.push_back(std::move(startButton));	//[1]
-
-	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
-	menuContainer.push_back(std::move(optionButton));	//[2]
+	
+	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
+	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures, sf::Vector2f(50, 1000)));
+	menuContainer.push_back(std::move(muteButton));		//[2]
 
 	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, sf::Vector2f(50, 400)));
 	menuContainer.push_back(std::move(exitButton));		//[3]
-
+	
+	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
+	menuContainer.push_back(std::move(optionButton));	//[4]
 	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
-	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures, sf::Vector2f(50, 1000)));
-	menuContainer.push_back(std::move(muteButton));		//[4]
-
 	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, sf::Vector2f(50, 1000)));
 	menuContainer.push_back(std::move(backButton));		//[5]
 
@@ -93,8 +93,8 @@ void Game::handleInput(sf::Keyboard::Key key, bool b) {
 		if (key == sf::Keyboard::W) {
 			sf::Vector2i pos = (sf::Mouse::getPosition(window));
 			std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
-			if(playerB.getActive())	unitBContainer.push_back(std::move(unit));
-			else unitRContainer.push_back(std::move(unit));
+			if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
+			else { unitRContainer.push_back(std::move(unit)) };
 		}
 		else if (key == sf::Keyboard::S) {
 			switchPlayer();
@@ -156,7 +156,7 @@ Player Game::getActivePlayer() {
 	if (playerB.getActive()) {
 		return playerB;
 	}
-	else return playerR;
+	else { return playerR; }
 }
 
 void Game::switchPlayer() {

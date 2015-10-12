@@ -34,13 +34,11 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 		}
 		if (id == textureID::OPTION)
 		{
-			std::cout << "test" ;
-
 			container[1]->setPosition(leaveScreen); // container 1 = startbutton
-			container[2]->setPosition(leaveScreen); //2 = optionbutton
+			container[4]->setPosition(leaveScreen); //4 = optionbutton
 			container[3]->setPosition(leaveScreen); //3 = exit
 													//de mute[4] e5n backbutton[5] zaten buiten scherm dus die halen we weer binnen scherm
-			container[4]->setPosition(sf::Vector2f(50, 330)); //4 = mute
+			container[2]->setPosition(sf::Vector2f(50, 330)); //2 = mute
 			container[5]->setPosition(sf::Vector2f(50, 400)); //5 = back
 		}
 		if (id == textureID::EXIT)
@@ -73,11 +71,11 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 		{
 			//start, option en exit button terug halen
 			container[1]->setPosition(sf::Vector2f(50, 260)); // container 1 = startbutton
-			container[2]->setPosition(sf::Vector2f(50, 330)); //2 = optionbutton
+			container[4]->setPosition(sf::Vector2f(50, 330)); //4 = optionbutton
 			container[3]->setPosition(sf::Vector2f(50, 400)); //3 = exit
 
 			//de mute[4] en backbutton[5] zaten buiten scherm dus die halen we weer binnen scherm
-			container[4]->setPosition(leaveScreen);
+			container[2]->setPosition(leaveScreen);
 			container[5]->setPosition(leaveScreen);
 		}
 
