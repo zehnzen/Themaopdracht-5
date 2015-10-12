@@ -54,9 +54,6 @@
     <ClInclude Include="V2Functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MenuButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,9 +87,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="V2Functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MenuButton.cpp">

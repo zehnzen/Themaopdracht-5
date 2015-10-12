@@ -8,6 +8,7 @@ Music::Music() :
 	volume(100.f)
 {
 	musicFiles[musicID::MENUTHEME] = "themeMusic.ogg";
+	musicFiles[musicID::MISSIONTHEME] = "missionMusic.ogg";
 }
 
 void Music::play(musicID id) {

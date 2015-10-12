@@ -33,17 +33,25 @@ void Game::loadMenu()
 {
 	inMenu = true;
 	//texture voor menu
-	std::unique_ptr<MenuButton> background(new MenuButton(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
-	menuContainer.push_back(std::move(background));
+
+	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
+	menuContainer.push_back(std::move(background));		//[0]
 
 	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, sf::Vector2f(50, 260)));
-	menuContainer.push_back(std::move(startButton));
+	menuContainer.push_back(std::move(startButton));	//[1]
 
 	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
-	menuContainer.push_back(std::move(optionButton));
+	menuContainer.push_back(std::move(optionButton));	//[2]
 
 	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, sf::Vector2f(50, 400)));
-	menuContainer.push_back(std::move(exitButton));
+	menuContainer.push_back(std::move(exitButton));		//[3]
+
+	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
+	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures, sf::Vector2f(50, 1000)));
+	menuContainer.push_back(std::move(muteButton));		//[4]
+
+	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, sf::Vector2f(50, 1000)));
+	menuContainer.push_back(std::move(backButton));		//[5]
 
 }
 
@@ -106,12 +114,11 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			if(inMenu)
 			{
 				for (auto const & p : menuContainer) {
-					if (p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window) == 1) {//TODO test voor start
+					if (p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window, menuContainer, music) == 1) {//TODO test voor start
 						inMenu = false;
 					}
 				}
 			}
-
 			if (playerB.getActive()) {
 				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
 				for (auto const & p : unitBContainer) {							
@@ -162,7 +169,6 @@ void Game::switchPlayer() {
 		p->setSelected(false);
 	}
 }
-
 
 void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {									// mark the field (1 terrain) in order to show a units walking limit
 	for (auto const & t : terrainContainer) {
