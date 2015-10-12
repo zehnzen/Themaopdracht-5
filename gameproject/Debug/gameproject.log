@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿Build started 10/12/2015 13:15:34.
      1>Project "C:\Users\waila\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
@@ -24,3 +25,14 @@
 Build succeeded.
 
 Time Elapsed 00:00:02.99
+=======
+﻿Build started 10/10/2015 7:12:11 PM.
+     1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         gameproject.vcxproj -> C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Debug\gameproject.exe
+     1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\gameproject\gameproject.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.06
+>>>>>>> master
