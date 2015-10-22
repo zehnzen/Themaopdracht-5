@@ -17,9 +17,16 @@ public:
 	int getWalklimit();
 	void draw(sf::RenderWindow & window);
 	void handleMouse(sf::Vector2f pos);
-	virtual void action();											// dit is de actie die je unit uit kan voeren
 	void setSelected(bool sel);
 	bool getSelected();
+
+	bool checkWalk(sf::Vector2f pos);
+	bool checkClicked(sf::Vector2f pos);
+
+
+	void damage(int points);
+	int attack();
+	void destroy();	// vernietigen als geen hp meer
 
 
 protected:
@@ -28,6 +35,9 @@ protected:
 	sf::Color side;
 	bool selected = false;
 	int walklimit = 2;
+
+	int hitpoints = 100;		// hp
+	int attackpoints = 20;
 };
 
 #endif

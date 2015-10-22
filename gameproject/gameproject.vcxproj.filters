@@ -54,6 +54,9 @@
     <ClInclude Include="V2Functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataTables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomber.cpp">
@@ -84,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="V2Functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataTables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

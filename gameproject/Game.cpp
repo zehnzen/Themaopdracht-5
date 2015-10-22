@@ -6,6 +6,7 @@
 #include "V2Functions.h"
 #include "Soldier.h"
 
+
 Game::Game() :
 	window(sf::VideoMode(640, 480), "SFML window"),
 	playerB{ sf::Color::Blue, true},
@@ -87,6 +88,12 @@ void Game::handleMouse(sf::Mouse::Button button) {
 				for (auto const & p : unitBContainer) {							
 					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
 					if (p->getSelected()) {
+						for (auto const & q : unitRContainer) {		// kijken of rood wordt aangeklikt
+							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {
+								q->damage(p->attack());	// aanval op rood door blauw
+							}
+						}
+
 						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
 						oldUnitWalklimit = p->getWalklimit();
 						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
@@ -134,8 +141,8 @@ void Game::switchPlayer() {
 }
 
 
-void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {									// mark the field (1 terrain) in order to show a units walking limit
-	for (auto const & t : terrainContainer) {
+void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
+	/*for (auto const & t : terrainContainer) {
 		for (int i = 0; i <= walklimit; i ++) {
 			if ((t->getPosition().x == ((position.x - 7) - (TILESIZE * i))) && (t->getPosition().y == (position.y - 7))) {		// rechts
 				t->changeColor(color);
@@ -150,8 +157,33 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 				t->changeColor(color);
 			}
 		}
+	} */
+
+
+	for (auto const & t : terrainContainer) {
+		//if(t->getPosition() == position) {		// nog ff origin verplaatsen in de sprites!!! anders werkt het niet. origin in het midden. daarom eerst nog ff die hieronder:
+		if((t->getPosition().x == position.x - 7) && (t->getPosition().y == position.y - 7)) {
+
+			int index;
+
+			auto it = std::find(terrainContainer.begin(), terrainContainer.end(), t);
+			if (it != terrainContainer.end()) {
+				index = std::distance(terrainContainer.begin(), it);
+			}
+			for (int i = 0; i <= walklimit; i++) {		// checken of die terrain wel bestaat! anders hebben we een bug :(
+				//if(terrainContainer.at(index - i) != NULL) {terrainContainer.at(index - i)->changeColor(color);}
+				//if(terrainContainer.at(index + i) != NULL) {terrainContainer.at(index + i)->changeColor(color);}
+				//if(terrainContainer.at(index - (10 * i)) != NULL) {terrainContainer.at(index - (10 * i))->changeColor(color);}
+				//if(terrainContainer.at(index + (10 * i)) != NULL) {terrainContainer.at(index + (10 * i))->changeColor(color);}
+				terrainContainer.at(index - i)->changeColor(color);
+				terrainContainer.at(index + i)->changeColor(color);
+				terrainContainer.at(index - (10 * i))->changeColor(color);		// 10 = playfieldX
+				terrainContainer.at(index + (10 * i))->changeColor(color);		// 10 = playfieldX
+			}
+		}
 	}
 }
+
 
 void Game::run() {
 	while (window.isOpen()) {

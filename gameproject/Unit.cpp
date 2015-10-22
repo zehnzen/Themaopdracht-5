@@ -39,16 +39,8 @@ void Unit::draw(sf::RenderWindow & window) {
 void Unit::handleMouse(sf::Vector2f pos) {
 	if (selected) { // als al geselecteerd dan afhandelen of hij wil lopen of toch wil afbreken)
 		sprite.setColor(sf::Color::Yellow);
-		if ((pos.x - sprite.getPosition().x >= -TILESIZE * walklimit)	&& (pos.x - sprite.getPosition().x <= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE ) && (pos.y - sprite.getPosition().y >= 0))) {		// rechts
-				setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
-		}
-		else if ((pos.x - sprite.getPosition().x <= TILESIZE * walklimit + TILESIZE) && (pos.x - sprite.getPosition().x >= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE) && (pos.y - sprite.getPosition().y >= 0))) {		// links
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
-		}
-		else if ((pos.y - sprite.getPosition().y >= -TILESIZE * walklimit) && (pos.y - sprite.getPosition().y <= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omhoog
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
-		}
-		else if ((pos.y - sprite.getPosition().y <= TILESIZE * walklimit + TILESIZE) && (pos.y - sprite.getPosition().y >= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omlaag
+
+		if (checkWalk(pos)) {
 			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
 		}
 
@@ -60,13 +52,6 @@ void Unit::handleMouse(sf::Vector2f pos) {
 	}
 }
 
-void Unit::action() {
-	// selecteerbare vakjes maken om zich heen: (straal van 1)
-	//for (int i = 0; i < walklimit; i++) {
-		// vakjes tekenen
-		// Terrain.changeColor(sf::Color::Green);
-	//}
-}
 
 void Unit::setSelected(bool sel) {
 	selected = sel;
@@ -80,4 +65,47 @@ void Unit::setSelected(bool sel) {
 
 bool Unit::getSelected() {
 	return selected;
+}
+
+
+bool Unit::checkWalk(sf::Vector2f pos) {
+	bool b = false;
+
+	if ((pos.x - sprite.getPosition().x >= -TILESIZE * walklimit) && (pos.x - sprite.getPosition().x <= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE) && (pos.y - sprite.getPosition().y >= 0))) {		// rechts
+		b = true;
+	}
+	else if ((pos.x - sprite.getPosition().x <= TILESIZE * walklimit + TILESIZE) && (pos.x - sprite.getPosition().x >= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE) && (pos.y - sprite.getPosition().y >= 0))) {		// links
+		b = true;
+	}
+	else if ((pos.y - sprite.getPosition().y >= -TILESIZE * walklimit) && (pos.y - sprite.getPosition().y <= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omhoog
+		b = true;
+	}
+	else if ((pos.y - sprite.getPosition().y <= TILESIZE * walklimit + TILESIZE) && (pos.y - sprite.getPosition().y >= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omlaag
+		b = true;
+	}
+
+	return b;
+}
+
+bool Unit::checkClicked(sf::Vector2f pos) {
+	return sprite.getGlobalBounds().contains(pos);
+}
+
+
+void Unit::damage(int points) {
+	hitpoints = hitpoints - points;
+	if (hitpoints <= 0) {
+		destroy();
+	}
+}
+
+
+int Unit::attack() {
+	return attackpoints;
+}
+
+
+void Unit::destroy() {
+	// eerst maar ff alleen de kleur naar onzichtbaar
+	sprite.setColor(sf::Color::Transparent);
 }

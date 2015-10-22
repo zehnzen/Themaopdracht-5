@@ -9,7 +9,6 @@
 class Bomber : public Unit {
 public:
 	Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color);
-	void action() override;											// dit is de actie die je unit uit kan voeren
 	int getHP();
 	int getDP();
 	int getWalklimit();
