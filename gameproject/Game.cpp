@@ -94,7 +94,7 @@ void Game::handleInput(sf::Keyboard::Key key, bool b) {
 			sf::Vector2i pos = (sf::Mouse::getPosition(window));
 			std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
 			if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
-			else { unitRContainer.push_back(std::move(unit)) };
+			else { unitRContainer.push_back(std::move(unit)); }
 		}
 		else if (key == sf::Keyboard::S) {
 			switchPlayer();
