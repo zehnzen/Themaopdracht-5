@@ -17,10 +17,15 @@ public:
 	void setPaused(bool paused);
 	void setVolume(float volume);
 
+	bool getPlaying();
+	void togglePlaying();
+
 private:
 	sf::Music music;
 	std::map<musicID, std::string> musicFiles;
 	float volume;
+	bool playing = false;
+	musicID lastPlayed = musicID::NONE;
 };
 
 #endif

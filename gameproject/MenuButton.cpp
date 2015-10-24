@@ -2,12 +2,9 @@
 
 #include "MenuButton.h"
 
-MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos):
-	id{ id },
-	button{ textures.get(id) }
-{
-	setPosition(pos);
-}
+MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
+	Button{ id, textures, pos }
+{}
 
 void MenuButton::setPosition(sf::Vector2f pos) {
 	button.setPosition(pos);
@@ -29,7 +26,6 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 		if (id == textureID::START)
 		{
 			music.play(musicID::MISSIONTHEME);
-			music.setVolume(7);
 			return 1;
 		}
 		if (id == textureID::OPTION)
@@ -37,7 +33,7 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 			container[1]->setPosition(leaveScreen); // container 1 = startbutton
 			container[4]->setPosition(leaveScreen); //4 = optionbutton
 			container[3]->setPosition(leaveScreen); //3 = exit
-													//de mute[4] e5n backbutton[5] zaten buiten scherm dus die halen we weer binnen scherm
+													//de mute[4] en backbutton[5] zaten buiten scherm dus die halen we weer binnen scherm
 			container[2]->setPosition(sf::Vector2f(50, 330)); //2 = mute
 			container[5]->setPosition(sf::Vector2f(50, 400)); //5 = back
 		}
@@ -47,25 +43,7 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 		}
 		if (id == textureID::MUTE) {
 			std::cout << "MUTE\n";
-			//werkt wel maar klopt(logisch) niet
-			if (!musicStopped)
-			{
-				musicStopped = true;
-				music.setVolume(10);
-			}
-			else if (musicStopped) {
-				music.setVolume(0);
-				musicStopped = false;
-			}
-			//de codes hieronder zou eigenlijk moeten werken ..
-			/*if (!musicStopped ) {
-			musicStopped = true;
-			music.setVolume(0);
-			}
-			else if(musicStopped) {
-			music.setVolume(10);
-			musicStopped = false;
-			}*/
+			music.togglePlaying();
 		}
 		if (id == textureID::BACK)
 		{
