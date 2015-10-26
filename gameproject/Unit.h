@@ -17,16 +17,18 @@ public:
 	int getWalklimit();
 	void draw(sf::RenderWindow & window);
 	void handleMouse(sf::Vector2f pos);
+	bool checkSelected(sf::Vector2f pos);				// ff andere manier proberen dan via handleMouse
 	void setSelected(bool sel);
+	void setOldSelected(bool osel);
 	bool getSelected();
 
 	bool checkWalk(sf::Vector2f pos);
+	void Unit::walk(sf::Vector2f pos);
 	bool checkClicked(sf::Vector2f pos);
 
 
-	void damage(int points);
+	bool damage(int points);
 	int attack();
-	void destroy();	// vernietigen als geen hp meer
 
 
 protected:
@@ -34,6 +36,7 @@ protected:
 	sf::Sprite sprite;
 	sf::Color side;
 	bool selected = false;
+	bool oldSelected = false;
 	int walklimit = 2;
 
 	int hitpoints = 100;		// hp

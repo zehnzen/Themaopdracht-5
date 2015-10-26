@@ -79,39 +79,64 @@ void Game::handleInput(sf::Keyboard::Key key, bool b) {
 
 void Game::handleMouse(sf::Mouse::Button button) {
 	if (button == sf::Mouse::Left) {
-		// hier wat er moet gebeuren bij linker muisklik:
-		// - check position van muis
-
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			if (playerB.getActive()) {
-				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
-				for (auto const & p : unitBContainer) {							
-					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
-					if (p->getSelected()) {
-						for (auto const & q : unitRContainer) {		// kijken of rood wordt aangeklikt
-							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {
-								q->damage(p->attack());	// aanval op rood door blauw
+			markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
+			if (playerB.getActive()) {							// BLAUWE TEAM
+				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
+				for (auto const & p : unitBContainer) {
+					if (p->checkSelected(mPosition)) {
+						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
+						oldUnitWalklimit = p->getWalklimit();
+						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
+					}
+					else {
+						int i = 0;
+						for (auto const & q : unitRContainer) {
+							i++;
+							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
+								if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
+									unitRContainer.erase(unitRContainer.begin() + i - 1);
+									break;
+								}
+							}
+						}
+						//for (auto const & t : unitBContainer) {
+							//if (t->checkSelected(mPosition)) {			// checken of er geen andere unit op deze plek zit
+								p->walk(mPosition);
+							//	break;
+							//}
+							//else p->walk(mPosition);
+							p->setOldSelected(false);
+						//}
+					}
+				}
+			}
+			//----------------------------------------------------------------------------------------------------
+			else {												// RODE TEAM
+				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
+				for (auto const & p : unitRContainer) {
+					if (p->checkSelected(mPosition)) {
+						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
+						oldUnitWalklimit = p->getWalklimit();
+						markField(p->getWalklimit(), p->getPosition(), sf::Color::Red);
+					}
+					else {
+						int i = 0;
+						for (auto const & q : unitBContainer) {
+							i++;
+							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
+								if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
+									unitBContainer.erase(unitBContainer.begin() + i - 1);
+									break;
+								}
 							}
 						}
 
-						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
-						oldUnitWalklimit = p->getWalklimit();
-						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
+						p->walk(mPosition);
+						p->setOldSelected(false);
 					}
 				}
 			}
-			else {
-				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
-				for (auto const & p : unitRContainer) {							
-					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
-					if (p->getSelected()) {
-						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
-						oldUnitWalklimit = p->getWalklimit();
-						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
-					}
-				}
-			}
-			
 		}
 	}
 	//doet momenteel de switchplayer voor rechtermuisklik
@@ -122,12 +147,14 @@ void Game::handleMouse(sf::Mouse::Button button) {
 	}
 }
 
+
 Player Game::getActivePlayer() {
 	if (playerB.getActive()) {
 		return playerB;
 	}
 	else return playerR;
 }
+
 
 void Game::switchPlayer() {
 	playerB.setActive(!playerB.getActive());

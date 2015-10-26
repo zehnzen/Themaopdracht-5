@@ -38,18 +38,27 @@ void Unit::draw(sf::RenderWindow & window) {
 
 void Unit::handleMouse(sf::Vector2f pos) {
 	if (selected) { // als al geselecteerd dan afhandelen of hij wil lopen of toch wil afbreken)
-		sprite.setColor(sf::Color::Yellow);
-
-		if (checkWalk(pos)) {
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
-		}
-
-		selected = false;
-		sprite.setColor(side);
+		walk(pos);
+		setSelected(false);
 	}
 	else {		// als niet geselecteerd kijken of je hem alsnog wilt selecteren
 		setSelected(sprite.getGlobalBounds().contains(pos));
 	}
+}
+
+
+bool Unit::checkSelected(sf::Vector2f pos) {
+	setSelected(sprite.getGlobalBounds().contains(pos));
+	if (selected) {
+		if (oldSelected == false) {
+			oldSelected = true;
+		}
+		else {
+			selected = false;
+			oldSelected = false;
+		}
+	}
+	return selected;
 }
 
 
@@ -62,6 +71,12 @@ void Unit::setSelected(bool sel) {
 		sprite.setColor(side);
 	}
 }
+
+
+void Unit::setOldSelected(bool osel) {
+	oldSelected = osel;
+}
+
 
 bool Unit::getSelected() {
 	return selected;
@@ -87,25 +102,32 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 	return b;
 }
 
+
+void Unit::walk(sf::Vector2f pos) {
+	if (checkWalk(pos) && oldSelected) {
+		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
+
+		selected = false;
+		sprite.setColor(side);
+	}
+}
+
 bool Unit::checkClicked(sf::Vector2f pos) {
 	return sprite.getGlobalBounds().contains(pos);
 }
 
 
-void Unit::damage(int points) {
+bool Unit::damage(int points) {
 	hitpoints = hitpoints - points;
 	if (hitpoints <= 0) {
-		destroy();
+		return true;
 	}
+	return false;
 }
 
 
 int Unit::attack() {
+	oldSelected = false;
+	selected = false;
 	return attackpoints;
-}
-
-
-void Unit::destroy() {
-	// eerst maar ff alleen de kleur naar onzichtbaar
-	sprite.setColor(sf::Color::Transparent);
 }
