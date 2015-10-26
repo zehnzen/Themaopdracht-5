@@ -142,24 +142,6 @@ void Game::switchPlayer() {
 
 
 void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
-	/*for (auto const & t : terrainContainer) {
-		for (int i = 0; i <= walklimit; i ++) {
-			if ((t->getPosition().x == ((position.x - 7) - (TILESIZE * i))) && (t->getPosition().y == (position.y - 7))) {		// rechts
-				t->changeColor(color);
-			}
-			if ((t->getPosition().x == ((position.x - 7) + (TILESIZE * i))) && (t->getPosition().y == (position.y - 7))) {		// links
-				t->changeColor(color);
-			}
-			if ((t->getPosition().y == ((position.y - 7) - (TILESIZE * i))) && (t->getPosition().x == (position.x - 7))) {		// boven
-				t->changeColor(color);
-			}
-			if ((t->getPosition().y == ((position.y - 7) + (TILESIZE * i))) && (t->getPosition().x == (position.x - 7))) {		// onder
-				t->changeColor(color);
-			}
-		}
-	} */
-
-
 	for (auto const & t : terrainContainer) {
 		//if(t->getPosition() == position) {		// nog ff origin verplaatsen in de sprites!!! anders werkt het niet. origin in het midden. daarom eerst nog ff die hieronder:
 		if((t->getPosition().x == position.x - 7) && (t->getPosition().y == position.y - 7)) {
@@ -170,15 +152,23 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 			if (it != terrainContainer.end()) {
 				index = std::distance(terrainContainer.begin(), it);
 			}
-			for (int i = 0; i <= walklimit; i++) {		// checken of die terrain wel bestaat! anders hebben we een bug :(
-				//if(terrainContainer.at(index - i) != NULL) {terrainContainer.at(index - i)->changeColor(color);}
-				//if(terrainContainer.at(index + i) != NULL) {terrainContainer.at(index + i)->changeColor(color);}
-				//if(terrainContainer.at(index - (10 * i)) != NULL) {terrainContainer.at(index - (10 * i))->changeColor(color);}
-				//if(terrainContainer.at(index + (10 * i)) != NULL) {terrainContainer.at(index + (10 * i))->changeColor(color);}
-				terrainContainer.at(index - i)->changeColor(color);
-				terrainContainer.at(index + i)->changeColor(color);
-				terrainContainer.at(index - (10 * i))->changeColor(color);		// 10 = playfieldX
-				terrainContainer.at(index + (10 * i))->changeColor(color);		// 10 = playfieldX
+			for (int i = 0; i <= walklimit; i++) {
+				if((index - i) >= 0){						// checken of die terrain wel bestaat
+					if ((index % 10) && ((index - i + 1)% 10)) {		// checken of de vakjes wel in dezelfde rij liggen
+						terrainContainer.at(index - i)->changeColor(color);
+					}
+				}
+				if ((index + i) <= 79) {											// 79 = playfieldX * playfieldY - 1 = 10 * 8 - 1
+					if (((index + 1)% 10) && ((index + i) % 10)) {					// checken of de vakjes wel in dezelfde rij liggen
+						terrainContainer.at(index + i)->changeColor(color);
+					}
+				}
+				if ((index - (10 * i)) >= 0) {
+					terrainContainer.at(index - (10 * i))->changeColor(color);		// 10 = playfieldX
+				}
+				if ((index + (10 * i)) <= 79) {			
+					terrainContainer.at(index + (10 * i))->changeColor(color);		// 10 = playfieldX
+				}
 			}
 		}
 	}
