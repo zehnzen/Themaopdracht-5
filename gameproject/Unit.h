@@ -16,14 +16,13 @@ public:
 	sf::Vector2f getPosition();
 	int getWalklimit();
 	void draw(sf::RenderWindow & window);
-	void handleMouse(sf::Vector2f pos);
-	bool checkSelected(sf::Vector2f pos);				// ff andere manier proberen dan via handleMouse
+	bool makeSelected(sf::Vector2f pos);				// ff andere manier proberen dan via handleMouse
 	void setSelected(bool sel);
 	void setOldSelected(bool osel);
 	bool getSelected();
 
 	bool checkWalk(sf::Vector2f pos);
-	void Unit::walk(sf::Vector2f pos);
+	void Unit::walk(sf::Vector2f pos, bool free);		// free betekent dat de plek waar hij wil lopen vrij toegankelijk is (niet bezit door iets anders)
 	bool checkClicked(sf::Vector2f pos);
 
 

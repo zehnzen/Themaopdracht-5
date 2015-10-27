@@ -36,18 +36,8 @@ void Unit::draw(sf::RenderWindow & window) {
 	window.draw(sprite);
 }
 
-void Unit::handleMouse(sf::Vector2f pos) {
-	if (selected) { // als al geselecteerd dan afhandelen of hij wil lopen of toch wil afbreken)
-		walk(pos);
-		setSelected(false);
-	}
-	else {		// als niet geselecteerd kijken of je hem alsnog wilt selecteren
-		setSelected(sprite.getGlobalBounds().contains(pos));
-	}
-}
 
-
-bool Unit::checkSelected(sf::Vector2f pos) {
+bool Unit::makeSelected(sf::Vector2f pos) {
 	setSelected(sprite.getGlobalBounds().contains(pos));
 	if (selected) {
 		if (oldSelected == false) {
@@ -103,13 +93,13 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 }
 
 
-void Unit::walk(sf::Vector2f pos) {
-	if (checkWalk(pos) && oldSelected) {
-		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
-
-		selected = false;
-		sprite.setColor(side);
+void Unit::walk(sf::Vector2f pos, bool free) {
+	if (checkWalk(pos) && oldSelected && free) {
+			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
 	}
+	selected = false;
+	oldSelected = false;
+	sprite.setColor(side);
 }
 
 bool Unit::checkClicked(sf::Vector2f pos) {
@@ -129,5 +119,6 @@ bool Unit::damage(int points) {
 int Unit::attack() {
 	oldSelected = false;
 	selected = false;
+	sprite.setColor(side);
 	return attackpoints;
 }

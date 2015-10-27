@@ -36,6 +36,8 @@ private:
 
 	void markField(int walklimit, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
 
+	bool checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
+
 	sf::RenderWindow window;
 
 	Player playerB;

@@ -29,3 +29,12 @@ int	Player::getPoints() {
 int Player::getMoney() {
 	return money;
 }
+
+
+void Player::setUnitSelected(bool usel) {
+	unitSelected = usel;
+}
+
+bool Player::getUnitSelected() {
+	return unitSelected;
+}
