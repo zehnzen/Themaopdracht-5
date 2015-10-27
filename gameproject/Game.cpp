@@ -32,27 +32,30 @@ void Game::initText() {
 void Game::loadMenu()
 {
 	inMenu = true;
-	//texture voor menu
-
-	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
+	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures, 
+		sf::Vector2f(0, 0)));
 	menuContainer.push_back(std::move(background));		//[0]
 
-	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, sf::Vector2f(50, 260)));
+	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, 
+		sf::Vector2f(800, 260), sf::Vector2f(1, 0)));   //800 zodat hij buiten window laadt.
 	menuContainer.push_back(std::move(startButton));	//[1]
 
-	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
+	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, 
+		sf::Vector2f(1000, 330), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(optionButton));	//[2]
 
-	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, sf::Vector2f(50, 400)));
+	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, 
+		sf::Vector2f(1200, 400), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(exitButton));		//[3]
 
 	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
-	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures, sf::Vector2f(50, 1000)));
+	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures,
+		sf::Vector2f(-300, 330), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(muteButton));		//[4]
 
-	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, sf::Vector2f(50, 1000)));
+	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, 
+		sf::Vector2f(-300, 400), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(backButton));		//[5]
-
 }
 
 void Game::loadTextures() {
@@ -101,6 +104,7 @@ void Game::handleInput(sf::Keyboard::Key key, bool b) {
 		}
 		else if (key == sf::Keyboard::P) {
 			inMenu = true;
+			music.setVolume(10);
 		}
 	}
 }
@@ -222,12 +226,8 @@ void Game::processEvents() {
 
 void Game::update() {
 	//TODO implement Command message structure which will be iterated here and each command delivered to it's target where it'll handle it's implementation
-	if (inMenu) {
-		//TODO game doesn't update but handles menu
-	}
-	else {
 		//TODO the game updates
-	}
+	
 }
 
 void Game::HUD() {
@@ -239,16 +239,18 @@ void Game::HUD() {
 	text.setPosition(510, 40);
 	// Draw it
 	window.draw(text);
-
 }
 
 void Game::render() {
 	window.clear();
 	if (inMenu) {
 		for (const auto & p : menuContainer) {
-			p->draw(window);
+			p->draw(window);		
+			if( !(p->getPosition().x <= 50) ) {
+				p->update(-1);
+			}
 		}
-	}
+	}	
 	else {
 		for (const auto & p : terrainContainer) {
 			p->draw(window);

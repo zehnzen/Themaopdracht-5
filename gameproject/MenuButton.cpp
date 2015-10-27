@@ -4,13 +4,32 @@
 
 MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos):
 	id{ id },
-	button{ textures.get(id) }
+	button{ textures.get(id) },
+	position{pos}
+{
+	setPosition(pos);
+}
+
+MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Vector2f direction) :
+	id{ id },
+	button{ textures.get(id) },
+	position{ pos },
+	direction{ direction }
 {
 	setPosition(pos);
 }
 
 void MenuButton::setPosition(sf::Vector2f pos) {
 	button.setPosition(pos);
+}
+
+void MenuButton::update(float t)
+{
+	button.setPosition(button.getPosition() + t * direction);
+}
+
+void MenuButton::changeDirection(sf::Vector2f cD) {
+	direction = cD;
 }
 
 sf::Vector2f MenuButton::getPosition() {
@@ -28,59 +47,39 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 	{
 		if (id == textureID::START)
 		{
-			music.play(musicID::MISSIONTHEME);
-			music.setVolume(7);
+			music.play(musicID::MISSIONTHEME);			
 			return 1;
 		}
-		if (id == textureID::OPTION)
-		{
-			std::cout << "test" ;
+		if (id == textureID::OPTION) {
+			std::cout << "option\n" << std::endl;
 
-			container[1]->setPosition(leaveScreen); // container 1 = startbutton
-			container[2]->setPosition(leaveScreen); //2 = optionbutton
-			container[3]->setPosition(leaveScreen); //3 = exit
-													//de mute[4] e5n backbutton[5] zaten buiten scherm dus die halen we weer binnen scherm
-			container[4]->setPosition(sf::Vector2f(50, 330)); //4 = mute
-			container[5]->setPosition(sf::Vector2f(50, 400)); //5 = back
+			container[4]->setPosition(sf::Vector2f(MenuPos2));
+			container[5]->setPosition(sf::Vector2f(MenuPos3));
+			for (int i = 1; i <= 3; ++i) {
+
+					container[i]->setPosition(outOfScreen);
+			}
 		}
-		if (id == textureID::EXIT)
-		{
+		if (id == textureID::EXIT) {
 			window.close();
 		}
 		if (id == textureID::MUTE) {
-			std::cout << "MUTE\n";
-			//werkt wel maar klopt(logisch) niet
-			if (!musicStopped)
-			{
-				musicStopped = true;
-				music.setVolume(10);
-			}
-			else if (musicStopped) {
-				music.setVolume(0);
-				musicStopped = false;
-			}
-			//de codes hieronder zou eigenlijk moeten werken ..
-			/*if (!musicStopped ) {
-			musicStopped = true;
+			if (!musicMuted ) {
+			musicMuted = true;
 			music.setVolume(0);
 			}
-			else if(musicStopped) {
+			else if(musicMuted) {
 			music.setVolume(10);
-			musicStopped = false;
-			}*/
+			musicMuted = false;
+			}
 		}
-		if (id == textureID::BACK)
-		{
-			//start, option en exit button terug halen
-			container[1]->setPosition(sf::Vector2f(50, 260)); // container 1 = startbutton
-			container[2]->setPosition(sf::Vector2f(50, 330)); //2 = optionbutton
-			container[3]->setPosition(sf::Vector2f(50, 400)); //3 = exit
-
-			//de mute[4] en backbutton[5] zaten buiten scherm dus die halen we weer binnen scherm
-			container[4]->setPosition(leaveScreen);
-			container[5]->setPosition(leaveScreen);
+		if (id == textureID::BACK) {
+			container[1]->setPosition(sf::Vector2f(MenuPos1)); // container 1 = startbutton
+			container[2]->setPosition(sf::Vector2f(MenuPos2)); //2 = optionbutton
+			container[3]->setPosition(sf::Vector2f(MenuPos3)); //3 = exit
+			container[4]->setPosition(outOfScreen);
+			container[5]->setPosition(outOfScreen);
 		}
-
 	}
 	return 0;
 }

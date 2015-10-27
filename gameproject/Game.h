@@ -1,5 +1,6 @@
 //File Game.h
 
+
 #ifndef _GAME_H
 #define _GAME_H
 
@@ -59,8 +60,12 @@ private:
 	Sound sound;
 
 	bool inMenu = false;
+	//bool inOptionMenu = false;
+
 	sf::Font font;
 	sf::Text text;
+
+	float menuSpeed = -1.1f;
 
 };
 
