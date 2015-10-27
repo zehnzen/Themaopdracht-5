@@ -120,16 +120,18 @@ void Game::handleMouse(sf::Mouse::Button button) {
 		}
 		else{
 			markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
-			if (playerB.getActive()) {							// BLAUWE TEAM
+			if (playerB.getActive()) {													// BLAUWE TEAM
 				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
 				for (auto const & p : unitBContainer) {
 					if (p->checkClicked(mPosition)) {
 						p->makeSelected(mPosition);
 						oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
+
 						oldUnitWalklimit = p->getWalklimit();
 						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Blue);
 					}
 					else {
+						// aanvallen:
 						int i = 0;
 						for (auto const & q : unitRContainer) {
 							i++;
@@ -140,7 +142,8 @@ void Game::handleMouse(sf::Mouse::Button button) {
 								}
 							}
 						}
-						p->walk(mPosition, checkSpaceFree(unitBContainer, mPosition));
+						p->walk(mPosition, checkSpaceFree(unitBContainer, mPosition));		// lopen
+
 					}
 				}
 			}
@@ -154,17 +157,19 @@ void Game::handleMouse(sf::Mouse::Button button) {
 						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Red);
 					}
 					else {
+						// aanvallen:
 						int i = 0;
 						for (auto const & q : unitBContainer) {
 							i++;
 							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
 								if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
-									unitBContainer.erase(unitBContainer.begin() + i - 1);
+									unitRContainer.erase(unitBContainer.begin() + i - 1);
 									break;
 								}
 							}
 						}
-						p->walk(mPosition, checkSpaceFree(unitRContainer, mPosition));
+						p->walk(mPosition, checkSpaceFree(unitRContainer, mPosition));		// lopen
+
 					}
 				}
 			}
@@ -252,6 +257,17 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 		}
 	}
 }
+
+
+bool Game::checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos) {
+	for (auto const & t : container) {
+		if (t->checkClicked(pos)) {			// checken of er geen andere unit op deze plek zit
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
 void Game::run() {

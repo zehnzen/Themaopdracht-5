@@ -12,7 +12,7 @@ public:
 	void setPos(sf::Vector2f pos) override;
 	void setSelected(bool);
 	void setOldSelected(bool);
-	
+
 	bool getSelected();
 	int getHP();
 	int getDP();

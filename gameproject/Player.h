@@ -17,10 +17,13 @@ public:
 	//void diffPoints(int);
 	int getMoney();
 	//void diffMoney(int);
+	void setUnitSelected(bool usel);
+	bool getUnitSelected();
 
 
 private:
 	bool active;
+	bool unitSelected;		// if a unit is selected
 	sf::Color side;
 	int points = 100;
 	int money = 1000;

@@ -33,7 +33,8 @@ int Unit::getWalklimit() {
 	return walklimit;
 }
 
-bool Unit::checkSelected(sf::Vector2f pos) {
+
+bool Unit::makeSelected(sf::Vector2f pos) {
 	setSelected(sprite.getGlobalBounds().contains(pos));
 	if (selected) {
 		if (oldSelected == false) {
@@ -84,6 +85,7 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 	return b;
 }
 
+
 void Unit::walk(sf::Vector2f pos, bool free) {
 	if (checkWalk(pos) && oldSelected && free) {
 		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
@@ -108,6 +110,7 @@ bool Unit::damage(int points) {
 int Unit::attack() {
 	oldSelected = false;
 	selected = false;
+	sprite.setColor(side);
 	return attackpoints;
 }
 
