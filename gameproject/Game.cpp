@@ -163,7 +163,7 @@ void Game::handleMouse(sf::Mouse::Button button) {
 							i++;
 							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
 								if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
-									unitRContainer.erase(unitBContainer.begin() + i - 1);
+									unitBContainer.erase(unitBContainer.begin() + i - 1);
 									break;
 								}
 							}
@@ -257,18 +257,6 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 		}
 	}
 }
-
-
-bool Game::checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos) {
-	for (auto const & t : container) {
-		if (t->checkClicked(pos)) {			// checken of er geen andere unit op deze plek zit
-			return false;
-		}
-	}
-	return true;
-}
-
-
 
 void Game::run() {
 	sf::Clock clock;

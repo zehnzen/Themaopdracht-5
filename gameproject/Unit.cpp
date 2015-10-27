@@ -117,17 +117,3 @@ int Unit::attack() {
 void Unit::action() {
 
 }
-
-bool Unit::makeSelected(sf::Vector2f pos) {
-	setSelected(sprite.getGlobalBounds().contains(pos));
-	if (selected) {
-		if (oldSelected == false) {
-			oldSelected = true;
-		}
-		else {
-			selected = false;
-			oldSelected = false;
-		}
-	}
-	return selected;
-}
