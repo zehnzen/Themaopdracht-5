@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F8BA00D1-A632-41A8-86DC-F053FC6FF514}</ProjectGuid>
+    <ProjectGuid>{AF798EDF-7073-4493-BE98-48F3D3B22884}</ProjectGuid>
     <RootNamespace>gameproject</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="Bomber.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuButton.cpp" />

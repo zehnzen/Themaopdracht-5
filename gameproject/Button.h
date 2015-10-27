@@ -1,4 +1,4 @@
-//B
+//File Button.h
 
 #ifndef _BUTTON_H
 #define _BUTTON_H

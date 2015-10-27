@@ -7,49 +7,46 @@
 
 
 Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	id{ id },
-	sprite{ textures.get(id), sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10) },
+	Entity( id, textures),
 	side {color}
 {
 	setPos(pos);
 	sprite.setColor(color);
 }
 
-void Unit::setTexture(sf::Texture & text) {
-	sprite.setTexture(text, true);
-	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10));
-}
-
 void Unit::setPos(sf::Vector2f pos) {
-	sprite.setPosition(pos.x + 7, pos.y + 7);
+	//sprite.setPosition(pos.x + SpriteOffset, pos.y + SpriteOffset);
+	sprite.setPosition(pos.x, pos.y);
 }
 
-sf::Vector2f Unit::getPosition() {
-	return sprite.getPosition();
+void Unit::update(sf::Time dt) {
+
+}
+
+sf::Vector2f Unit::getTilePosition() {
+	sf::Vector2f pos = sprite.getPosition();
+	return sf::Vector2f(pos.x - SpriteOffset, pos.y - SpriteOffset);
 }
 
 int Unit::getWalklimit() {
 	return walklimit;
 }
 
-void Unit::draw(sf::RenderWindow & window) {
-	window.draw(sprite);
-}
-
 void Unit::handleMouse(sf::Vector2f pos) {
 	if (selected) { // als al geselecteerd dan afhandelen of hij wil lopen of toch wil afbreken)
 		sprite.setColor(sf::Color::Yellow);
-		if ((pos.x - sprite.getPosition().x >= -TILESIZE * walklimit)	&& (pos.x - sprite.getPosition().x <= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE ) && (pos.y - sprite.getPosition().y >= 0))) {		// rechts
-				setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
+		sf::Vector2f spritePos = sprite.getPosition();
+		if ((pos.x - spritePos.x >= -TILESIZE * walklimit)	&& (pos.x - spritePos.x <= 0) && ((pos.y - spritePos.y <= TILESIZE ) && (pos.y - spritePos.y >= 0))) {		// rechts
+				setPos(V2fModulo(pos, TILESIZE));
 		}
-		else if ((pos.x - sprite.getPosition().x <= TILESIZE * walklimit + TILESIZE) && (pos.x - sprite.getPosition().x >= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE) && (pos.y - sprite.getPosition().y >= 0))) {		// links
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
+		else if ((pos.x - spritePos.x <= TILESIZE * walklimit + TILESIZE) && (pos.x - spritePos.x >= 0) && ((pos.y - spritePos.y <= TILESIZE) && (pos.y - spritePos.y >= 0))) {		// links
+			setPos(V2fModulo(pos, TILESIZE));
 		}
-		else if ((pos.y - sprite.getPosition().y >= -TILESIZE * walklimit) && (pos.y - sprite.getPosition().y <= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omhoog
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
+		else if ((pos.y - spritePos.y >= -TILESIZE * walklimit) && (pos.y - spritePos.y <= 0) && ((pos.x - spritePos.x <= TILESIZE) && (pos.x - spritePos.x >= 0))) {		// omhoog
+			setPos(V2fModulo(pos, TILESIZE));
 		}
-		else if ((pos.y - sprite.getPosition().y <= TILESIZE * walklimit + TILESIZE) && (pos.y - sprite.getPosition().y >= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omlaag
-			setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
+		else if ((pos.y - spritePos.y <= TILESIZE * walklimit + TILESIZE) && (pos.y - spritePos.y >= 0) && ((pos.x - spritePos.x <= TILESIZE) && (pos.x - spritePos.x >= 0))) {		// omlaag
+			setPos(V2fModulo(pos, TILESIZE));
 		}
 
 		selected = false;

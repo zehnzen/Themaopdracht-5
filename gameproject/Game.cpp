@@ -4,7 +4,8 @@
 #include "Game.h"
 #include <array>
 #include "V2Functions.h"
-#include "Soldier.h"
+
+const sf::Time Game::timePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() :
 	window(sf::VideoMode(640, 480), "SFML window"),
@@ -59,6 +60,7 @@ void Game::loadTextures() {
 	textures.load(textureID::GRASS, "grass.jpg");
 	textures.load(textureID::ROAD, "road.jpg");
 	textures.load(textureID::UNIT, "unit.jpg");
+	textures.load(textureID::DRAGON, "dragon.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
@@ -87,14 +89,14 @@ void Game::makePlayfield() {
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void Game::handleInput(sf::Keyboard::Key key, bool b) {
+void Game::handleKeypress(sf::Keyboard::Key key, bool b) {
 	//Deze commands alleen bij indrukken
-	if (b) {
+	if (!b) {
 		if (key == sf::Keyboard::W) {
-			sf::Vector2i pos = (sf::Mouse::getPosition(window));
-			std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
-			if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
-			else { unitRContainer.push_back(std::move(unit)); }
+			spawnUnit(V2f_from_V2i(sf::Mouse::getPosition(window)));
+		}
+		else if (key == sf::Keyboard::A) {
+			spawnBomber(V2f_from_V2i(sf::Mouse::getPosition(window)));
 		}
 		else if (key == sf::Keyboard::S) {
 			switchPlayer();
@@ -120,24 +122,24 @@ void Game::handleMouse(sf::Mouse::Button button) {
 				}
 			}
 			if (playerB.getActive()) {
-				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
+				markField(UnitWalklimit, UnitPosition, sf::Color::White);
 				for (auto const & p : unitBContainer) {							
 					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
 					if (p->getSelected()) {
-						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
-						oldUnitWalklimit = p->getWalklimit();
-						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
+						UnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
+						UnitWalklimit = p->getWalklimit();
+						markField(UnitWalklimit, UnitPosition, sf::Color::Blue);
 					}
 				}
 			}
 			else {
-				markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
+				markField(UnitWalklimit, UnitPosition, sf::Color::White);
 				for (auto const & p : unitRContainer) {							
 					p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)));
 					if (p->getSelected()) {
-						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
-						oldUnitWalklimit = p->getWalklimit();
-						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
+						UnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
+						UnitWalklimit = p->getWalklimit();
+						markField(UnitWalklimit, UnitPosition, sf::Color::Blue);
 					}
 				}
 			}
@@ -152,6 +154,7 @@ void Game::handleMouse(sf::Mouse::Button button) {
 	}
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------
 Player Game::getActivePlayer() {
 	if (playerB.getActive()) {
 		return playerB;
@@ -170,19 +173,32 @@ void Game::switchPlayer() {
 	}
 }
 
+void Game::spawnBomber(sf::Vector2f pos) {
+	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
+	else { unitRContainer.push_back(std::move(unit)); }
+}
+
+void Game::spawnUnit(sf::Vector2f pos) {
+	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
+	else { unitRContainer.push_back(std::move(unit)); }
+}
+
 void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {									// mark the field (1 terrain) in order to show a units walking limit
 	for (auto const & t : terrainContainer) {
 		for (int i = 0; i <= walklimit; i ++) {
-			if ((t->getPosition().x == ((position.x - 7) - (TILESIZE * i))) && (t->getPosition().y == (position.y - 7))) {		// rechts
+			sf::Vector2f pos = t->getPosition();
+			if (pos.x == (position.x - (TILESIZE * i)) && pos.y == position.y) {		// rechts
 				t->changeColor(color);
 			}
-			if ((t->getPosition().x == ((position.x - 7) + (TILESIZE * i))) && (t->getPosition().y == (position.y - 7))) {		// links
+			if (pos.x == (position.x  + (TILESIZE * i)) && pos.y == position.y) {		// links
 				t->changeColor(color);
 			}
-			if ((t->getPosition().y == ((position.y - 7) - (TILESIZE * i))) && (t->getPosition().x == (position.x - 7))) {		// boven
+			if (pos.y == (position.y  - (TILESIZE * i)) && pos.x == position.x) {		// boven
 				t->changeColor(color);
 			}
-			if ((t->getPosition().y == ((position.y - 7) + (TILESIZE * i))) && (t->getPosition().x == (position.x - 7))) {		// onder
+			if (pos.y == (position.y  + (TILESIZE * i)) && pos.x == position.x) {		// onder
 				t->changeColor(color);
 			}
 		}
@@ -190,22 +206,29 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 }
 
 void Game::run() {
+	sf::Clock clock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	while (window.isOpen()) {
-		processEvents();
-		update();
+		sf::Time elapsedTime = clock.restart();
+		timeSinceLastUpdate += elapsedTime;
+		while (timeSinceLastUpdate > timePerFrame) {
+			timeSinceLastUpdate -= timePerFrame;
+			processInput();
+			update(timePerFrame);
+		}
 		render();
 	}
 }
 
-void Game::processEvents() {
+void Game::processInput() {
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		switch (event.type) {
 			case sf::Event::KeyPressed:
-				handleInput(event.key.code, true);
+				handleKeypress(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
-				handleInput(event.key.code, false);
+				handleKeypress(event.key.code, false);
 				break;
 			case sf::Event::MouseButtonPressed:
 				handleMouse(event.mouseButton.button);
@@ -220,13 +243,19 @@ void Game::processEvents() {
 	}
 }
 
-void Game::update() {
+void Game::update(sf::Time dt) {
 	//TODO implement Command message structure which will be iterated here and each command delivered to it's target where it'll handle it's implementation
 	if (inMenu) {
 		//TODO game doesn't update but handles menu
 	}
 	else {
 		//TODO the game updates
+		for (auto & p : unitBContainer) {
+			p->update(dt);
+		}
+		for (auto & p : unitRContainer) {
+			p->update(dt);
+		}
 	}
 }
 
