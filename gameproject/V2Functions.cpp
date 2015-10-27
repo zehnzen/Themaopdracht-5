@@ -17,6 +17,7 @@ sf::Vector2i V2i_from_V2f(sf::Vector2f & rhs) {
 	return sf::Vector2i((int)rhs.x, (int)rhs.y);
 }
 
+//Voor Vector2f haalt de resterende modulo af van het orginele getal.
 sf::Vector2f V2fModulo(sf::Vector2f & lhs, int rhs) {
 	return V2f_from_V2i(v2i_MOD(V2i_from_V2f(lhs), rhs));
 }

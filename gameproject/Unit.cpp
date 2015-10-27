@@ -7,25 +7,25 @@
 
 
 Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	Entity( id, textures),
+	GameObject( id, textures, pos),
 	side {color}
 {
-	setPos(pos);
 	sprite.setColor(color);
+
+	numFrames = 1;
+	repeat = true;
 }
 
 void Unit::setPos(sf::Vector2f pos) {
 	//sprite.setPosition(pos.x + SpriteOffset, pos.y + SpriteOffset);
-	sprite.setPosition(pos.x, pos.y);
 }
 
-void Unit::update(sf::Time dt) {
-
+int Unit::getHP() {
+	return hp;
 }
 
-sf::Vector2f Unit::getTilePosition() {
-	sf::Vector2f pos = sprite.getPosition();
-	return sf::Vector2f(pos.x - SpriteOffset, pos.y - SpriteOffset);
+int Unit::getDP() {
+	return dp;
 }
 
 int Unit::getWalklimit() {

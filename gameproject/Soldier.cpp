@@ -4,11 +4,15 @@
 #include "Soldier.h"
 
 Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	Unit{id, textures, pos, color}
+	Unit{ id, textures, pos, color }
 {
-	setPos(pos);
+	hp = 100;
+	dp = 10;
+	walklimit = 1;
 	sprite.setColor(color);
-	Unit::walklimit = walklimit;
+
+	numFrames = 5;
+	repeat = true;
 }
 
 void Soldier::action() {
@@ -17,16 +21,4 @@ void Soldier::action() {
 	// vakjes tekenen
 	// Terrain.changeColor(sf::Color::Green);
 	//}
-}
-
-int Soldier::getHP() {
-	return hp;
-}
-
-int Soldier::getDP() {
-	return dp;
-}
-
-int Soldier::getWalklimit() {
-	return walklimit;
 }
