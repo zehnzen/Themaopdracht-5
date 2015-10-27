@@ -4,7 +4,8 @@
 #include "Game.h"
 #include <array>
 #include "V2Functions.h"
-#include "Soldier.h"
+
+const sf::Time Game::timePerFrame = sf::seconds(1.f / 60.f);
 
 
 Game::Game() :
@@ -12,11 +13,12 @@ Game::Game() :
 	playerB{ sf::Color::Blue, true},
 	playerR{ sf::Color::Red, false}
 	{
-	initText();
-	loadTextures();
-	makePlayfield();
-	music.play(musicID::MENUTHEME);
-	music.setVolume(10);
+		loadTextures();
+		loadMenu();
+		initText();
+		makePlayfield();
+		music.play(musicID::MENUTHEME);
+		music.setVolume(7);
 }
 
 void Game::initText() {
@@ -27,7 +29,31 @@ void Game::initText() {
 	text.setCharacterSize(20);
 	text.setStyle(sf::Text::Bold);
 	text.setColor(sf::Color::Black);
+}
+
+void Game::loadMenu()
+{
+	inMenu = true;
+	//texture voor menu
+
+	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
+	menuContainer.push_back(std::move(background));		//[0]
+
+	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, sf::Vector2f(50, 260)));
+	menuContainer.push_back(std::move(startButton));	//[1]
 	
+	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
+	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures, sf::Vector2f(50, 1000)));
+	menuContainer.push_back(std::move(muteButton));		//[2]
+
+	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, sf::Vector2f(50, 400)));
+	menuContainer.push_back(std::move(exitButton));		//[3]
+	
+	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
+	menuContainer.push_back(std::move(optionButton));	//[4]
+	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
+	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, sf::Vector2f(50, 1000)));
+	menuContainer.push_back(std::move(backButton));		//[5]
 
 }
 
@@ -35,6 +61,13 @@ void Game::loadTextures() {
 	textures.load(textureID::GRASS, "grass.jpg");
 	textures.load(textureID::ROAD, "road.jpg");
 	textures.load(textureID::UNIT, "unit.jpg");
+	textures.load(textureID::DRAGON, "dragon.png");
+	textures.load(textureID::BACKGROUND, "images//background.jpg");
+	textures.load(textureID::START, "images//start.png");
+	textures.load(textureID::OPTION, "images//option.png");
+	textures.load(textureID::EXIT, "images//exit.png");
+	textures.load(textureID::MUTE, "images//muteSound.png");
+	textures.load(textureID::BACK, "images//back.png");
 }
 
 void Game::makePlayfield() {
@@ -57,37 +90,43 @@ void Game::makePlayfield() {
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void Game::handleInput(sf::Keyboard::Key key, bool b) {
-	if (key == sf::Keyboard::W) {
-		sf::Vector2i pos = (sf::Mouse::getPosition(window));
-		std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
-		if(playerB.getActive())	unitBContainer.push_back(std::move(unit));
-		else unitRContainer.push_back(std::move(unit));
+void Game::handleKeypress(sf::Keyboard::Key key, bool b) {
+	//Deze commands alleen bij indrukken
+	if (!b) {
+		if (key == sf::Keyboard::W) {
+			spawnUnit(V2f_from_V2i(sf::Mouse::getPosition(window)));
+		}
+		else if (key == sf::Keyboard::A) {
+			spawnBomber(V2f_from_V2i(sf::Mouse::getPosition(window)));
+		}
+		else if (key == sf::Keyboard::S) {
+			switchPlayer();
+		}
+		else if (key == sf::Keyboard::P) {
+			inMenu = true;
+		}
 	}
-	else if (key == sf::Keyboard::S) {
-		switchPlayer();
-		std::cout << "switch player";
-		//KEYBOARD ALLEEN PRESS AFVANGEN NOG DOEN
-	}
-	/*
-	else if (key == sf::Keyboard::A)
-		mIsMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		mIsMovingRight = isPressed;
-		//*/
 }
 
 void Game::handleMouse(sf::Mouse::Button button) {
 	if (button == sf::Mouse::Left) {
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if(inMenu)
+		{
+			for (auto const & p : menuContainer) {
+				if (p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window, menuContainer, music) == 1) {//TODO test voor start
+					inMenu = false;
+				}
+			}
+		}
+		else{
 			markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
 			if (playerB.getActive()) {							// BLAUWE TEAM
 				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
 				for (auto const & p : unitBContainer) {
 					if (p->checkSelected(mPosition)) {
-						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
+						oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
 						oldUnitWalklimit = p->getWalklimit();
-						markField(p->getWalklimit(), p->getPosition(), sf::Color::Blue);
+						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Blue);
 					}
 					else {
 						int i = 0;
@@ -100,25 +139,18 @@ void Game::handleMouse(sf::Mouse::Button button) {
 								}
 							}
 						}
-						//for (auto const & t : unitBContainer) {
-							//if (t->checkSelected(mPosition)) {			// checken of er geen andere unit op deze plek zit
-								p->walk(mPosition);
-							//	break;
-							//}
-							//else p->walk(mPosition);
-							p->setOldSelected(false);
-						//}
+						p->walk(mPosition);
+						p->setOldSelected(false);
 					}
 				}
 			}
-			//----------------------------------------------------------------------------------------------------
 			else {												// RODE TEAM
 				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
 				for (auto const & p : unitRContainer) {
 					if (p->checkSelected(mPosition)) {
 						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
 						oldUnitWalklimit = p->getWalklimit();
-						markField(p->getWalklimit(), p->getPosition(), sf::Color::Red);
+						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Red);
 					}
 					else {
 						int i = 0;
@@ -147,12 +179,13 @@ void Game::handleMouse(sf::Mouse::Button button) {
 	}
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------
 
 Player Game::getActivePlayer() {
 	if (playerB.getActive()) {
 		return playerB;
 	}
-	else return playerR;
+	else { return playerR; }
 }
 
 
@@ -167,11 +200,22 @@ void Game::switchPlayer() {
 	}
 }
 
+void Game::spawnBomber(sf::Vector2f pos) {
+	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
+	else { unitRContainer.push_back(std::move(unit)); }
+}
+
+void Game::spawnUnit(sf::Vector2f pos) {
+	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
+	else { unitRContainer.push_back(std::move(unit)); }
+}
 
 void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
 	for (auto const & t : terrainContainer) {
 		//if(t->getPosition() == position) {		// nog ff origin verplaatsen in de sprites!!! anders werkt het niet. origin in het midden. daarom eerst nog ff die hieronder:
-		if((t->getPosition().x == position.x - 7) && (t->getPosition().y == position.y - 7)) {
+		if((t->getPosition().x == position.x) && (t->getPosition().y == position.y)) {
 
 			int index;
 
@@ -203,25 +247,35 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 
 
 void Game::run() {
+	sf::Clock clock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	while (window.isOpen()) {
-		processEvents();
-		update();
+		sf::Time elapsedTime = clock.restart();
+		timeSinceLastUpdate += elapsedTime;
+		while (timeSinceLastUpdate > timePerFrame) {
+			timeSinceLastUpdate -= timePerFrame;
+			processInput();
+			update(timePerFrame);
+		}
 		render();
 	}
 }
 
-void Game::processEvents() {
+void Game::processInput() {
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		switch (event.type) {
 			case sf::Event::KeyPressed:
-				handleInput(event.key.code, true);
+				handleKeypress(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
-				handleInput(event.key.code, false);
+				handleKeypress(event.key.code, false);
 				break;
 			case sf::Event::MouseButtonPressed:
 				handleMouse(event.mouseButton.button);
+				break;
+			case sf::Event::LostFocus:
+				inMenu = true;
 				break;
 			case sf::Event::Closed:
 				window.close();
@@ -230,8 +284,20 @@ void Game::processEvents() {
 	}
 }
 
-void Game::update() {
-
+void Game::update(sf::Time dt) {
+	//TODO implement Command message structure which will be iterated here and each command delivered to it's target where it'll handle it's implementation
+	if (inMenu) {
+		//TODO game doesn't update but handles menu
+	}
+	else {
+		//TODO the game updates
+		for (auto & p : unitBContainer) {
+			p->update(dt);
+		}
+		for (auto & p : unitRContainer) {
+			p->update(dt);
+		}
+	}
 }
 
 void Game::HUD() {
@@ -248,17 +314,23 @@ void Game::HUD() {
 
 void Game::render() {
 	window.clear();
-	for (const auto & p : terrainContainer) {
-		p->draw(window);
+	if (inMenu) {
+		for (const auto & p : menuContainer) {
+			p->draw(window);
+		}
 	}
-	for (const auto & p : unitBContainer) {
-		p->draw(window);
-	}
-	for (const auto & p : unitRContainer) {
-		p->draw(window);
-	}
+	else {
+		for (const auto & p : terrainContainer) {
+			p->draw(window);
+		}
+		for (const auto & p : unitBContainer) {
+			p->draw(window);
+		}
+		for (const auto & p : unitRContainer) {
+			p->draw(window);
+		}
 
-	HUD();
-
+		HUD();
+	}
 	window.display();
 }

@@ -9,14 +9,8 @@
 class Bomber : public Unit {
 public:
 	Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color);
-	int getHP();
-	int getDP();
-	int getWalklimit();
 
-private:
-	int walklimit = 3;
-	int hp = 150;
-	int dp = 50;
+	void action() override;
 };
 
 #endif

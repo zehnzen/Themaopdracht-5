@@ -7,45 +7,30 @@
 
 
 Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	id{ id },
-	sprite{ textures.get(id), sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10) },
+	GameObject( id, textures, pos),
 	side {color}
 {
-	setPos(pos);
 	sprite.setColor(color);
-}
 
-void Unit::setTexture(sf::Texture & text) {
-	sprite.setTexture(text, true);
-	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE - 10, TILESIZE - 10));
+	numFrames = 1;
+	repeat = true;
 }
 
 void Unit::setPos(sf::Vector2f pos) {
-	sprite.setPosition(pos.x + 7, pos.y + 7);
+	//sprite.setPosition(pos.x + SpriteOffset, pos.y + SpriteOffset);
 }
 
-sf::Vector2f Unit::getPosition() {
-	return sprite.getPosition();
+int Unit::getHP() {
+	return hitpoints;
+}
+
+int Unit::getDP() {
+	return attackpoints;
 }
 
 int Unit::getWalklimit() {
 	return walklimit;
 }
-
-void Unit::draw(sf::RenderWindow & window) {
-	window.draw(sprite);
-}
-
-void Unit::handleMouse(sf::Vector2f pos) {
-	if (selected) { // als al geselecteerd dan afhandelen of hij wil lopen of toch wil afbreken)
-		walk(pos);
-		setSelected(false);
-	}
-	else {		// als niet geselecteerd kijken of je hem alsnog wilt selecteren
-		setSelected(sprite.getGlobalBounds().contains(pos));
-	}
-}
-
 
 bool Unit::checkSelected(sf::Vector2f pos) {
 	setSelected(sprite.getGlobalBounds().contains(pos));
@@ -61,9 +46,8 @@ bool Unit::checkSelected(sf::Vector2f pos) {
 	return selected;
 }
 
-
-void Unit::setSelected(bool sel) {
-	selected = sel;
+void Unit::setSelected(bool b) {
+	selected = b;
 	if (selected) {
 		sprite.setColor(sf::Color::Yellow);
 	}
@@ -72,16 +56,13 @@ void Unit::setSelected(bool sel) {
 	}
 }
 
-
-void Unit::setOldSelected(bool osel) {
-	oldSelected = osel;
+void Unit::setOldSelected(bool b) {
+	oldSelected = b;
 }
-
 
 bool Unit::getSelected() {
 	return selected;
 }
-
 
 bool Unit::checkWalk(sf::Vector2f pos) {
 	bool b = false;
@@ -102,7 +83,6 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 	return b;
 }
 
-
 void Unit::walk(sf::Vector2f pos) {
 	if (checkWalk(pos) && oldSelected) {
 		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
@@ -116,7 +96,6 @@ bool Unit::checkClicked(sf::Vector2f pos) {
 	return sprite.getGlobalBounds().contains(pos);
 }
 
-
 bool Unit::damage(int points) {
 	hitpoints = hitpoints - points;
 	if (hitpoints <= 0) {
@@ -124,7 +103,6 @@ bool Unit::damage(int points) {
 	}
 	return false;
 }
-
 
 int Unit::attack() {
 	oldSelected = false;

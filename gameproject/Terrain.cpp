@@ -18,12 +18,6 @@ Terrain::Terrain(textureID id, const textureHolder & textures, sf::Vector2f pos)
 	sprite.setPosition(pos);
 }
 
-/*
-void Terrain::setTexture(sf::Texture & text) {
-	sprite.setTexture(text, true);
-	sprite.setTextureRect(sf::IntRect{ 0,0,30,30 });
-}*/
-
 void Terrain::setPosition(sf::Vector2f pos) {
 	sprite.setPosition(pos);
 }

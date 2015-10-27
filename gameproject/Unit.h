@@ -3,43 +3,38 @@
 #ifndef _UNIT_H
 #define _UNIT_H
 
-#include <SFML/Graphics.hpp>
-#include "Enums.h"
-#include "ResourceHolder.h"
-#include "ResourceIdentifier.h"
+#include "GameObject.h"
 
-class Unit{
+class Unit : public GameObject{
 public:
 	Unit(textureID, const textureHolder& textures, sf::Vector2f, sf::Color);
-	void setTexture(sf::Texture & text);
-	void setPos(sf::Vector2f pos);
-	sf::Vector2f getPosition();
-	int getWalklimit();
-	void draw(sf::RenderWindow & window);
-	void handleMouse(sf::Vector2f pos);
-	bool checkSelected(sf::Vector2f pos);				// ff andere manier proberen dan via handleMouse
-	void setSelected(bool sel);
-	void setOldSelected(bool osel);
+
+	void setPos(sf::Vector2f pos) override;
+	void setSelected(bool);
+	void setOldSelected(bool);
+	
 	bool getSelected();
+	int getHP();
+	int getDP();
+	int getWalklimit();
 
 	bool checkWalk(sf::Vector2f pos);
-	void Unit::walk(sf::Vector2f pos);
+	bool checkSelected(sf::Vector2f pos);				// ff andere manier proberen dan via handleMouse
 	bool checkClicked(sf::Vector2f pos);
 
-
+	void walk(sf::Vector2f pos);
 	bool damage(int points);
 	int attack();
 
-
+	virtual void action();											// dit is de actie die je unit uit kan voeren
+	
 protected:
-	textureID id;
-	sf::Sprite sprite;
 	sf::Color side;
 	bool selected = false;
 	bool oldSelected = false;
 	int walklimit = 2;
 
-	int hitpoints = 100;		// hp
+	int hitpoints = 100;
 	int attackpoints = 20;
 };
 

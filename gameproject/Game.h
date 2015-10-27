@@ -9,9 +9,13 @@
 #include "Terrain.h"
 #include "Enums.h"
 #include "Unit.h"
+#include "Soldier.h"
+#include "Bomber.h"
 #include "Player.h"
 #include "Music.h"
 #include "Sound.h"
+#include "MenuButton.h"
+
 
 class Game {
 public:
@@ -19,15 +23,17 @@ public:
 	void run();
 
 private:
-	void processEvents();
-	void update();
+	void processInput();
+	void update(sf::Time);
 	void render();
 	void HUD();
+
+	void loadMenu();
 
 	void loadTextures();
 	void makePlayfield();
 
-	void handleInput(sf::Keyboard::Key, bool);
+	void handleKeypress(sf::Keyboard::Key, bool);
 	void handleMouse(sf::Mouse::Button);
 	void initText();
 
@@ -35,8 +41,11 @@ private:
 	Player getActivePlayer();
 
 	void markField(int walklimit, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
+	void spawnUnit(sf::Vector2f);
+	void spawnBomber(sf::Vector2f);
 
 	sf::RenderWindow window;
+	static const sf::Time timePerFrame;
 
 	Player playerB;
 	Player playerR;
@@ -44,7 +53,9 @@ private:
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
-	textureHolder	textures;
+	std::vector<std::unique_ptr<MenuButton>> menuContainer;
+
+	textureHolder textures;
 
 	sf::Vector2f oldUnitPosition;			// nodig voor het deselecteren van de tiles
 	int oldUnitWalklimit;					// nodig voor het deselecteren van de tiles
@@ -52,9 +63,10 @@ private:
 	Music music;
 	Sound sound;
 
+	bool inMenu = false;
 	sf::Font font;
 	sf::Text text;
+};
 
 
 #endif
-};
