@@ -17,12 +17,13 @@ public:
 	int getHP();
 	int getDP();
 	int getWalklimit();
+	bool makeSelected(sf::Vector2f pos);
 
 	bool checkWalk(sf::Vector2f pos);
 	bool checkSelected(sf::Vector2f pos);				// ff andere manier proberen dan via handleMouse
 	bool checkClicked(sf::Vector2f pos);
 
-	void walk(sf::Vector2f pos);
+	void walk(sf::Vector2f pos, bool free);
 	bool damage(int points);
 	int attack();
 

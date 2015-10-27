@@ -123,7 +123,8 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			if (playerB.getActive()) {							// BLAUWE TEAM
 				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
 				for (auto const & p : unitBContainer) {
-					if (p->checkSelected(mPosition)) {
+					if (p->checkClicked(mPosition)) {
+						p->makeSelected(mPosition);
 						oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
 						oldUnitWalklimit = p->getWalklimit();
 						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Blue);
@@ -139,16 +140,16 @@ void Game::handleMouse(sf::Mouse::Button button) {
 								}
 							}
 						}
-						p->walk(mPosition);
-						p->setOldSelected(false);
+						p->walk(mPosition, checkSpaceFree(unitBContainer, mPosition));
 					}
 				}
 			}
 			else {												// RODE TEAM
 				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
 				for (auto const & p : unitRContainer) {
-					if (p->checkSelected(mPosition)) {
-						oldUnitPosition = p->getPosition();		// onthouden voor het deselecteren van de tiles
+					if (p->checkClicked(mPosition)) {
+						p->makeSelected(mPosition);
+						oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
 						oldUnitWalklimit = p->getWalklimit();
 						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Red);
 					}
@@ -163,9 +164,7 @@ void Game::handleMouse(sf::Mouse::Button button) {
 								}
 							}
 						}
-
-						p->walk(mPosition);
-						p->setOldSelected(false);
+						p->walk(mPosition, checkSpaceFree(unitRContainer, mPosition));
 					}
 				}
 			}
@@ -180,6 +179,15 @@ void Game::handleMouse(sf::Mouse::Button button) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------
+
+bool Game::checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos) {
+	for (auto const & t : container) {
+		if (t->checkClicked(pos)) {			// checken of er geen andere unit op deze plek zit
+			return false;
+		}
+	}
+	return true;
+}
 
 Player Game::getActivePlayer() {
 	if (playerB.getActive()) {

@@ -11,13 +11,14 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 	side {color}
 {
 	sprite.setColor(color);
+	setPos(pos);
 
 	numFrames = 1;
 	repeat = true;
 }
 
 void Unit::setPos(sf::Vector2f pos) {
-	//sprite.setPosition(pos.x + SpriteOffset, pos.y + SpriteOffset);
+	sprite.setPosition(pos.x + SpriteOffset, pos.y + SpriteOffset);
 }
 
 int Unit::getHP() {
@@ -83,13 +84,13 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 	return b;
 }
 
-void Unit::walk(sf::Vector2f pos) {
-	if (checkWalk(pos) && oldSelected) {
+void Unit::walk(sf::Vector2f pos, bool free) {
+	if (checkWalk(pos) && oldSelected && free) {
 		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
-
-		selected = false;
-		sprite.setColor(side);
 	}
+	selected = false;
+	oldSelected = false;
+	sprite.setColor(side);
 }
 
 bool Unit::checkClicked(sf::Vector2f pos) {
@@ -108,4 +109,22 @@ int Unit::attack() {
 	oldSelected = false;
 	selected = false;
 	return attackpoints;
+}
+
+void Unit::action() {
+
+}
+
+bool Unit::makeSelected(sf::Vector2f pos) {
+	setSelected(sprite.getGlobalBounds().contains(pos));
+	if (selected) {
+		if (oldSelected == false) {
+			oldSelected = true;
+		}
+		else {
+			selected = false;
+			oldSelected = false;
+		}
+	}
+	return selected;
 }

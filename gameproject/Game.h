@@ -44,6 +44,8 @@ private:
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 
+	bool checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f);
+
 	sf::RenderWindow window;
 	static const sf::Time timePerFrame;
 
