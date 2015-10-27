@@ -4,7 +4,7 @@
 #define _Enums_H
 
 enum class textureID { GRASS, ROAD, UNIT, BACKGROUND, START, OPTION, EXIT, MUTE, BACK};
-enum class musicID {MENUTHEME, MISSIONTHEME, BB};
+enum class musicID {MENUTHEME, MISSIONTHEME, BB, NONE};
 enum class soundID {SELECTUNIT, WALKUNIT};
 enum {TILESIZE = 50};
 

@@ -32,28 +32,28 @@ void Game::initText() {
 void Game::loadMenu()
 {
 	inMenu = true;
-	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures, 
+	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures,
 		sf::Vector2f(0, 0)));
 	menuContainer.push_back(std::move(background));		//[0]
 
-	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, 
+	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures,
 		sf::Vector2f(800, 260), sf::Vector2f(1, 0)));   //800 zodat hij buiten window laadt.
 	menuContainer.push_back(std::move(startButton));	//[1]
 
-	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, 
+	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures,
 		sf::Vector2f(1000, 330), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(optionButton));	//[2]
 
-	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, 
+	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures,
 		sf::Vector2f(1200, 400), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(exitButton));		//[3]
 
-	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
+	//muteButton en backButton buiten scherm laden omdat ze via de option button binnengehaald wordt.
 	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures,
 		sf::Vector2f(-300, 330), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(muteButton));		//[4]
 
-	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, 
+	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures,
 		sf::Vector2f(-300, 400), sf::Vector2f(1, 0)));
 	menuContainer.push_back(std::move(backButton));		//[5]
 }
@@ -96,8 +96,8 @@ void Game::handleInput(sf::Keyboard::Key key, bool b) {
 		if (key == sf::Keyboard::W) {
 			sf::Vector2i pos = (sf::Mouse::getPosition(window));
 			std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2f_from_V2i(v2i_MOD(pos, TILESIZE)), getActivePlayer().getPlayer()));
-			if(playerB.getActive())	unitBContainer.push_back(std::move(unit));
-			else unitRContainer.push_back(std::move(unit));
+			if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
+			else { unitRContainer.push_back(std::move(unit)); }
 		}
 		else if (key == sf::Keyboard::S) {
 			switchPlayer();
@@ -160,7 +160,7 @@ Player Game::getActivePlayer() {
 	if (playerB.getActive()) {
 		return playerB;
 	}
-	else return playerR;
+	else { return playerR; }
 }
 
 void Game::switchPlayer() {
@@ -226,7 +226,7 @@ void Game::processEvents() {
 
 void Game::update() {
 	//TODO implement Command message structure which will be iterated here and each command delivered to it's target where it'll handle it's implementation
-		//TODO the game updates
+	//TODO the game updates
 	
 }
 
