@@ -71,9 +71,6 @@ void Game::loadTextures() {
 }
 
 void Game::makePlayfield() {
-	const int playfieldX = 10;
-	const int playfieldY = 8;
-
 	for (float y = 0; y < playfieldY; y++) {
 		for (float x = 0; x < playfieldX; x++) {
 			if (x == 3 || x == 6) {
@@ -236,38 +233,55 @@ void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {			
 			if (it != terrainContainer.end()) {
 				index = std::distance(terrainContainer.begin(), it);
 			}
-			for (int i = 0; i <= walklimit; i++) {
-				if((index - i) >= 0){						// checken of die terrain wel bestaat
-					if ((index % 10) && ((index - i + 1)% 10)) {		// checken of de vakjes wel in dezelfde rij liggen
+
+			// DIT HELE DING HIERONDER KAN VEEEEEEEL COMPACTER!!!!! (maar had er nog geen zin in)
+			bool left = true;
+			bool right = true;
+			for (int i = 1; i <= walklimit; i++) {
+				if((index - i) >= 0){						// checken of die terrain wel bestaat			// LINKS checken
+					if ((index % playfieldX) && ((index - i + 1)% playfieldX) && left) {					// checken of de vakjes wel in dezelfde rij liggen
 						terrainContainer.at(index - i)->changeColor(color);
 					}
+					else left = false;
 				}
-				if ((index + i) <= 79) {											// 79 = playfieldX * playfieldY - 1 = 10 * 8 - 1
-					if (((index + 1)% 10) && ((index + i) % 10)) {					// checken of de vakjes wel in dezelfde rij liggen
+				if ((index + i) <= (playfieldX * playfieldY) - 1) {											// RECHTS checken
+					if (((index + 1) % playfieldX) && ((index + i) % playfieldX) && right) {				// checken of de vakjes wel in dezelfde rij liggen
 						terrainContainer.at(index + i)->changeColor(color);
 					}
+					else right = false;
 				}
-				if ((index - (10 * i)) >= 0) {
-					terrainContainer.at(index - (10 * i))->changeColor(color);		// 10 = playfieldX
+				if ((index - (playfieldX * i)) >= 0) {														// BOVEN checken
+					terrainContainer.at(index - (playfieldX * i))->changeColor(color);
 				}
-				if ((index + (10 * i)) <= 79) {			
-					terrainContainer.at(index + (10 * i))->changeColor(color);		// 10 = playfieldX
+				if ((index + (playfieldX * i)) <= (playfieldX * playfieldY) - 1) {							// ONDER hem checken
+					terrainContainer.at(index + (playfieldX * i))->changeColor(color);
 				}
+				//---------------------------------------------
+				if (((index + (playfieldX * i)) <= (playfieldX * playfieldY) - 1) && ((index + (playfieldX * i) + walklimit) <= (playfieldX * playfieldY) - 1)) {		// RECHTSONDERHOEK checken
+					for (int e = i; e <= walklimit; e++) {
+						terrainContainer.at(index + (playfieldX * i) + (walklimit - e))->changeColor(color);
+					}
+				}
+				if (((index - (playfieldX * i)) >= 0) && ((index - (playfieldX * i)) + walklimit >= 0)) {		// RECHTSONDERHOEK checken
+					for (int e = i; e <= walklimit; e++) {
+						terrainContainer.at(index - (playfieldX * i) + (walklimit - e))->changeColor(color);
+					}
+				}
+				if (((index - (playfieldX * i)) >= 0) && ((index - (playfieldX * i)) - walklimit >= 0)) {		// LINKSBOVENHOEK checken
+					for (int e = i; e <= walklimit; e++) {
+						terrainContainer.at(index - (playfieldX * i) - (walklimit - e))->changeColor(color);
+					}
+				}
+				if (((index + (playfieldX * i)) <= (playfieldX * playfieldY) - 1) && ((index + (playfieldX * i) - walklimit) <= (playfieldX * playfieldY) - 1)) {		// LINKSONDERHOEK checken
+					for (int e = i; e <= walklimit; e++) {
+						terrainContainer.at(index + (playfieldX * i) - (walklimit - e))->changeColor(color);
+					}
+				}
+				//---------------------------------------------
 			}
 		}
 	}
 }
-
-
-bool Game::checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos) {
-	for (auto const & t : container) {
-		if (t->checkClicked(pos)) {			// checken of er geen andere unit op deze plek zit
-			return false;
-		}
-	}
-	return true;
-}
-
 
 
 void Game::run() {

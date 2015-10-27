@@ -44,8 +44,6 @@ private:
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 
-	bool checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f);
-
 	bool checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
 
 	sf::RenderWindow window;
@@ -70,6 +68,9 @@ private:
 	bool inMenu = false;
 	sf::Font font;
 	sf::Text text;
+
+	int playfieldX = 10;
+	int playfieldY = 8;
 };
 
 

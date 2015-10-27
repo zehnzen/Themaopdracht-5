@@ -8,8 +8,7 @@
 
 Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	GameObject( id, textures, pos),
-	side {color}
-{
+	side {color} {
 	sprite.setColor(color);
 	setPos(pos);
 
@@ -116,18 +115,4 @@ int Unit::attack() {
 
 void Unit::action() {
 
-}
-
-bool Unit::makeSelected(sf::Vector2f pos) {
-	setSelected(sprite.getGlobalBounds().contains(pos));
-	if (selected) {
-		if (oldSelected == false) {
-			oldSelected = true;
-		}
-		else {
-			selected = false;
-			oldSelected = false;
-		}
-	}
-	return selected;
 }
