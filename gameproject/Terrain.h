@@ -16,7 +16,9 @@ public:
 	sf::Vector2f getPosition();
 	void draw(sf::RenderWindow & window);
 	void changeColor(sf::Color col);
-	
+	sf::Color getColor();
+	bool checkClicked(sf::Vector2f pos);
+
 private:
 	textureID id;
 	sf::Sprite sprite;

@@ -34,3 +34,12 @@ void Terrain::draw(sf::RenderWindow & window) {
 void Terrain::changeColor(sf::Color col) {
 	sprite.setColor(col);
 }
+
+sf::Color Terrain::getColor() {
+	sf::Color color = sprite.getColor();
+	return color;
+}
+
+bool Terrain::checkClicked(sf::Vector2f pos) {
+	return sprite.getGlobalBounds().contains(pos);
+}

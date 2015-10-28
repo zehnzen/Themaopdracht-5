@@ -17,12 +17,13 @@ public:
 	int getHP();
 	int getDP();
 	int getWalklimit();
+	int getAttackrange();
 	bool makeSelected(sf::Vector2f pos);
 
 	bool checkWalk(sf::Vector2f pos);
 	bool checkClicked(sf::Vector2f pos);
 
-	void walk(sf::Vector2f pos, bool free);
+	void walk(sf::Vector2f pos);
 	bool damage(int points);
 	int attack();
 
@@ -33,6 +34,7 @@ protected:
 	bool selected = false;
 	bool oldSelected = false;
 	int walklimit = 2;
+	int attackrange = 3;
 
 	int hitpoints = 100;
 	int attackpoints = 20;

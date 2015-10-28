@@ -12,6 +12,9 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 	sprite.setColor(color);
 	setPos(pos);
 
+	walklimit = 2;
+	attackrange = 3;
+
 	numFrames = 1;
 	repeat = true;
 }
@@ -32,6 +35,9 @@ int Unit::getWalklimit() {
 	return walklimit;
 }
 
+int Unit::getAttackrange() {
+	return attackrange;
+}
 
 bool Unit::makeSelected(sf::Vector2f pos) {
 	setSelected(sprite.getGlobalBounds().contains(pos));
@@ -85,8 +91,8 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 }
 
 
-void Unit::walk(sf::Vector2f pos, bool free) {
-	if (checkWalk(pos) && oldSelected && free) {
+void Unit::walk(sf::Vector2f pos) {
+	if (oldSelected) {
 		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
 	}
 	selected = false;
