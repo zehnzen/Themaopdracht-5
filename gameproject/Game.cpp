@@ -8,7 +8,7 @@
 const sf::Time Game::timePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() :
-	window(sf::VideoMode(640, 480), "SFML window"),
+	window(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window"),
 	playerB{ sf::Color::Blue, true},
 	playerR{ sf::Color::Red, false}
 	{
@@ -39,21 +39,21 @@ void Game::loadMenu() {
 	inMenu = true;
 	//de val1, 2 en 3 worden buiten scherm getekend(800, 100, 1200) en komen dan naar binnen bewegen
 	buttonVal val1{ textureID::BACKGROUND };
-	buttonVal val2{ textureID::START,		sf::Vector2f(80,260),	sf::Vector2f(-1,0) };
-	buttonVal val3{ textureID::OPTION,		sf::Vector2f(100,330),	sf::Vector2f(-1,0) };
-	buttonVal val4{ textureID::EXIT,		sf::Vector2f(120,400),	sf::Vector2f(-1,0) };
-	buttonVal val5{ textureID::MUTE,		sf::Vector2f(50,1000),	sf::Vector2f(-1,0) };
-	buttonVal val6{ textureID::BACK,		sf::Vector2f(50,1000),	sf::Vector2f(-1,0) };
+	buttonVal val2{ textureID::START,		sf::Vector2f(ScreenWidth,		260) };
+	buttonVal val3{ textureID::OPTION,		sf::Vector2f(ScreenWidth + 40,	330) };
+	buttonVal val4{ textureID::EXIT,		sf::Vector2f(ScreenWidth + 80,	400) };
+	buttonVal val5{ textureID::MUTE,		sf::Vector2f(ScreenWidth,		ScreenHeight + 10) };
+	buttonVal val6{ textureID::BACK,		sf::Vector2f(ScreenWidth,	ScreenHeight + 10) };
 
-	std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6 };
+std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6 };
 
-	for (buttonVal value : menus) {
-		std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos, value.movingDirection));
-		menuContainer.push_back(std::move(menubutton));
-	}
-	buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
-	std::unique_ptr<UnitButton> unitButton(new DragonButton(val10.id, textures, val10.pos));
-	factoryButtons.push_back(std::move(unitButton));
+for (buttonVal value : menus) {
+	std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos));
+	menuContainer.push_back(std::move(menubutton));
+}
+buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
+std::unique_ptr<UnitButton> unitButton(new DragonButton(val10.id, textures, val10.pos));
+factoryButtons.push_back(std::move(unitButton));
 }
 
 void Game::loadTextures() {
@@ -78,7 +78,7 @@ void Game::makePlayfield() {
 				terrainContainer.push_back(std::move(terrain));
 			}
 			else {
-				std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{x * TILESIZE, y * TILESIZE}));
+				std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
 				terrainContainer.push_back(std::move(terrain));
 			}
 		}
@@ -131,7 +131,7 @@ void Game::handleMouse(sf::Mouse::Button button) {
 		}
 		//------------------END VALUES FOR WHICH TURN
 
-		if(inMenu)
+		if (inMenu)
 		{
 			for (auto const & p : menuContainer) {
 				if (p->handleMouse(mPosition, window, menuContainer, music) == 1) {//TODO test voor start
@@ -143,8 +143,16 @@ void Game::handleMouse(sf::Mouse::Button button) {
 			for (auto const & p : factoryButtons) {
 				if (p->getClicked(mPosition)) {
 					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
-					location = location + 50;
-					currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
+					// kijken of hij wel daar mag worden gedropt
+					//if(checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos)) {
+					//for () {
+						sf::Vector2f loc(location.x + TILESIZE, location.y + TILESIZE);
+					//}
+					if(checkSpaceFree(unitBContainer, loc)) {
+						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+					}
+					//location = location + 50;
+					//currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
 					inFactory = false;
 				}	
 			}
@@ -383,14 +391,9 @@ void Game::processInput() {
 void Game::update(sf::Time dt) {
 	if (inMenu) {
 		for (auto & p : menuContainer) {
-			p->update(dt);
-			//if (!(p->getPosition().x <= 50)) {
-			//	p->update(-1);
-			//	std::cout<<"jahooooooorrrrr";
-			//}
-			//if (p->LoadedInScreen && p->getPosition().y <= 800) { //gekozen voor 800 zodat ik zeker weet dat hij buiten scherm ligt
-			//	p->update(1);
-			//}
+			if (p->LoadedInScreen) {
+				p->update(dt);
+			}
 		}
 	}
 	else {

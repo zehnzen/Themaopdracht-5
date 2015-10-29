@@ -2,11 +2,10 @@
 
 #include "MenuButton.h"
 
-MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Vector2f direction) :
-	Button{id, textures, pos},
-	direction{ direction }
+MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
+	Button{id, textures, pos}
 {
-	numFrames = 60;
+	numFrames = 220;
 }
 
 void MenuButton::update(sf::Time dt) {
@@ -16,14 +15,11 @@ void MenuButton::update(sf::Time dt) {
 	while (elapsedTime >= timePerFrame)
 	{
 		if(!(sprite.getPosition().x <= 50))
-		sprite.setPosition(sprite.getPosition() + direction);
+		sprite.setPosition(sprite.getPosition() - sf::Vector2f(1,0));
 		elapsedTime -= timePerFrame;
 	}
 }
 
-void MenuButton::changeDirection(sf::Vector2f cD) {
-	direction = cD;
-}
 
 int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<MenuButton>>& container, Music & music) {
 
@@ -40,12 +36,11 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::ve
 			for (it = menuPosition.begin(); it < menuPosition.end() - 1; ++it, ++i) {
 				// i+1 omdat hij background moet overslaan
 				if (i <= 3) {
-					container[i]->LoadedInScreen = true;
-					container[i]->changeDirection(vertical);
+					container[i]->LoadedInScreen = false;
+					container[i]->setPosition(sf::Vector2f(ScreenWidth, ScreenHeight));
 				}
 				else {
-					container[i]->LoadedInScreen = false;
-					container[i]->changeDirection(horizontal);
+					container[i]->LoadedInScreen = true;
 					container[i]->setPosition(menuPosition[i]);
 				}
 			}
@@ -61,13 +56,12 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::ve
 			for (it = menuPosition.begin(); it < menuPosition.end() - 1; ++it, ++i) {
 
 				if (i <= 3) {
-					container[i]->LoadedInScreen = false;
-					container[i]->changeDirection(horizontal);
+					container[i]->LoadedInScreen = true;
 					container[i]->setPosition(menuPosition[i]);
 				}
 				else {
-					container[i]->LoadedInScreen = true;
-					container[i]->changeDirection(vertical);
+					container[i]->LoadedInScreen = false;
+					container[i]->setPosition(sf::Vector2f(ScreenWidth, ScreenHeight));
 				}
 			}
 		}
