@@ -27,9 +27,9 @@ protected:
 
 	textureID id;
 	sf::Sprite sprite;
-	sf::Vector2i frameSize = sf::Vector2i(TILESIZE, TILESIZE);
 	std::size_t numFrames;
 	std::size_t currentFrame = 0;
+	sf::Vector2i frameSize = sf::Vector2i(TILESIZE, TILESIZE);
 	sf::Time duration = sf::seconds(1);
 	sf::Time elapsedTime = sf::Time::Zero;
 	bool repeat;

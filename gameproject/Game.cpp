@@ -35,26 +35,22 @@ void Game::loadMenu()
 {
 	inMenu = true;
 	//texture voor menu
+	struct buttonVal {
+		textureID id;
+		sf::Vector2f pos;
+	};
+	buttonVal val1{ textureID::BACKGROUND, sf::Vector2f(0,0) };
+	buttonVal val2{ textureID::START, sf::Vector2f(50,260) };
+	buttonVal val3{ textureID::MUTE, sf::Vector2f(50,1000) };
+	buttonVal val4{ textureID::EXIT, sf::Vector2f(50,400) };
+	buttonVal val5{ textureID::OPTION, sf::Vector2f(50,330) };
+	buttonVal val6{ textureID::BACK, sf::Vector2f(50,1000) };
+	std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6};
 
-	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures, sf::Vector2f(0, 0)));
-	menuContainer.push_back(std::move(background));		//[0]
-
-	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures, sf::Vector2f(50, 260)));
-	menuContainer.push_back(std::move(startButton));	//[1]
-	
-	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
-	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures, sf::Vector2f(50, 1000)));
-	menuContainer.push_back(std::move(muteButton));		//[2]
-
-	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures, sf::Vector2f(50, 400)));
-	menuContainer.push_back(std::move(exitButton));		//[3]
-	
-	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures, sf::Vector2f(50, 330)));
-	menuContainer.push_back(std::move(optionButton));	//[4]
-	//muteButton en backButton buiten scherm laden. Deze worden later met setposition terug gehaald.
-	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures, sf::Vector2f(50, 1000)));
-	menuContainer.push_back(std::move(backButton));		//[5]
-
+	for (buttonVal value : menus) {
+		std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos));
+		menuContainer.push_back(std::move(menubutton));
+	}
 }
 
 void Game::loadTextures() {
@@ -120,57 +116,42 @@ void Game::handleMouse(sf::Mouse::Button button) {
 		}
 		else{
 			markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
-			if (playerB.getActive()) {													// BLAUWE TEAM
-				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
-				for (auto const & p : unitBContainer) {
-					if (p->checkClicked(mPosition)) {
-						p->makeSelected(mPosition);
-						oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
-
-						oldUnitWalklimit = p->getWalklimit();
-						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Blue);
-					}
-					else {
-						// aanvallen:
-						int i = 0;
-						for (auto const & q : unitRContainer) {
-							i++;
-							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
-								if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
-									unitRContainer.erase(unitRContainer.begin() + i - 1);
-									break;
-								}
-							}
-						}
-						p->walk(mPosition, checkSpaceFree(unitBContainer, mPosition));		// lopen
-
-					}
-				}
+			std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, * enemyPlayerUnits;
+			sf::Color color;
+			if (playerB.getActive()) {
+				currentPlayerUnits = &unitBContainer;
+				enemyPlayerUnits = &unitRContainer;
+				color = sf::Color::Blue;
 			}
-			else {												// RODE TEAM
-				sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
-				for (auto const & p : unitRContainer) {
-					if (p->checkClicked(mPosition)) {
-						p->makeSelected(mPosition);
-						oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
-						oldUnitWalklimit = p->getWalklimit();
-						markField(oldUnitWalklimit, oldUnitPosition, sf::Color::Red);
-					}
-					else {
-						// aanvallen:
-						int i = 0;
-						for (auto const & q : unitBContainer) {
-							i++;
-							if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
-								if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
-									unitBContainer.erase(unitBContainer.begin() + i - 1);
-									break;
-								}
+			else {
+				currentPlayerUnits = &unitRContainer;
+				enemyPlayerUnits = &unitBContainer;
+				color = sf::Color::Red;
+			}
+
+			sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
+			for (auto const & p : *currentPlayerUnits) {
+				if (p->checkClicked(mPosition)) {
+					p->makeSelected(mPosition);
+					oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
+
+					oldUnitWalklimit = p->getWalklimit();
+					markField(oldUnitWalklimit, oldUnitPosition, color);
+				}
+				else {
+					// aanvallen:
+					int i = 0;
+					for (auto const & q : *enemyPlayerUnits) {
+						i++;
+						if (q->checkClicked(mPosition)) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
+							if (q->damage(p->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
+								enemyPlayerUnits->erase(enemyPlayerUnits->begin() + i - 1);
+								break;
 							}
 						}
-						p->walk(mPosition, checkSpaceFree(unitRContainer, mPosition));		// lopen
-
 					}
+					p->walk(mPosition, checkSpaceFree(*currentPlayerUnits, mPosition));		// lopen
+
 				}
 			}
 		}
