@@ -10,6 +10,7 @@ Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf
 	attackpoints = 50;
 	walklimit = 3;
 	attackrange = 4;
+	resetTurn();
 
 	numFrames = 5;
 }

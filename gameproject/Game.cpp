@@ -236,21 +236,23 @@ void Game::unitControl(std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, 
 }
 
 Player Game::getActivePlayer() {
-	if (playerB.getActive()) {
-		return playerB;
-	}
-	else { return playerR; }
+	return (playerB.getActive() ? playerB : playerR);
 }
 
 void Game::switchPlayer() {
+	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+	if (unitSelected) { markField(units->at(unitIndex)->getWalklimit(), units->at(unitIndex)->getAttackrange(), true, units->at(unitIndex)->getTilePosition(), sf::Color::White); }
 	playerB.setActive(!playerB.getActive());
 	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
 		p->setSelected(false);
+		p->resetTurn();
 	}
 	playerR.setActive(!playerR.getActive());
 	for (auto const & p : unitRContainer) {						// alle units van R deselecteren
 		p->setSelected(false);
+		p->resetTurn();
 	}
+	inFactory = false;
 }
 
 void Game::spawnBomber(sf::Vector2f pos) {

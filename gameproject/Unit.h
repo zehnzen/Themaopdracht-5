@@ -11,6 +11,8 @@ public:
 
 	void setPosition(sf::Vector2f pos) override;
 
+	void resetTurn();
+
 	int getDP();
 	int getWalklimit();
 
@@ -24,8 +26,7 @@ public:
 	virtual void action();											// dit is de actie die je unit uit kan voeren
 	
 protected:
-	int walklimit = 2;
-	int attackrange = 3;
+	int walklimit = 2, attackrange = 3, turnWalklimit = walklimit, turnAttackrange = attackrange;
 	int attackpoints = 20;
 };
 
