@@ -42,7 +42,12 @@ private:
 	void switchPlayer();
 	Player getActivePlayer();
 
-	void markField(int walklimit, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
+	void unitControl(std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, sf::Color color);		// afhandeling van de acties van de units
+	void markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
+	void markWalklimit(int walklimit, int index, sf::Color color);
+	void markAttackrange(int attackrange, int index, sf::Color color);
+	bool checkWalk(sf::Vector2f);		// aan de hand van de markering van de tiles kijken of een unit mag lopen
+	bool checkAttack(sf::Vector2f);
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 	void spawnFactory(sf::Vector2f);
@@ -66,8 +71,11 @@ private:
 
 	textureHolder textures;
 
-	sf::Vector2f oldUnitPosition;			// nodig voor het deselecteren van de tiles
-	int oldUnitWalklimit;					// nodig voor het deselecteren van de tiles
+	sf::Vector2f unitPosition;			// nodig voor het deselecteren van de tiles
+	int unitWalklimit;					// nodig voor het deselecteren van de tiles
+	int unitAttackrange;
+	bool unitSelected = false;
+	int unitIndex;
 
 	Music music;
 	Sound sound;
@@ -77,6 +85,9 @@ private:
 
 	sf::Font font;
 	sf::Text text;
+
+	int playfieldX = 10;
+	int playfieldY = 8;
 };
 
 

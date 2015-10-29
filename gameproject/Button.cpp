@@ -14,11 +14,6 @@ bool Button::getClicked(sf::Vector2f pos) {
 	return (sprite.getGlobalBounds().contains(pos)) ? true : false;
 }
 
-//TODO temporary communication
-/*int Button::handleMouse(sf::Vector2f pos, sf::RenderWindow & window)
-{
-	return 0;
-}*/
 int Button::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<Button>>& container, Music & music)
 {
 	return 0;

@@ -14,6 +14,9 @@ public:
 	Terrain(textureID, const textureHolder& textures, sf::Vector2f);
 
 	void changeColor(sf::Color col);
+
+	sf::Color getColor();
+	bool checkClicked(sf::Vector2f pos);
 };
 
 #endif

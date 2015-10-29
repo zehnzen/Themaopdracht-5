@@ -13,3 +13,12 @@ Terrain::Terrain(textureID id, const textureHolder & textures, sf::Vector2f pos)
 void Terrain::changeColor(sf::Color col) {
 	sprite.setColor(col);
 }
+
+sf::Color Terrain::getColor() {
+	sf::Color color = sprite.getColor();
+	return color;
+}
+
+bool Terrain::checkClicked(sf::Vector2f pos) {
+	return sprite.getGlobalBounds().contains(pos);
+}

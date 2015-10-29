@@ -14,15 +14,18 @@ public:
 	int getDP();
 	int getWalklimit();
 
+	int getAttackrange();
+
 	bool checkWalk(sf::Vector2f pos);
 
-	void walk(sf::Vector2f pos, bool free);
+	void walk(sf::Vector2f pos);
 	int attack();
 
 	virtual void action();											// dit is de actie die je unit uit kan voeren
 	
 protected:
 	int walklimit = 2;
+	int attackrange = 3;
 	int attackpoints = 20;
 };
 

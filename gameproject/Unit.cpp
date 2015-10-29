@@ -11,6 +11,9 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 {
 	setPosition(pos);
 
+	walklimit = 2;
+	attackrange = 3;
+
 	numFrames = 1;
 }
 
@@ -24,6 +27,11 @@ int Unit::getDP() {
 
 int Unit::getWalklimit() {
 	return walklimit;
+}
+
+
+int Unit::getAttackrange() {
+	return attackrange;
 }
 
 bool Unit::checkWalk(sf::Vector2f pos) {
@@ -46,8 +54,8 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 }
 
 
-void Unit::walk(sf::Vector2f pos, bool free) {
-	if (checkWalk(pos) && oldSelected && free) {
+void Unit::walk(sf::Vector2f pos) {
+	if (oldSelected) {
 		setPosition(V2fModulo(pos, TILESIZE));
 	}
 	selected = false;
