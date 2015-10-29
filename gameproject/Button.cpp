@@ -3,6 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 
+Button::Button()
+{
+}
+
 Button::Button(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	id{ id },
 	button{ textures.get(id) }
