@@ -63,6 +63,15 @@
     <ClInclude Include="V2Functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomber.cpp">
@@ -102,6 +111,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="V2Functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

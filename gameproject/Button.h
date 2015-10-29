@@ -8,22 +8,14 @@
 #include "ResourceIdentifier.h"
 #include "Enums.h"
 #include "Music.h"
+#include "GameObject.h"
 
-class Button {
+class Button : public GameObject{
 public:
 	Button(textureID, const textureHolder& textures, sf::Vector2f);
 
-	virtual void setPosition(sf::Vector2f);
-	virtual sf::Vector2f getPosition();
-
-	virtual void draw(sf::RenderWindow & window) ;	// draw methode met position erbij
-	//virtual int handleMouse(sf::Vector2f pos, sf::RenderWindow & window); //TODO geeft nu int terug voor testing, moet later met commands gaan werken.
+	bool getClicked(sf::Vector2f);
 
 	int handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<Button>> & container, Music & music);
-
-protected:
-	textureID id;
-	sf::Sprite button;
-
 };
 #endif

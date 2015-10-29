@@ -17,7 +17,7 @@ public:
 	sf::Vector2f getTilePosition();
 
 	virtual void update(sf::Time);
-	virtual void setPos(sf::Vector2f pos);
+	virtual void setPosition(sf::Vector2f pos);
 	virtual void handleMouse(sf::Vector2f pos);
 
 protected:

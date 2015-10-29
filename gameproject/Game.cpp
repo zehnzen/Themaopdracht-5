@@ -51,6 +51,10 @@ void Game::loadMenu()
 		std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos));
 		menuContainer.push_back(std::move(menubutton));
 	}
+
+	buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
+	std::unique_ptr<UnitButton> unitButton (new DragonButton(val10.id, textures, val10.pos));
+	factoryButtons.push_back(std::move(unitButton));
 }
 
 void Game::loadTextures() {
@@ -58,6 +62,7 @@ void Game::loadTextures() {
 	textures.load(textureID::ROAD, "road.jpg");
 	textures.load(textureID::UNIT, "unit.jpg");
 	textures.load(textureID::DRAGON, "dragon.png");
+	textures.load(textureID::FACTORY, "factory.jpg");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
@@ -95,6 +100,9 @@ void Game::handleKeypress(sf::Keyboard::Key key, bool b) {
 		else if (key == sf::Keyboard::A) {
 			spawnBomber(V2f_from_V2i(sf::Mouse::getPosition(window)));
 		}
+		else if (key == sf::Keyboard::F) {
+			spawnFactory(V2f_from_V2i(sf::Mouse::getPosition(window)));
+		}
 		else if (key == sf::Keyboard::S) {
 			switchPlayer();
 		}
@@ -106,35 +114,55 @@ void Game::handleKeypress(sf::Keyboard::Key key, bool b) {
 
 void Game::handleMouse(sf::Mouse::Button button) {
 	if (button == sf::Mouse::Left) {
+		sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
+
+		std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, *enemyPlayerUnits;
+		std::vector<std::unique_ptr<Building>> * currentPlayerBuildings, *enemyPlayerBuildings;
+		sf::Color color;
+
+		//------------------SET VALUES FOR WHICH TURN
+		if (playerB.getActive()) {
+			currentPlayerUnits = &unitBContainer;
+			enemyPlayerUnits = &unitRContainer;
+			currentPlayerBuildings = &buildingBContainer;
+			enemyPlayerBuildings = &buildingRContainer;
+			color = sf::Color::Blue;
+		}
+		else {
+			currentPlayerUnits = &unitRContainer;
+			enemyPlayerUnits = &unitBContainer;
+			currentPlayerBuildings = &buildingRContainer;
+			enemyPlayerBuildings = &buildingBContainer;
+			color = sf::Color::Red;
+		}
+		//------------------END VALUES FOR WHICH TURN
+
 		if(inMenu)
 		{
 			for (auto const & p : menuContainer) {
-				if (p->handleMouse(V2f_from_V2i(sf::Mouse::getPosition(window)), window, menuContainer, music) == 1) {//TODO test voor start
+				if (p->handleMouse(mPosition, window, menuContainer, music) == 1) {//TODO test voor start
 					inMenu = false;
 				}
 			}
 		}
+		else if (inFactory) {
+			for (auto const & p : factoryButtons) {
+				if (p->getClicked(mPosition)) {
+					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
+					location = location + 50;
+					currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
+					inFactory = false;
+				}	
+			}
+		}
 		else{
 			markField(oldUnitWalklimit, oldUnitPosition, sf::Color::White);
-			std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, * enemyPlayerUnits;
-			sf::Color color;
-			if (playerB.getActive()) {
-				currentPlayerUnits = &unitBContainer;
-				enemyPlayerUnits = &unitRContainer;
-				color = sf::Color::Blue;
-			}
-			else {
-				currentPlayerUnits = &unitRContainer;
-				enemyPlayerUnits = &unitBContainer;
-				color = sf::Color::Red;
-			}
 
-			sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
-			for (auto const & p : *currentPlayerUnits) {
+			//------------------HANDLE UNIT ACTIONS
+			for (const auto & p : *currentPlayerUnits) {
 				if (p->checkClicked(mPosition)) {
 					p->makeSelected(mPosition);
 					oldUnitPosition = p->getTilePosition();		// onthouden voor het deselecteren van de tiles
-
 					oldUnitWalklimit = p->getWalklimit();
 					markField(oldUnitWalklimit, oldUnitPosition, color);
 				}
@@ -154,6 +182,17 @@ void Game::handleMouse(sf::Mouse::Button button) {
 
 				}
 			}
+			//------------------END UNIT ACTIONS
+
+			//------------------HANDLE BUILDING ACTIONS
+
+			for (const auto & p : *currentPlayerBuildings) {
+				if (p->checkClicked(mPosition)) {
+					inFactory = true;
+				}
+			}
+
+			//------------------END BUILDING ACTIONS
 		}
 	}
 	//doet momenteel de switchplayer voor rechtermuisklik
@@ -196,14 +235,17 @@ void Game::switchPlayer() {
 
 void Game::spawnBomber(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
-	if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
-	else { unitRContainer.push_back(std::move(unit)); }
+	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
 }
 
 void Game::spawnUnit(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
-	if (playerB.getActive()) { unitBContainer.push_back(std::move(unit)); }
-	else { unitRContainer.push_back(std::move(unit)); }
+	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+}
+
+void Game::spawnFactory(sf::Vector2f pos) {
+	std::unique_ptr<Building> building(new Building(textureID::FACTORY, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	(playerB.getActive()) ? buildingBContainer.push_back(std::move(building)) : buildingRContainer.push_back(std::move(building));
 }
 
 void Game::markField(int walklimit, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
@@ -290,6 +332,17 @@ void Game::update(sf::Time dt) {
 		for (auto & p : unitRContainer) {
 			p->update(dt);
 		}
+		for (auto & p : buildingBContainer) {
+			p->update(dt);
+		}
+		for (auto & p : buildingRContainer) {
+			p->update(dt);
+		}
+		if (inFactory) {
+			for (auto & p : factoryButtons) {
+				p->update(dt);
+			}
+		}
 	}
 }
 
@@ -322,7 +375,17 @@ void Game::render() {
 		for (const auto & p : unitRContainer) {
 			p->draw(window);
 		}
-
+		for (auto & p : buildingBContainer) {
+			p->draw(window);
+		}
+		for (auto & p : buildingRContainer) {
+			p->draw(window);
+		}
+		if (inFactory) {
+			for (auto & p : factoryButtons) {
+				p->draw(window);
+			}
+		}
 		HUD();
 	}
 	window.display();

@@ -11,10 +11,12 @@
 #include "Unit.h"
 #include "Soldier.h"
 #include "Bomber.h"
+#include "Building.h"
 #include "Player.h"
 #include "Music.h"
 #include "Sound.h"
 #include "MenuButton.h"
+#include "UnitButton.h"
 
 
 class Game {
@@ -43,6 +45,7 @@ private:
 	void markField(int walklimit, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
+	void spawnFactory(sf::Vector2f);
 
 	bool checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
 
@@ -54,8 +57,12 @@ private:
 	std::vector<std::unique_ptr<Unit>> unitBContainer;
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
+	std::vector<std::unique_ptr<Building>> buildingBContainer;
+	std::vector<std::unique_ptr<Building>> buildingRContainer;
+
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	std::vector<std::unique_ptr<MenuButton>> menuContainer;
+	std::vector<std::unique_ptr<UnitButton>> factoryButtons;
 
 	textureHolder textures;
 
@@ -66,6 +73,8 @@ private:
 	Sound sound;
 
 	bool inMenu = false;
+	bool inFactory = false;
+
 	sf::Font font;
 	sf::Text text;
 };

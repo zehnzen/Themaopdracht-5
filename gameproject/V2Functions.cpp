@@ -21,3 +21,11 @@ sf::Vector2i V2i_from_V2f(sf::Vector2f & rhs) {
 sf::Vector2f V2fModulo(sf::Vector2f & lhs, int rhs) {
 	return V2f_from_V2i(v2i_MOD(V2i_from_V2f(lhs), rhs));
 }
+
+sf::Vector2f operator+(sf::Vector2f & lhs, int rhs) {
+	return sf::Vector2f(lhs.x + rhs, lhs.y + rhs);
+}
+
+sf::Vector2f operator+=(sf::Vector2f & lhs, int & rhs) {
+	return sf::Vector2f(lhs.x + rhs, lhs.y + rhs);
+}

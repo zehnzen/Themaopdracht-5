@@ -6,22 +6,9 @@ MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f
 	Button{ id, textures, pos }
 {}
 
-void MenuButton::setPosition(sf::Vector2f pos) {
-	button.setPosition(pos);
-}
-
-sf::Vector2f MenuButton::getPosition() {
-	return button.getPosition();
-}
-
-void MenuButton::draw(sf::RenderWindow & window)
-{
-	window.draw(button);
-}
-
 int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window,
 	std::vector<std::unique_ptr<MenuButton>>& container, Music & music) {
-	if (button.getGlobalBounds().contains(pos))
+	if (sprite.getGlobalBounds().contains(pos))
 	{
 		if (id == textureID::START)
 		{

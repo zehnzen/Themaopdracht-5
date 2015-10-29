@@ -4,24 +4,16 @@
 #include "Button.h"
 
 Button::Button(textureID id, const textureHolder & textures, sf::Vector2f pos) :
-	id{ id },
-	button{ textures.get(id) }
+	GameObject(id, textures, pos)
 {
-	setPosition(pos);
+	numFrames = 1;
+	repeat = true;
 }
 
-void Button::setPosition(sf::Vector2f pos) {
-	button.setPosition(pos);
+bool Button::getClicked(sf::Vector2f pos) {
+	return (sprite.getGlobalBounds().contains(pos)) ? true : false;
 }
 
-sf::Vector2f Button::getPosition()
-{
-	return button.getPosition();
-}
-
-void Button::draw(sf::RenderWindow & window) {
-	window.draw(button);
-}
 //TODO temporary communication
 /*int Button::handleMouse(sf::Vector2f pos, sf::RenderWindow & window)
 {
