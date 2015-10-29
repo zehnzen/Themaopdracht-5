@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿Build started 10/29/2015 2:34:58 PM.
+=======
+﻿Build started 10/29/2015 2:40:02 PM.
+>>>>>>> master
      1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp MenuButton.cpp main.cpp
@@ -24,9 +28,17 @@
          Debug\Unit.obj
          Debug\UnitButton.obj
          Debug\V2Functions.obj
+<<<<<<< HEAD
+=======
+         LINK : C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.exe not found or not built by the last incremental link; performing full link
+>>>>>>> master
          gameproject.vcxproj -> C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.exe
      1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" (Build target(s)).
 
 Build succeeded.
 
+<<<<<<< HEAD
 Time Elapsed 00:00:01.59
+=======
+Time Elapsed 00:00:02.00
+>>>>>>> master
