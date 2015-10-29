@@ -144,15 +144,16 @@ void Game::handleMouse(sf::Mouse::Button button) {
 				if (p->getClicked(mPosition)) {
 					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
 					// kijken of hij wel daar mag worden gedropt
-					//if(checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos)) {
-					//for () {
-						sf::Vector2f loc(location.x + TILESIZE, location.y + TILESIZE);
+
+					markField(2, 2, false, location, sf::Color::Green);
+					//if (checkSpawn(location)) {
+					//	currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
 					//}
-					if(checkSpaceFree(unitBContainer, loc)) {
-						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+					if (checkSpawn(location) != location) {
+						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, checkSpawn(location), color)));
 					}
-					//location = location + 50;
-					//currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
+
+					markField(2, 2, true, location, sf::Color::White);
 					inFactory = false;
 				}	
 			}
@@ -202,17 +203,32 @@ void Game::unitControl(std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, 
 		int i = 0;
 		for (auto const & q : * enemyPlayerUnits) {
 			i++;
-			if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {	// check of vijand wordt aangeklikt en dus of er een aanval moet komen
+			if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
 				if (checkAttack(mPosition)) {
 					if (q->damage(currentPlayerUnits->at(unitIndex)->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
+						for (auto const & t : terrainContainer) {
+							if (t->checkClicked(q->getTilePosition())) {
+								t->setFree(true);										// terrain weer vrij maken
+							}
+						}
 						enemyPlayerUnits->erase(enemyPlayerUnits->begin() + i - 1);
 					}
 				}
 				break;
 			}
 		}
-		if (checkWalk(mPosition)) {
+		if (checkWalkSpawn(mPosition)) {
+			for (auto const & t : terrainContainer) {
+				if (t->checkClicked(currentPlayerUnits->at(unitIndex)->getTilePosition())) {
+					t->setFree(true);								// terrain weer vrijgeven
+				}
+			}
 			currentPlayerUnits->at(unitIndex)->walk(mPosition);		// lopen
+			for (auto const & t : terrainContainer) {
+				if (t->checkClicked(mPosition)) {
+					t->setFree(false);								// terrain bezetten
+				}
+			}
 		}
 		currentPlayerUnits->at(unitIndex)->setSelected(false);
 		unitSelected = false;
@@ -241,29 +257,53 @@ void Game::switchPlayer() {
 void Game::spawnBomber(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			t->setFree(false);
+		}
+	}
 }
 
 void Game::spawnUnit(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			t->setFree(false);
+		}
+	}
 }
 
 void Game::spawnFactory(sf::Vector2f pos) {
 	std::unique_ptr<Building> building(new Building(textureID::FACTORY, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? buildingBContainer.push_back(std::move(building)) : buildingRContainer.push_back(std::move(building));
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			t->setFree(false);
+		}
+	}
 }
 
-bool Game::checkWalk(sf::Vector2f pos) {
-	if(checkSpaceFree(unitBContainer, pos) && checkSpaceFree(unitRContainer, pos)) {
+bool Game::checkWalkSpawn(sf::Vector2f pos) {
+	if(checkSpaceFree(pos)) {
 		for (auto const & t : terrainContainer) {
 			if (t->checkClicked(pos)) {
-				if ((t->getColor() == sf::Color::Blue) || (t->getColor() == sf::Color::Red)) {
+				if ((t->getColor() == sf::Color::Blue) || (t->getColor() == sf::Color::Red) || (t->getColor() == sf::Color::Green)) {
 					return true;
 				}
 			}
 		}
 	}
 	return false;
+}
+
+sf::Vector2f Game::checkSpawn(sf::Vector2f pos) {
+	for (auto const & t : terrainContainer) {
+		if ((t->getColor() == sf::Color::Green) && checkSpaceFree(t->getTilePosition())) {
+			return t->getTilePosition();
+		}
+	}
+	return pos;
 }
 
 bool Game::checkAttack(sf::Vector2f pos) {
@@ -277,9 +317,9 @@ bool Game::checkAttack(sf::Vector2f pos) {
 	return false;
 }
 
-bool Game::checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos) {
-	for (auto const & t : container) {
-		if (t->checkClicked(pos)) {			// checken of er geen andere unit op deze plek zit
+bool Game::checkSpaceFree(sf::Vector2f pos) {
+	for (auto const & t : terrainContainer) {
+		if ((t->checkClicked(pos)) && (!(t->getFree()))) {			// checken of dit terrain vakje wel vrij is
 			return false;
 		}
 	}
@@ -289,8 +329,7 @@ bool Game::checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Ve
 void Game::markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
 	int index;
 	for (auto const & t : terrainContainer) {
-		//if(t->getPosition() == position) {		// nog ff origin verplaatsen in de sprites!!! anders werkt het niet. origin in het midden. daarom eerst nog ff die hieronder:
-		if ((t->getPosition().x == position.x) && (t->getPosition().y == position.y)) {
+		if ((t->getTilePosition().x == position.x) && (t->getTilePosition().y == position.y)) {
 
 			auto it = std::find(terrainContainer.begin(), terrainContainer.end(), t);
 			if (it != terrainContainer.end()) {
@@ -299,56 +338,34 @@ void Game::markField(int walklimit, int attackrange, bool clear, sf::Vector2f po
 		}
 	}
 	if (clear) {
-		markAttackrange(attackrange, index, sf::Color::White);
+		markRange(attackrange, index, sf::Color::White);
 	}
 	else {
-		markAttackrange(attackrange, index, sf::Color::Magenta);
+		markRange(attackrange, index, sf::Color::Magenta);
 	}
-	markWalklimit(walklimit, index, color);
+	markRange(walklimit, index, color);
 }
 
-void Game::markAttackrange(int walklimit, int index, sf::Color color) {
-	walklimit--;
-	if (index >= 0 && index <= ((playfieldX * playfieldY) - 1)) {						// checken of die terrain wel bestaat			// LINKS checken
+void Game::markRange(int range, int index, sf::Color color) {
+	range--;
+	if (index >= 0 && index <= ((playfieldX * playfieldY) - 1)) {			// checken of die terrain wel bestaat			// LINKS checken
 		terrainContainer.at(index)->changeColor(color);
-		if (walklimit > 0) {
+		if (range > 0) {
 			if (index % playfieldX) {
-				markAttackrange(walklimit, index - 1, color);
+				markRange(range, index - 1, color);
 			}										// RECHTS checken
 			if ((index + 1) % playfieldX) {				// checken of de vakjes wel in dezelfde rij liggen
-				markAttackrange(walklimit, index + 1, color);
+				markRange(range, index + 1, color);
 			}
 			if ((index - playfieldX) >= 0) {														// BOVEN checken
-				markAttackrange(walklimit, index - playfieldX, color);
+				markRange(range, index - playfieldX, color);
 			}
 			if ((index + playfieldX) <= ((playfieldX * playfieldY) - 1)) {							// ONDER hem checken
-				markAttackrange(walklimit, index + playfieldX, color);
+				markRange(range, index + playfieldX, color);
 			}
 		}
 	}
 }
-
-void Game::markWalklimit(int walklimit, int index, sf::Color color) {
-	walklimit--;
-	if (index >= 0 && index <= ((playfieldX * playfieldY) - 1)) {						// checken of die terrain wel bestaat			// LINKS checken
-		terrainContainer.at(index)->changeColor(color);
-		if (walklimit > 0) {
-			if (index % playfieldX) {
-				markWalklimit(walklimit, index - 1, color);
-			}										// RECHTS checken
-			if ((index + 1) % playfieldX) {				// checken of de vakjes wel in dezelfde rij liggen
-				markWalklimit(walklimit, index + 1, color);
-			}
-			if ((index - playfieldX) >= 0) {														// BOVEN checken
-				markWalklimit(walklimit, index - playfieldX, color);
-			}
-			if ((index + playfieldX) <= ((playfieldX * playfieldY) - 1)) {							// ONDER hem checken
-				markWalklimit(walklimit, index + playfieldX, color);
-			}
-		}
-	}
-}
-
 
 void Game::run() {
 	sf::Clock clock;

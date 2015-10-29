@@ -17,6 +17,12 @@ public:
 
 	sf::Color getColor();
 	bool checkClicked(sf::Vector2f pos);
+
+	bool getFree();
+	void setFree(bool f);
+
+private:
+	bool free = true;
 };
 
 #endif
