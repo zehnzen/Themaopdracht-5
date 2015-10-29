@@ -7,22 +7,18 @@
 
 
 Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	GameObject( id, textures, pos),
-	side {color}
+	PlayerObject( id, textures, pos, color)
 {
-	sprite.setColor(color);
-	setPos(pos);
+	setPosition(pos);
+
+	walklimit = 2;
+	attackrange = 3;
 
 	numFrames = 1;
-	repeat = true;
 }
 
-void Unit::setPos(sf::Vector2f pos) {
+void Unit::setPosition(sf::Vector2f pos) {
 	sprite.setPosition(pos.x + SpriteOffset, pos.y + SpriteOffset);
-}
-
-int Unit::getHP() {
-	return hitpoints;
 }
 
 int Unit::getDP() {
@@ -34,36 +30,8 @@ int Unit::getWalklimit() {
 }
 
 
-bool Unit::makeSelected(sf::Vector2f pos) {
-	setSelected(sprite.getGlobalBounds().contains(pos));
-	if (selected) {
-		if (oldSelected == false) {
-			oldSelected = true;
-		}
-		else {
-			selected = false;
-			oldSelected = false;
-		}
-	}
-	return selected;
-}
-
-void Unit::setSelected(bool b) {
-	selected = b;
-	if (selected) {
-		sprite.setColor(sf::Color::Yellow);
-	}
-	else {
-		sprite.setColor(side);
-	}
-}
-
-void Unit::setOldSelected(bool b) {
-	oldSelected = b;
-}
-
-bool Unit::getSelected() {
-	return selected;
+int Unit::getAttackrange() {
+	return attackrange;
 }
 
 bool Unit::checkWalk(sf::Vector2f pos) {
@@ -86,25 +54,13 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 }
 
 
-void Unit::walk(sf::Vector2f pos, bool free) {
-	if (checkWalk(pos) && oldSelected && free) {
-		setPos(V2f_from_V2i(v2i_MOD(V2i_from_V2f(pos), TILESIZE)));
+void Unit::walk(sf::Vector2f pos) {
+	if (oldSelected) {
+		setPosition(V2fModulo(pos, TILESIZE));
 	}
 	selected = false;
 	oldSelected = false;
 	sprite.setColor(side);
-}
-
-bool Unit::checkClicked(sf::Vector2f pos) {
-	return sprite.getGlobalBounds().contains(pos);
-}
-
-bool Unit::damage(int points) {
-	hitpoints = hitpoints - points;
-	if (hitpoints <= 0) {
-		return true;
-	}
-	return false;
 }
 
 int Unit::attack() {
@@ -115,5 +71,4 @@ int Unit::attack() {
 }
 
 void Unit::action() {
-
 }

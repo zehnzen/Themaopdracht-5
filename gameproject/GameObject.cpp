@@ -4,17 +4,17 @@
 
 GameObject::GameObject(textureID id, const textureHolder& textures, sf::Vector2f pos):
 	id{ id },
-	sprite{ textures.get(id), sf::IntRect(0, 0, TILESIZE, TILESIZE) }
+	sprite{ textures.get(id) }
 {
-	sprite.setPosition(pos);
+	setPosition(pos);
 }
 
 void GameObject::setTextRect(sf::IntRect rect) {
 	sprite.setTextureRect(rect);
 }
 
-void GameObject::setPos(sf::Vector2f pos) {
-	sprite.setPosition(pos.x, pos.y);
+void GameObject::setPosition(sf::Vector2f pos) {
+	sprite.setPosition(pos);
 }
 
 sf::Vector2f GameObject::getPosition() {

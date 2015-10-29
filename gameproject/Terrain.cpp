@@ -7,8 +7,18 @@ Terrain::Terrain(textureID id, const textureHolder & textures, sf::Vector2f pos)
 	GameObject(id, textures, pos)
 {
 	sprite.setColor(sf::Color::White);
+	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE, TILESIZE));
 }
 
 void Terrain::changeColor(sf::Color col) {
 	sprite.setColor(col);
+}
+
+sf::Color Terrain::getColor() {
+	sf::Color color = sprite.getColor();
+	return color;
+}
+
+bool Terrain::checkClicked(sf::Vector2f pos) {
+	return sprite.getGlobalBounds().contains(pos);
 }

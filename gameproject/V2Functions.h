@@ -9,5 +9,7 @@ sf::Vector2f V2f_from_V2i(sf::Vector2i rhs);
 sf::Vector2i v2i_MOD(sf::Vector2i & lhs, int rhs);
 sf::Vector2i V2i_from_V2f(sf::Vector2f & rhs);
 sf::Vector2f V2fModulo(sf::Vector2f & lhs, int rhs);
+sf::Vector2f operator+(sf::Vector2f & lhs, int rhs);
+sf::Vector2f operator+=(sf::Vector2f & lhs, int rhs);
 
 #endif
