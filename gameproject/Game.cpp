@@ -28,41 +28,35 @@ void Game::initText() {
 	text.setStyle(sf::Text::Bold);
 	text.setColor(sf::Color::Black);
 }
-
+struct buttonVal {
+	textureID id;
+	sf::Vector2f pos;
+	sf::Vector2f movingDirection;
+};
 void Game::loadMenu()
 {
 	inMenu = true;
-	std::unique_ptr<MenuButton>background(new MenuButton(textureID::BACKGROUND, textures,
-		sf::Vector2f(0, 0)));
-	menuContainer.push_back(std::move(background));		//[0]
+	//de val1, 2 en 3 worden buiten scherm getekend(800, 100, 1200) en komen dan naar binnen bewegen
+	buttonVal val1{ textureID::BACKGROUND };
+	buttonVal val2{ textureID::START,		sf::Vector2f(800,260),	sf::Vector2f(1,0) };
+	buttonVal val3{ textureID::OPTION,		sf::Vector2f(1000,330),	sf::Vector2f(1,0) };
+	buttonVal val4{ textureID::EXIT,		sf::Vector2f(1200,400),	sf::Vector2f(1,0) };
+	buttonVal val5{ textureID::MUTE,		sf::Vector2f(50,1000),	sf::Vector2f(1,0) };
+	buttonVal val6{ textureID::BACK,		sf::Vector2f(50,1000),	sf::Vector2f(1,0) };
 
-	std::unique_ptr<MenuButton> startButton(new MenuButton(textureID::START, textures,
-		sf::Vector2f(800, 260), sf::Vector2f(1, 0)));   //800 zodat hij buiten window laadt.
-	menuContainer.push_back(std::move(startButton));	//[1]
+	std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6 };
 
-	std::unique_ptr<MenuButton> optionButton(new MenuButton(textureID::OPTION, textures,
-		sf::Vector2f(1000, 330), sf::Vector2f(1, 0)));
-	menuContainer.push_back(std::move(optionButton));	//[2]
-
-	std::unique_ptr<MenuButton> exitButton(new MenuButton(textureID::EXIT, textures,
-		sf::Vector2f(1200, 400), sf::Vector2f(1, 0)));
-	menuContainer.push_back(std::move(exitButton));		//[3]
-
-	//muteButton en backButton buiten scherm laden omdat ze via de option button binnengehaald wordt.
-	std::unique_ptr<MenuButton> muteButton(new MenuButton(textureID::MUTE, textures,
-		sf::Vector2f(-300, 330), sf::Vector2f(1, 0)));
-	menuContainer.push_back(std::move(muteButton));		//[4]
-
-	std::unique_ptr<MenuButton> backButton(new MenuButton(textureID::BACK, textures,
-		sf::Vector2f(-300, 400), sf::Vector2f(1, 0)));
-	menuContainer.push_back(std::move(backButton));		//[5]
+	for (buttonVal value : menus) {
+		std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos, value.movingDirection));
+		menuContainer.push_back(std::move(menubutton));
+	}
 }
 
 void Game::loadTextures() {
 	textures.load(textureID::GRASS, "grass.jpg");
 	textures.load(textureID::ROAD, "road.jpg");
 	textures.load(textureID::UNIT, "unit.jpg");
-	textures.load(textureID::BACKGROUND, "images//background.jpg");
+	textures.load(textureID::BACKGROUND, "images//background.jpe");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
 	textures.load(textureID::EXIT, "images//exit.png");
@@ -248,6 +242,9 @@ void Game::render() {
 			p->draw(window);		
 			if( !(p->getPosition().x <= 50) ) {
 				p->update(-1);
+			}
+			if(p->LoadedInScreen && p->getPosition().y <= 800) { //gekozen voor 800 zodat ik zeker weet dat hij buiten scherm ligt
+				p->update(1);
 			}
 		}
 	}	
