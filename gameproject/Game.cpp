@@ -8,7 +8,7 @@
 const sf::Time Game::timePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() :
-	window	(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window"),
+	window	(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window", 1 << 2),
 	input	{window},
 	playerB	{ sf::Color::Blue, true},
 	playerR	{ sf::Color::Red, false}
@@ -412,9 +412,7 @@ void Game::processCommands() {
 void Game::updateAnimation(sf::Time dt) {
 	if (inMenu) {
 		for (auto & p : menuContainer) {
-			if (p->LoadedInScreen) {
-				p->update(dt);
-			}
+			p->update(dt);
 		}
 	}
 	else {
