@@ -264,6 +264,8 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		currentPlayerUnits->at(unitIndex)->setSelected(false);
 		unitSelected = false;
 		allySelected = false;
+		unitIndex = 0;												// errorverhelpend anders raakt de HUD in de stress. info JP
+		std::cout << "deselected unit\n";
 
 		markField(unitWalklimit, unitAttackrange, true, unitPosition, sf::Color::White);
 	}
@@ -517,6 +519,7 @@ void Game::HUD() {
 			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
 		}
+		//std::cout << "unitindex: " << unitIndex << "\n";
 		text.setString("unit: ");
 		text.setPosition(510, 80);
 		window.draw(text);
