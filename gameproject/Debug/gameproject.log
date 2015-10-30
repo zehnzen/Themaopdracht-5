@@ -1,6 +1,29 @@
-﻿Build started 10/30/2015 4:24:17 PM.
-     1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+﻿Build started 10/30/2015 4:25:39 PM.
+     1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Bomber.cpp Building.cpp Button.cpp CommandQueue.cpp Game.cpp GameObject.cpp InputHandler.cpp main.cpp MenuButton.cpp Music.cpp Player.cpp PlayerButton.cpp PlayerObject.cpp Resource.cpp Soldier.cpp Sound.cpp Terrain.cpp Unit.cpp UnitButton.cpp V2Functions.cpp
+         V2Functions.cpp
+         UnitButton.cpp
+         Unit.cpp
+         Terrain.cpp
+         Sound.cpp
+         Soldier.cpp
+         Resource.cpp
+         PlayerObject.cpp
+         PlayerButton.cpp
+         Player.cpp
+         Music.cpp
+         MenuButton.cpp
+         main.cpp
+         InputHandler.cpp
+         GameObject.cpp
+         Game.cpp
+         CommandQueue.cpp
+         Button.cpp
+         Building.cpp
+         Bomber.cpp
+         Generating Code...
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:/SFML/lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.lib" /MACHINE:X86 Debug\Bomber.obj
          Debug\Building.obj
          Debug\Button.obj
@@ -21,11 +44,9 @@
          Debug\Unit.obj
          Debug\UnitButton.obj
          Debug\V2Functions.obj
-     1>V2Functions.obj : warning LNK4020: a type record in 'c:\users\remco\documents\github\themaopdracht-5\themaopdracht-5\gameproject\debug\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
-     1>Terrain.obj : warning LNK4020: a type record in 'c:\users\remco\documents\github\themaopdracht-5\themaopdracht-5\gameproject\debug\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
-     1>Sound.obj : fatal error LNK1103: debugging information corrupt; recompile module
-     1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" (Build target(s)) -- FAILED.
+         gameproject.vcxproj -> C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.exe
+     1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" (Rebuild target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.42
+Time Elapsed 00:00:14.17
