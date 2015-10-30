@@ -74,7 +74,6 @@ int Unit::attack() {
 	oldSelected = false;
 	selected = false;
 	sprite.setColor(side);
-
 	turnAttackrange = 0;
 	return attackpoints;
 }

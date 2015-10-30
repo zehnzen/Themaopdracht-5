@@ -4,6 +4,8 @@
 #define _GAME_H
 
 #include <SFML\Graphics.hpp>
+#include "InputHandler.h"
+#include "CommandQueue.h"
 #include "ResourceHolder.h"
 #include "ResourceIdentifier.h"
 #include "Terrain.h"
@@ -20,15 +22,14 @@
 #include "PlayerButton.h"
 #include "Resource.h"
 
-
 class Game {
 public:
 	Game();
 	void run();
 
 private:
-	void processInput();
-	void update(sf::Time);
+	void processCommands();
+	void updateAnimation(sf::Time);
 	void render();
 	void HUD();
 
@@ -37,14 +38,14 @@ private:
 	void loadTextures();
 	void makePlayfield();
 
-	void handleKeypress(sf::Keyboard::Key, bool);
-	void handleMouse(sf::Mouse::Button);
+	void handleLeftClick(sf::Vector2f);
+	void handleRightClick();
 	void initText();
 
 	void switchPlayer();
 	Player getActivePlayer();
 
-	void unitControl(std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, sf::Color color);		// afhandeling van de acties van de units
+	void unitControl(sf::Vector2f, std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, sf::Color color);		// afhandeling van de acties van de units
 
 	void markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
 	void markRange(int range, int index, sf::Color color);
@@ -61,6 +62,8 @@ private:
 	bool checkSpaceFree(sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
 
 	sf::RenderWindow window;
+	InputHandler input;
+	CommandQueue cQueue;
 	static const sf::Time timePerFrame;
 
 	Player playerB;

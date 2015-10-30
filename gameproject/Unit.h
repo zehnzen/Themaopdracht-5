@@ -20,8 +20,7 @@ public:
 
 	void walk(sf::Vector2f pos);
 	int attack();
-
-	void resource();											// dit is de actie die je unit uit kan voeren
+	void resource();
 	
 protected:
 	int walklimit = 2, attackrange = 3, turnWalklimit = walklimit, turnAttackrange = attackrange;
