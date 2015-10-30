@@ -146,15 +146,19 @@ void Game::handleMouse(sf::Mouse::Button button) {
 					// kijken of hij wel daar mag worden gedropt
 
 					markField(2, 2, false, location, sf::Color::Green);
-					//if (checkSpawn(location)) {
-					//	currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
-					//}
 					if (checkSpawn(location) != location) {
-						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, checkSpawn(location), color)));
+						sf::Vector2f loc = checkSpawn(location);
+						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+						for (auto const & t : terrainContainer) {
+							if (t->checkClicked(loc)) {
+								t->setFree(false);
+							}
+						}
 					}
 
 					markField(2, 2, true, location, sf::Color::White);
 					inFactory = false;
+					break;
 				}	
 			}
 		}
