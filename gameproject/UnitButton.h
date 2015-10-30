@@ -12,6 +12,11 @@ public:
 	UnitButton(textureID, const textureHolder& textures, sf::Vector2f pos);
 
 	virtual Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color);
+
+	int getCostMoney();
+
+protected:
+	int cost = 100;
 };
 
 class DragonButton : public UnitButton {

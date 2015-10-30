@@ -12,5 +12,6 @@ Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf
 	attackrange = 4;
 	resetTurn();
 
+	unitName = "Bomber";
 	numFrames = 5;
 }

@@ -30,6 +30,11 @@ int Unit::getWalklimit() {
 	return turnWalklimit;
 }
 
+std::string Unit::getName()
+{
+	return unitName;
+}
+
 
 int Unit::getAttackrange() {
 	return turnAttackrange;

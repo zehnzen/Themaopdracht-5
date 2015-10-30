@@ -13,9 +13,14 @@ Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::C
 	return new Unit(textureID::UNIT, textures, pos, color);
 }
 
+int UnitButton::getCostMoney() {
+	return cost;
+}
+
 DragonButton::DragonButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
-	UnitButton{ id, textures, pos } 
+	UnitButton{ id, textures, pos }
 {
+	cost = 500;
 	numFrames = 5;
 }
 
