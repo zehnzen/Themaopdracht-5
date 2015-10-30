@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿Build started 30-10-2015 15:05:30.
+=======
+﻿Build started 30-10-2015 15:10:27.
+>>>>>>> master
      1>Project "D:\GIT\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:/SFML/include /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp main.cpp
@@ -31,4 +35,8 @@
 
 Build succeeded.
 
+<<<<<<< HEAD
 Time Elapsed 00:00:04.93
+=======
+Time Elapsed 00:00:05.46
+>>>>>>> master
