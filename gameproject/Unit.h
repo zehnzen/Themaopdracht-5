@@ -4,6 +4,7 @@
 #define _UNIT_H
 
 #include "PlayerObject.h"
+#include "string"
 
 class Unit : public PlayerObject{
 public:
@@ -15,6 +16,7 @@ public:
 
 	int getDP();
 	int getWalklimit();
+	std::string getName();
 
 	int getAttackrange();
 
@@ -25,6 +27,7 @@ public:
 protected:
 	int walklimit = 2, attackrange = 3, turnWalklimit = walklimit, turnAttackrange = attackrange;
 	int attackpoints = 20;
+	std::string unitName;
 };
 
 #endif

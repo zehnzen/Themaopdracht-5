@@ -485,11 +485,9 @@ void Game::HUD() {
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(510, 40);
 	window.draw(text);
-	if (unitSelected)
-	{
+	if (unitSelected) {
 		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-		//std::cout << units->at(unitIndex)->getHP();
-		text.setString("unit: ");
+		text.setString("units " + units->at(unitIndex)->getName());
 		text.setPosition(510, 80);
 		window.draw(text);
 		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
@@ -498,7 +496,6 @@ void Game::HUD() {
 		text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
 		text.setPosition(510, 140);
 		window.draw(text);
-		
 	}
 }
 
