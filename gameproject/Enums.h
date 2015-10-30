@@ -12,5 +12,6 @@ enum class musicID {MENUTHEME, MISSIONTHEME, BB, NONE};
 enum class soundID {SELECTUNIT, WALKUNIT};
 enum {TILESIZE = 50, SpriteOffset = 4, ScreenWidth = 640, ScreenHeight = 480};
 enum class buttonID { NONE, ENDTURN};
+enum class commandID { NONE, LEFTCLICK, RIGHTCLICK, SPAWNUNIT, SPAWNBOMBER, SPAWNFACTORY, SWITCHPLAYER, OPENMENU};
 
 #endif
