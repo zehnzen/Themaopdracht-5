@@ -46,6 +46,9 @@ void InputHandler::handleKeypress(Command & comm, sf::Keyboard::Key key, bool b)
 		else if (key == sf::Keyboard::F) {
 			comm.id = commandID::SPAWNFACTORY;
 		}
+		else if (key == sf::Keyboard::R) {
+			comm.id = commandID::SPAWNRESOURCE;
+		}
 		else if (key == sf::Keyboard::S) {
 			comm.id = commandID::SWITCHPLAYER;
 		}

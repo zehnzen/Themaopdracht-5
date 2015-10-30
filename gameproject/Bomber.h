@@ -9,8 +9,6 @@
 class Bomber : public Unit {
 public:
 	Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color);
-
-	void action() override;
 };
 
 #endif
