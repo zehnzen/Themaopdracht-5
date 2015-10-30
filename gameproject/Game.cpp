@@ -54,7 +54,11 @@ void Game::loadMenu() {
 	}
 
 	buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
-	std::unique_ptr<UnitButton> unitButton(new DragonButton(val10.id, textures, val10.pos));
+	std::unique_ptr<UnitButton> dragonButton(new DragonButton(val10.id, textures, val10.pos));
+	factoryButtons.push_back(std::move(dragonButton));
+
+	buttonVal val11{ textureID::UNIT, sf::Vector2f(550, 400) };
+	std::unique_ptr<UnitButton> unitButton(new UnitButton(val11.id, textures, val11.pos));
 	factoryButtons.push_back(std::move(unitButton));
 
 	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(50, 410) };
@@ -135,16 +139,20 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 		if (inFactory) {
 			for (auto const & p : factoryButtons) {
 				if (p->getClicked(mPosition)) {
-					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
+					sf::Vector2f location = currentPlayerBuildings->at(factoryIndex)->getTilePosition();
 					// kijken of hij wel daar mag worden gedropt
-
 					markField(2, 2, false, location, sf::Color::Green);
 					if (checkSpawn(location) != location) {
 						sf::Vector2f loc = checkSpawn(location);
-						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
-						for (auto const & t : terrainContainer) {
-							if (t->checkClicked(loc)) {
-								t->setFree(false);
+						// checken of de speler geld genoeg heeft:
+						int cost = p->getCostMoney();
+						if (((playerB.getActive()) ? playerB.getMoney() : playerR.getMoney()) >= cost) {
+							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - cost) : playerR.setMoney(playerR.getMoney() - cost);
+							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+							for (auto const & t : terrainContainer) {
+								if (t->checkClicked(loc)) {
+									t->setFree(false);
+								}
 							}
 						}
 					}
@@ -160,7 +168,11 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 			unitControl(mPosition, currentPlayerUnits, enemyPlayerUnits, color);
 			for (const auto & p : *currentPlayerBuildings) {
 				if (p->checkClicked(mPosition)) {
-					inFactory = true;
+					inFactory = true;			//============================================================================================================
+					auto ip = std::find(currentPlayerBuildings->begin(), currentPlayerBuildings->end(), p);
+					if (ip != currentPlayerBuildings->end()) {
+						factoryIndex = std::distance(currentPlayerBuildings->begin(), ip);
+					}
 				}
 			}
 		}
@@ -493,7 +505,6 @@ void Game::HUD() {
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(510, 40);
 	window.draw(text);
-<<<<<<< HEAD
 	if (unitSelected)
 	{
 		std::vector<std::unique_ptr<Unit>> * units;
@@ -505,14 +516,7 @@ void Game::HUD() {
 		{
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
 		}
-		
-		//std::cout << units->at(unitIndex)->getHP();
 		text.setString("unit: ");
-=======
-	if (unitSelected) {
-		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-		text.setString("units " + units->at(unitIndex)->getName());
->>>>>>> origin/hudw
 		text.setPosition(510, 80);
 		window.draw(text);
 		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
