@@ -68,6 +68,7 @@ void Game::loadTextures() {
 	textures.load(textureID::UNIT, "unit.jpg");
 	textures.load(textureID::DRAGON, "dragon.png");
 	textures.load(textureID::FACTORY, "factory.jpg");
+	textures.load(textureID::RESOURCE, "resourcepoint.png");
 	textures.load(textureID::ENDTURN, "endTurn.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
@@ -209,6 +210,17 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 				break;
 			}
 		}
+		// resources verkrijgen:
+		for (auto const & r : resourceContainer) {
+			if (r->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
+				if (checkAttack(mPosition) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of de resource niet uitgeput is
+					(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() + r->getMoney()) : playerR.setMoney(playerR.getMoney() + r->getMoney());
+					currentPlayerUnits->at(unitIndex)->resource();
+				}
+				break;
+			}
+		}
+		// lopen:
 		if (checkWalk(mPosition)) {
 			for (auto const & t : terrainContainer) {
 				if (t->checkClicked(currentPlayerUnits->at(unitIndex)->getTilePosition())) {
@@ -274,6 +286,16 @@ void Game::spawnUnit(sf::Vector2f pos) {
 void Game::spawnFactory(sf::Vector2f pos) {
 	std::unique_ptr<Building> building(new Building(textureID::FACTORY, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? buildingBContainer.push_back(std::move(building)) : buildingRContainer.push_back(std::move(building));
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			t->setFree(false);
+		}
+	}
+}
+
+void Game::spawnResource(sf::Vector2f pos) {
+	std::unique_ptr<Resource> resource(new Resource(textureID::RESOURCE, textures, V2fModulo(pos, TILESIZE)));
+	resourceContainer.push_back(std::move(resource));
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
 			t->setFree(false);
@@ -402,6 +424,9 @@ void Game::processCommands() {
 		case commandID::SPAWNFACTORY:
 			spawnFactory(c.pos);
 			break;
+		case commandID::SPAWNRESOURCE:
+			spawnResource(c.pos);
+			break;
 		case commandID::SWITCHPLAYER:
 			switchPlayer();
 			break;
@@ -426,6 +451,9 @@ void Game::updateAnimation(sf::Time dt) {
 			p->update(dt);
 		}
 		for (auto & p : buildingRContainer) {
+			p->update(dt);
+		}
+		for (auto & p : resourceContainer) {
 			p->update(dt);
 		}
 		if (inFactory) {
@@ -485,6 +513,9 @@ void Game::render() {
 			p->draw(window);
 		}
 		for (auto & p : buildingRContainer) {
+			p->draw(window);
+		}
+		for (auto & p : resourceContainer) {
 			p->draw(window);
 		}
 		if (inFactory) {

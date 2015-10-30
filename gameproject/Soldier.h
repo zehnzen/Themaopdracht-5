@@ -9,8 +9,6 @@
 class Soldier : public Unit {
 public:
 	Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color);
-
-	void action() override;
 };
 
 #endif
