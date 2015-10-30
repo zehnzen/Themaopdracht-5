@@ -63,13 +63,14 @@ void Game::loadMenu() {
 }
 
 void Game::loadTextures() {
-	textures.load(textureID::GRASS, "grass.jpg");
-	textures.load(textureID::ROAD, "road.jpg");
-	textures.load(textureID::UNIT, "unit.jpg");
-	textures.load(textureID::DRAGON, "dragon.png");
-	textures.load(textureID::FACTORY, "factory.jpg");
-	textures.load(textureID::RESOURCE, "resourcepoint.png");
-	textures.load(textureID::ENDTURN, "endTurn.png");
+
+	textures.load(textureID::GRASS, "images//grass.jpg");
+	textures.load(textureID::ROAD, "images//road.jpg");
+	textures.load(textureID::UNIT, "images//unit.jpg");
+	textures.load(textureID::DRAGON, "images//dragon.png");
+	textures.load(textureID::FACTORY, "images//factory2.png");
+	textures.load(textureID::ENDTURN, "images//endTurn.png");
+	textures.load(textureID::RESOURCE, "images//resourcepoint.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
