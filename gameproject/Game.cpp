@@ -54,7 +54,11 @@ void Game::loadMenu() {
 	}
 
 	buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
-	std::unique_ptr<UnitButton> unitButton(new DragonButton(val10.id, textures, val10.pos));
+	std::unique_ptr<UnitButton> dragonButton(new DragonButton(val10.id, textures, val10.pos));
+	factoryButtons.push_back(std::move(dragonButton));
+
+	buttonVal val11{ textureID::UNIT, sf::Vector2f(550, 400) };
+	std::unique_ptr<UnitButton> unitButton(new UnitButton(val11.id, textures, val11.pos));
 	factoryButtons.push_back(std::move(unitButton));
 
 	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(50, 410) };
@@ -141,14 +145,14 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 					if (checkSpawn(location) != location) {
 						sf::Vector2f loc = checkSpawn(location);
 						// checken of de speler geld genoeg heeft:
-						if (((playerB.getActive()) ? playerB.getMoney() : playerR.getMoney()) >= 500) {
-							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - 500) : playerR.setMoney(playerR.getMoney() - 500);
+						int cost = p->getCostMoney();
+						if (((playerB.getActive()) ? playerB.getMoney() : playerR.getMoney()) >= cost) {
+							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - cost) : playerR.setMoney(playerR.getMoney() - cost);
 							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
-						}
-						//----------------------------------
-						for (auto const & t : terrainContainer) {
-							if (t->checkClicked(loc)) {
-								t->setFree(false);
+							for (auto const & t : terrainContainer) {
+								if (t->checkClicked(loc)) {
+									t->setFree(false);
+								}
 							}
 						}
 					}
