@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿Build started 10/30/2015 4:25:39 PM.
      1>Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
@@ -25,6 +26,12 @@
          Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:/SFML/lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.lib" /MACHINE:X86 Debug\Bomber.obj
+=======
+﻿Build started 30-10-2015 15:46:04.
+     1>Project "D:\GIT\Themaopdracht-5\gameproject\gameproject.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GIT\Themaopdracht-5\Debug\gameproject.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:/SFML/lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\GIT\Themaopdracht-5\Debug\gameproject.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GIT\Themaopdracht-5\Debug\gameproject.lib" /MACHINE:X86 Debug\Bomber.obj
+>>>>>>> master
          Debug\Building.obj
          Debug\Button.obj
          Debug\CommandQueue.obj
@@ -44,9 +51,19 @@
          Debug\Unit.obj
          Debug\UnitButton.obj
          Debug\V2Functions.obj
+<<<<<<< HEAD
          gameproject.vcxproj -> C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\Debug\gameproject.exe
      1>Done Building Project "C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\gameproject\gameproject.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
 Time Elapsed 00:00:14.17
+=======
+         LINK : D:\GIT\Themaopdracht-5\Debug\gameproject.exe not found or not built by the last incremental link; performing full link
+         gameproject.vcxproj -> D:\GIT\Themaopdracht-5\Debug\gameproject.exe
+     1>Done Building Project "D:\GIT\Themaopdracht-5\gameproject\gameproject.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.16
+>>>>>>> master

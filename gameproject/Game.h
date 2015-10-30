@@ -89,6 +89,7 @@ private:
 	int unitWalklimit;					// nodig voor het deselecteren van de tiles
 	int unitAttackrange;
 	bool unitSelected = false;
+	bool allySelected = false;
 	int unitIndex;
 	int factoryIndex;
 
