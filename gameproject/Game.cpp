@@ -175,6 +175,7 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		for (auto const & p : *currentPlayerUnits) {
 			if (p->checkClicked(mPosition)) {
 				unitSelected = true;
+				allySelected = true;
 				p->makeSelected(mPosition);
 
 				auto ip = std::find(currentPlayerUnits->begin(), currentPlayerUnits->end(), p);
@@ -189,13 +190,26 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 				break;
 			}
 		}
+		for (auto const & p : *enemyPlayerUnits) {
+			if (p->checkClicked(mPosition)) {
+				unitSelected = true;
+				allySelected = false;
+
+				auto ip = std::find(currentPlayerUnits->begin(), currentPlayerUnits->end(), p);
+				if (ip != currentPlayerUnits->end()) {
+					unitIndex = std::distance(currentPlayerUnits->begin(), ip);
+
+				}
+				break;
+			}
+		}
 	}
-	else if (unitSelected) {
+	else if (unitSelected && allySelected) {
 		// aanvallen:
 		int i = 0;
 		for (auto const & q : *enemyPlayerUnits) {
 			i++;
-			if (q->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
+			if (q->checkClicked(mPosition)) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
 				if (checkAttack(mPosition)) {
 					if (q->damage(currentPlayerUnits->at(unitIndex)->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
 						for (auto const & t : terrainContainer) {
@@ -224,7 +238,13 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		}
 		currentPlayerUnits->at(unitIndex)->setSelected(false);
 		unitSelected = false;
+		allySelected = false;
+
 		markField(unitWalklimit, unitAttackrange, true, unitPosition, sf::Color::White);
+	}
+	else {
+		unitSelected = false;
+		allySelected = false;
 	}
 }
 
@@ -446,7 +466,16 @@ void Game::HUD() {
 	window.draw(text);
 	if (unitSelected)
 	{
-		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+		std::vector<std::unique_ptr<Unit>> * units;
+		if (allySelected)
+		{
+			units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+		}
+		else
+		{
+			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
+		}
+		
 		//std::cout << units->at(unitIndex)->getHP();
 		text.setString("unit: ");
 		text.setPosition(510, 80);
