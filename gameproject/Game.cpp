@@ -197,6 +197,7 @@ void Game::unitControl(std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, 
 		for (auto const & p : * currentPlayerUnits) {
 			if (p->checkClicked(mPosition)) {
 				unitSelected = true;
+				std::cout << "Something selected\n";
 				p->makeSelected(mPosition);
 
 				auto ip = std::find(currentPlayerUnits->begin(), currentPlayerUnits->end(), p);
@@ -414,15 +415,28 @@ void Game::update(sf::Time dt) {
 }
 
 void Game::HUD() {
-	text.setColor(getActivePlayer().getPlayer());
-	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));
+	text.setColor(getActivePlayer().getPlayer());								//stel de tekstkleur in op de kleur van de huidige speler
+	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
 	text.setPosition(510, 0);
 	window.draw(text);
-	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));
+	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(510, 40);
-	// Draw it
 	window.draw(text);
-
+	if (unitSelected)
+	{
+		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+		//std::cout << units->at(unitIndex)->getHP();
+		text.setString("unit: ");
+		text.setPosition(510, 80);
+		window.draw(text);
+		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
+		text.setPosition(510, 110);
+		window.draw(text);
+		text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
+		text.setPosition(510, 140);
+		window.draw(text);
+		
+	}
 }
 
 void Game::render() {

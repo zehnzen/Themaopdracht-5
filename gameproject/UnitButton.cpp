@@ -9,7 +9,7 @@ UnitButton::UnitButton(textureID id, const textureHolder & textures, sf::Vector2
 }
 
 Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
-	std::cout << "Unit returnd";
+	std::cout << "Unit returnd\n";
 	return new Unit(textureID::UNIT, textures, pos, color);
 }
 
@@ -20,7 +20,7 @@ DragonButton::DragonButton(textureID id, const textureHolder & textures, sf::Vec
 }
 
 Unit* DragonButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
-	std::cout << "Bomber returned";
+	std::cout << "Bomber returned\n";
 	return new Bomber(textureID::DRAGON, textures, pos, color);
 }
 
