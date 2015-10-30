@@ -11,11 +11,15 @@ MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f
 void MenuButton::update(sf::Time dt) {
 	sf::Time timePerFrame = duration / (float)numFrames;
 	elapsedTime += dt;
-
 	while (elapsedTime >= timePerFrame)
 	{
-		if(sprite.getPosition().x > 50)
-		sprite.setPosition(sprite.getPosition() - sf::Vector2f(2,0));
+		if (LoadedInScreen && sprite.getPosition().x > 50) {
+			sprite.setPosition(sprite.getPosition() - sf::Vector2f(2, 0));
+		}
+		if (!(LoadedInScreen) && sprite.getPosition().y < ScreenHeight) {
+			sprite.setPosition(sprite.getPosition() - sf::Vector2f(0, -5));
+			elapsedTime -= timePerFrame;
+		}
 		elapsedTime -= timePerFrame;
 	}
 }
@@ -37,7 +41,6 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::ve
 				// i+1 omdat hij background moet overslaan
 				if (i <= 3) {
 					container[i]->LoadedInScreen = false;
-					container[i]->setPosition(sf::Vector2f(ScreenWidth, ScreenHeight));
 				}
 				else {
 					container[i]->LoadedInScreen = true;
@@ -61,7 +64,6 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::ve
 				}
 				else {
 					container[i]->LoadedInScreen = false;
-					container[i]->setPosition(sf::Vector2f(ScreenWidth, ScreenHeight));
 				}
 			}
 		}
