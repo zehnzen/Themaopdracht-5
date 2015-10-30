@@ -22,3 +22,11 @@ sf::Color Terrain::getColor() {
 bool Terrain::checkClicked(sf::Vector2f pos) {
 	return sprite.getGlobalBounds().contains(pos);
 }
+
+bool Terrain::getFree() {
+	return free;
+}
+
+void Terrain::setFree(bool f) {
+	free = f;
+}
