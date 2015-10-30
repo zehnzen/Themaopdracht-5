@@ -91,6 +91,7 @@ private:
 	bool unitSelected = false;
 	bool allySelected = false;
 	int unitIndex;
+	int factoryIndex;
 
 	Music music;
 	Sound sound;
