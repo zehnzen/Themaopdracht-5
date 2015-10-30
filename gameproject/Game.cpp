@@ -8,9 +8,10 @@
 const sf::Time Game::timePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() :
-	window(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window"),
-	playerB{ sf::Color::Blue, true},
-	playerR{ sf::Color::Red, false}
+	window	(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window"),
+	input	{window},
+	playerB	{ sf::Color::Blue, true},
+	playerR	{ sf::Color::Red, false}
 	{
 		loadTextures();
 		loadMenu();
@@ -91,111 +92,84 @@ void Game::makePlayfield() {
 	}
 };
 
-void Game::handleKeypress(sf::Keyboard::Key key, bool b) {
-	//Deze commands alleen bij indrukken
-	if (!b) {
-		if (key == sf::Keyboard::W) {
-			spawnUnit(V2f_from_V2i(sf::Mouse::getPosition(window)));
-		}
-		else if (key == sf::Keyboard::A) {
-			spawnBomber(V2f_from_V2i(sf::Mouse::getPosition(window)));
-		}
-		else if (key == sf::Keyboard::F) {
-			spawnFactory(V2f_from_V2i(sf::Mouse::getPosition(window)));
-		}
-		else if (key == sf::Keyboard::S) {
-			switchPlayer();
-		}
-		else if (key == sf::Keyboard::P) {
-			inMenu = true;
+void Game::handleLeftClick(sf::Vector2f mPosition) {
+	std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, *enemyPlayerUnits;
+	std::vector<std::unique_ptr<Building>> * currentPlayerBuildings, *enemyPlayerBuildings;
+	sf::Color color;
+
+	//------------------SET VALUES FOR WHICH TURN
+	if (playerB.getActive()) {
+		currentPlayerUnits = &unitBContainer;
+		enemyPlayerUnits = &unitRContainer;
+		currentPlayerBuildings = &buildingBContainer;
+		enemyPlayerBuildings = &buildingRContainer;
+		color = sf::Color::Blue;
+	}
+	else {
+		currentPlayerUnits = &unitRContainer;
+		enemyPlayerUnits = &unitBContainer;
+		currentPlayerBuildings = &buildingRContainer;
+		enemyPlayerBuildings = &buildingBContainer;
+		color = sf::Color::Red;
+	}
+	//------------------END VALUES FOR WHICH TURN
+
+	if (inMenu)
+	{
+		for (auto const & p : menuContainer) {
+			if (p->handleMouse(mPosition, window, menuContainer, music) == 1) {//TODO test voor start
+				inMenu = false;
+			}
 		}
 	}
-}
-
-void Game::handleMouse(sf::Mouse::Button button) {
-	if (button == sf::Mouse::Left) {
-		sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
-
-		std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, *enemyPlayerUnits;
-		std::vector<std::unique_ptr<Building>> * currentPlayerBuildings, *enemyPlayerBuildings;
-		sf::Color color;
-
-		//------------------SET VALUES FOR WHICH TURN
-		if (playerB.getActive()) {
-			currentPlayerUnits = &unitBContainer;
-			enemyPlayerUnits = &unitRContainer;
-			currentPlayerBuildings = &buildingBContainer;
-			enemyPlayerBuildings = &buildingRContainer;
-			color = sf::Color::Blue;
-		}
-		else {
-			currentPlayerUnits = &unitRContainer;
-			enemyPlayerUnits = &unitBContainer;
-			currentPlayerBuildings = &buildingRContainer;
-			enemyPlayerBuildings = &buildingBContainer;
-			color = sf::Color::Red;
-		}
-		//------------------END VALUES FOR WHICH TURN
-
-		if (inMenu)
-		{
-			for (auto const & p : menuContainer) {
-				if (p->handleMouse(mPosition, window, menuContainer, music) == 1) {//TODO test voor start
-					inMenu = false;
+	else {
+		for (auto const & p : playerButtons) {
+			if (p->getClicked(mPosition)) {
+				if (p->handleClick() == buttonID::ENDTURN) {
+					switchPlayer();
 				}
 			}
 		}
-		else {
-			for (auto const & p : playerButtons) {
+		if (inFactory) {
+			for (auto const & p : factoryButtons) {
 				if (p->getClicked(mPosition)) {
-					if (p->handleClick() == buttonID::ENDTURN) {
-						switchPlayer();
-					}
-				}
-			}
-			if (inFactory) {
-				for (auto const & p : factoryButtons) {
-					if (p->getClicked(mPosition)) {
-						sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
-						// kijken of hij wel daar mag worden gedropt
+					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
+					// kijken of hij wel daar mag worden gedropt
 
-						markField(2, 2, false, location, sf::Color::Green);
-						if (checkSpawn(location) != location) {
-							sf::Vector2f loc = checkSpawn(location);
-							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
-							for (auto const & t : terrainContainer) {
-								if (t->checkClicked(loc)) {
-									t->setFree(false);
-								}
+					markField(2, 2, false, location, sf::Color::Green);
+					if (checkSpawn(location) != location) {
+						sf::Vector2f loc = checkSpawn(location);
+						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+						for (auto const & t : terrainContainer) {
+							if (t->checkClicked(loc)) {
+								t->setFree(false);
 							}
 						}
+					}
 
-						markField(2, 2, true, location, sf::Color::White);
-						inFactory = false;
-						break;
-					}
+					markField(2, 2, true, location, sf::Color::White);
+					inFactory = false;
+					break;
+				}
+				inFactory = false;
+			}
+		}		
+		else {
+			unitControl(mPosition, currentPlayerUnits, enemyPlayerUnits, color);
+			for (const auto & p : *currentPlayerBuildings) {
+				if (p->checkClicked(mPosition)) {
+					inFactory = true;
 				}
 			}
-			else {
-				unitControl(currentPlayerUnits, enemyPlayerUnits, color);
-				for (const auto & p : *currentPlayerBuildings) {
-					if (p->checkClicked(mPosition)) {
-						inFactory = true;
-					}
-				}
-			}
-		}
-	}
-	//doet momenteel de switchplayer voor rechtermuisklik
-	if (button == sf::Mouse::Right) {
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-			switchPlayer();
 		}
 	}
 }
 
-void Game::unitControl(std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, std::vector<std::unique_ptr<Unit>> * enemyPlayerUnits, sf::Color color) {			// het afhandelen van de movement, aanvallen en actions van de units
-	sf::Vector2f mPosition = V2f_from_V2i(sf::Mouse::getPosition(window));
+void Game::handleRightClick() {
+	switchPlayer();
+}
+
+void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, std::vector<std::unique_ptr<Unit>> * enemyPlayerUnits, sf::Color color) {			// het afhandelen van de movement, aanvallen en actions van de units
 	if (!unitSelected) {
 		markField(unitWalklimit, unitAttackrange, true, unitPosition, sf::Color::White);
 		for (auto const & p : *currentPlayerUnits) {
@@ -260,7 +234,10 @@ Player Game::getActivePlayer() {
 
 void Game::switchPlayer() {
 	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-	if (unitSelected) { markField(units->at(unitIndex)->getWalklimit(), units->at(unitIndex)->getAttackrange(), true, units->at(unitIndex)->getTilePosition(), sf::Color::White); }
+	if (unitSelected) { 
+		unitSelected = false;
+		markField(units->at(unitIndex)->getWalklimit(), units->at(unitIndex)->getAttackrange(), true, units->at(unitIndex)->getTilePosition(), sf::Color::White);
+	}
 	playerB.setActive(!playerB.getActive());
 	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
 		p->setSelected(false);
@@ -395,37 +372,44 @@ void Game::run() {
 		timeSinceLastUpdate += elapsedTime;
 		while (timeSinceLastUpdate > timePerFrame) {
 			timeSinceLastUpdate -= timePerFrame;
-			processInput();
-			update(timePerFrame);
+			input.processInput(cQueue);
+			processCommands();
+			updateAnimation(timePerFrame);
 		}
 		render();
 	}
 }
 
-void Game::processInput() {
-	sf::Event event;
-	while (window.pollEvent(event)) {
-		switch (event.type) {
-			case sf::Event::KeyPressed:
-				handleKeypress(event.key.code, true);
-				break;
-			case sf::Event::KeyReleased:
-				handleKeypress(event.key.code, false);
-				break;
-			case sf::Event::MouseButtonPressed:
-				handleMouse(event.mouseButton.button);
-				break;
-			case sf::Event::LostFocus:
-				inMenu = true;
-				break;
-			case sf::Event::Closed:
-				window.close();
-				break;
+void Game::processCommands() {
+	while (!cQueue.isEmpty()) {
+		Command c = cQueue.pop();
+		switch (c.id) {
+		case commandID::OPENMENU:
+			inMenu = true;
+			break;
+		case commandID::LEFTCLICK:
+			handleLeftClick(c.pos);
+			break;
+		case commandID::RIGHTCLICK:
+			handleRightClick();
+			break;
+		case commandID::SPAWNUNIT:
+			spawnUnit(c.pos);
+			break;
+		case commandID::SPAWNBOMBER:
+			spawnBomber(c.pos);
+			break;
+		case commandID::SPAWNFACTORY:
+			spawnFactory(c.pos);
+			break;
+		case commandID::SWITCHPLAYER:
+			switchPlayer();
+			break;
 		}
 	}
 }
 
-void Game::update(sf::Time dt) {
+void Game::updateAnimation(sf::Time dt) {
 	if (inMenu) {
 		for (auto & p : menuContainer) {
 			if (p->LoadedInScreen) {
