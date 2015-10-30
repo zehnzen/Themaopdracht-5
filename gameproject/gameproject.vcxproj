@@ -125,10 +125,13 @@
     <ClInclude Include="Bomber.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="Music.h" />
     <ClInclude Include="Player.h" />
@@ -147,8 +150,10 @@
     <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="Music.cpp" />
