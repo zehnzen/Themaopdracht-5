@@ -28,7 +28,6 @@ int Player::getMoney() {
 	return money;
 }
 
-
 void Player::setUnitSelected(bool usel) {
 	unitSelected = usel;
 }

@@ -14,8 +14,8 @@ void MenuButton::update(sf::Time dt) {
 
 	while (elapsedTime >= timePerFrame)
 	{
-		if(!(sprite.getPosition().x <= 50))
-		sprite.setPosition(sprite.getPosition() - sf::Vector2f(1,0));
+		if(sprite.getPosition().x > 50)
+		sprite.setPosition(sprite.getPosition() - sf::Vector2f(2,0));
 		elapsedTime -= timePerFrame;
 	}
 }

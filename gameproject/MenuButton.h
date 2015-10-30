@@ -9,14 +9,12 @@
 class MenuButton : public Button {
 public:
 	MenuButton(textureID, const textureHolder& textures, sf::Vector2f pos = sf::Vector2f(0,0));
-	//TODO geeft nu int terug voor testing, moet later met commands gaan werken.
+
 	void update(sf::Time) override;
 	int handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<MenuButton>> & container, Music & music);
 	bool LoadedInScreen = true;
 
 private:
-	//const sf::Vector2f outOfScreen = sf::Vector2f(-200, 800);
-	sf::Vector2f direction;
 	bool musicMuted = false;
 
 	std::vector<sf::Vector2f> menuPosition = {

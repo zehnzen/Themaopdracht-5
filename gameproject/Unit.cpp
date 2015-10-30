@@ -13,6 +13,7 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 
 	walklimit = 2;
 	attackrange = 3;
+	resetTurn();
 
 	numFrames = 1;
 }
@@ -26,12 +27,17 @@ int Unit::getDP() {
 }
 
 int Unit::getWalklimit() {
-	return walklimit;
+	return turnWalklimit;
 }
 
 
 int Unit::getAttackrange() {
-	return attackrange;
+	return turnAttackrange;
+}
+
+void Unit::resetTurn() {
+	turnWalklimit = walklimit;
+	turnAttackrange = attackrange;
 }
 
 bool Unit::checkWalk(sf::Vector2f pos) {
@@ -55,18 +61,40 @@ bool Unit::checkWalk(sf::Vector2f pos) {
 
 
 void Unit::walk(sf::Vector2f pos) {
-	if (oldSelected) {
-		setPosition(V2fModulo(pos, TILESIZE));
-	}
+	sf::Vector2f newPos = V2fModulo(pos, TILESIZE);
+	sf::Vector2f previous = getTilePosition();
+
+	setPosition(newPos);
+
 	selected = false;
 	oldSelected = false;
 	sprite.setColor(side);
+
+	int walkDeducted = 0;
+	while (previous.x > newPos.x) {
+		previous.x -= TILESIZE;
+		walkDeducted++;
+	}
+	while (previous.x < newPos.x) {
+		previous.x += TILESIZE;
+		walkDeducted++;
+	}
+	while (previous.y > newPos.y) {
+		previous.y -= TILESIZE;
+		walkDeducted++;
+	}
+	while (previous.y < newPos.y) {
+		previous.y += TILESIZE;
+		walkDeducted++;
+	}
+	turnWalklimit -= walkDeducted;	
 }
 
 int Unit::attack() {
 	oldSelected = false;
 	selected = false;
 	sprite.setColor(side);
+	turnAttackrange = 0;
 	return attackpoints;
 }
 

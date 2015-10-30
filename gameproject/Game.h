@@ -17,6 +17,7 @@
 #include "Sound.h"
 #include "MenuButton.h"
 #include "UnitButton.h"
+#include "PlayerButton.h"
 
 
 class Game {
@@ -43,11 +44,13 @@ private:
 	Player getActivePlayer();
 
 	void unitControl(std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, sf::Color color);		// afhandeling van de acties van de units
+
 	void markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
-	void markWalklimit(int walklimit, int index, sf::Color color);
-	void markAttackrange(int attackrange, int index, sf::Color color);
+	void markRange(int, int, sf::Color);
+
 	bool checkWalk(sf::Vector2f);		// aan de hand van de markering van de tiles kijken of een unit mag lopen
 	bool checkAttack(sf::Vector2f);
+
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 	void spawnFactory(sf::Vector2f);
@@ -67,7 +70,10 @@ private:
 
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	std::vector<std::unique_ptr<MenuButton>> menuContainer;
+
 	std::vector<std::unique_ptr<UnitButton>> factoryButtons;
+
+	std::vector<std::unique_ptr<PlayerButton>> playerButtons;
 
 	textureHolder textures;
 

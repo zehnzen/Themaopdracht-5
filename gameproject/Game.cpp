@@ -45,15 +45,20 @@ void Game::loadMenu() {
 	buttonVal val5{ textureID::MUTE,		sf::Vector2f(ScreenWidth,		ScreenHeight + 10) };
 	buttonVal val6{ textureID::BACK,		sf::Vector2f(ScreenWidth,	ScreenHeight + 10) };
 
-std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6 };
+	std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6 };
 
-for (buttonVal value : menus) {
-	std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos));
-	menuContainer.push_back(std::move(menubutton));
-}
-buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
-std::unique_ptr<UnitButton> unitButton(new DragonButton(val10.id, textures, val10.pos));
-factoryButtons.push_back(std::move(unitButton));
+	for (buttonVal value : menus) {
+		std::unique_ptr<MenuButton> menubutton(new MenuButton(value.id, textures, value.pos));
+		menuContainer.push_back(std::move(menubutton));
+	}
+
+	buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
+	std::unique_ptr<UnitButton> unitButton(new DragonButton(val10.id, textures, val10.pos));
+	factoryButtons.push_back(std::move(unitButton));
+
+	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(50, 410) };
+	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(val20.id, textures, val20.pos));
+	playerButtons.push_back(std::move(playerButton));
 }
 
 void Game::loadTextures() {
@@ -62,6 +67,7 @@ void Game::loadTextures() {
 	textures.load(textureID::UNIT, "unit.jpg");
 	textures.load(textureID::DRAGON, "dragon.png");
 	textures.load(textureID::FACTORY, "factory.jpg");
+	textures.load(textureID::ENDTURN, "endTurn.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
@@ -139,29 +145,38 @@ void Game::handleMouse(sf::Mouse::Button button) {
 				}
 			}
 		}
-		else if (inFactory) {
-			for (auto const & p : factoryButtons) {
+		else {
+			for (auto const & p : playerButtons) {
 				if (p->getClicked(mPosition)) {
-					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
-					// kijken of hij wel daar mag worden gedropt
-					//if(checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos)) {
-					//for () {
-						sf::Vector2f loc(location.x + TILESIZE, location.y + TILESIZE);
-					//}
-					if(checkSpaceFree(unitBContainer, loc)) {
-						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+					if (p->handleClick() == buttonID::ENDTURN) {
+						switchPlayer();
 					}
-					//location = location + 50;
-					//currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
-					inFactory = false;
-				}	
+				}
 			}
-		}
-		else{
-			unitControl(currentPlayerUnits, enemyPlayerUnits, color);
-			for (const auto & p : *currentPlayerBuildings) {
-				if (p->checkClicked(mPosition)) {
-					inFactory = true;
+			if (inFactory) {
+				for (auto const & p : factoryButtons) {
+					if (p->getClicked(mPosition)) {
+						sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
+						// kijken of hij wel daar mag worden gedropt
+						//if(checkSpaceFree(std::vector<std::unique_ptr<Unit>> & container, sf::Vector2f pos)) {
+						//for () {
+						sf::Vector2f loc(location.x + TILESIZE, location.y + TILESIZE);
+						//}
+						if (checkSpaceFree(unitBContainer, loc)) {
+							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+						}
+						//location = location + 50;
+						//currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, location, color)));
+						inFactory = false;
+					}
+				}
+			}
+			else {
+				unitControl(currentPlayerUnits, enemyPlayerUnits, color);
+				for (const auto & p : *currentPlayerBuildings) {
+					if (p->checkClicked(mPosition)) {
+						inFactory = true;
+					}
 				}
 			}
 		}
@@ -182,6 +197,7 @@ void Game::unitControl(std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, 
 		for (auto const & p : * currentPlayerUnits) {
 			if (p->checkClicked(mPosition)) {
 				unitSelected = true;
+				std::cout << "Something selected\n";
 				p->makeSelected(mPosition);
 
 				auto ip = std::find(currentPlayerUnits->begin(), currentPlayerUnits->end(), p);
@@ -221,21 +237,23 @@ void Game::unitControl(std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, 
 }
 
 Player Game::getActivePlayer() {
-	if (playerB.getActive()) {
-		return playerB;
-	}
-	else { return playerR; }
+	return (playerB.getActive() ? playerB : playerR);
 }
 
 void Game::switchPlayer() {
+	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+	if (unitSelected) { markField(units->at(unitIndex)->getWalklimit(), units->at(unitIndex)->getAttackrange(), true, units->at(unitIndex)->getTilePosition(), sf::Color::White); }
 	playerB.setActive(!playerB.getActive());
 	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
 		p->setSelected(false);
+		p->resetTurn();
 	}
 	playerR.setActive(!playerR.getActive());
 	for (auto const & p : unitRContainer) {						// alle units van R deselecteren
 		p->setSelected(false);
+		p->resetTurn();
 	}
+	inFactory = false;
 }
 
 void Game::spawnBomber(sf::Vector2f pos) {
@@ -299,51 +317,30 @@ void Game::markField(int walklimit, int attackrange, bool clear, sf::Vector2f po
 		}
 	}
 	if (clear) {
-		markAttackrange(attackrange, index, sf::Color::White);
+		markRange(attackrange, index, sf::Color::White);
 	}
 	else {
-		markAttackrange(attackrange, index, sf::Color::Magenta);
+		markRange(attackrange, index, sf::Color::Magenta);
 	}
-	markWalklimit(walklimit, index, color);
+	markRange(walklimit, index, color);
 }
 
-void Game::markAttackrange(int walklimit, int index, sf::Color color) {
-	walklimit--;
+void Game::markRange(int limit, int index, sf::Color color) {
+	limit--;
 	if (index >= 0 && index <= ((playfieldX * playfieldY) - 1)) {						// checken of die terrain wel bestaat			// LINKS checken
 		terrainContainer.at(index)->changeColor(color);
-		if (walklimit > 0) {
+		if (limit > 0) {
 			if (index % playfieldX) {
-				markAttackrange(walklimit, index - 1, color);
+				markRange(limit, index - 1, color);
 			}										// RECHTS checken
 			if ((index + 1) % playfieldX) {				// checken of de vakjes wel in dezelfde rij liggen
-				markAttackrange(walklimit, index + 1, color);
+				markRange(limit, index + 1, color);
 			}
 			if ((index - playfieldX) >= 0) {														// BOVEN checken
-				markAttackrange(walklimit, index - playfieldX, color);
+				markRange(limit, index - playfieldX, color);
 			}
 			if ((index + playfieldX) <= ((playfieldX * playfieldY) - 1)) {							// ONDER hem checken
-				markAttackrange(walklimit, index + playfieldX, color);
-			}
-		}
-	}
-}
-
-void Game::markWalklimit(int walklimit, int index, sf::Color color) {
-	walklimit--;
-	if (index >= 0 && index <= ((playfieldX * playfieldY) - 1)) {						// checken of die terrain wel bestaat			// LINKS checken
-		terrainContainer.at(index)->changeColor(color);
-		if (walklimit > 0) {
-			if (index % playfieldX) {
-				markWalklimit(walklimit, index - 1, color);
-			}										// RECHTS checken
-			if ((index + 1) % playfieldX) {				// checken of de vakjes wel in dezelfde rij liggen
-				markWalklimit(walklimit, index + 1, color);
-			}
-			if ((index - playfieldX) >= 0) {														// BOVEN checken
-				markWalklimit(walklimit, index - playfieldX, color);
-			}
-			if ((index + playfieldX) <= ((playfieldX * playfieldY) - 1)) {							// ONDER hem checken
-				markWalklimit(walklimit, index + playfieldX, color);
+				markRange(limit, index + playfieldX, color);
 			}
 		}
 	}
@@ -418,15 +415,28 @@ void Game::update(sf::Time dt) {
 }
 
 void Game::HUD() {
-	text.setColor(getActivePlayer().getPlayer());
-	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));
+	text.setColor(getActivePlayer().getPlayer());								//stel de tekstkleur in op de kleur van de huidige speler
+	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
 	text.setPosition(510, 0);
 	window.draw(text);
-	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));
+	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(510, 40);
-	// Draw it
 	window.draw(text);
-
+	if (unitSelected)
+	{
+		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+		//std::cout << units->at(unitIndex)->getHP();
+		text.setString("unit: ");
+		text.setPosition(510, 80);
+		window.draw(text);
+		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
+		text.setPosition(510, 110);
+		window.draw(text);
+		text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
+		text.setPosition(510, 140);
+		window.draw(text);
+		
+	}
 }
 
 void Game::render() {
@@ -437,6 +447,9 @@ void Game::render() {
 		}
 	}
 	else {
+		for (const auto & p : playerButtons) {
+			p->draw(window);
+		}
 		for (const auto & p : terrainContainer) {
 			p->draw(window);
 		}
