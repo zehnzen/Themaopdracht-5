@@ -14,9 +14,8 @@ public:
 	bool getActive();
 	void setActive(bool);
 	int getPoints();
-	//void diffPoints(int);
 	int getMoney();
-	//void diffMoney(int);
+	void setMoney(int mon);
 	void setUnitSelected(bool usel);
 	bool getUnitSelected();
 
