@@ -90,6 +90,7 @@ private:
 	int unitAttackrange;
 	bool unitSelected = false;
 	int unitIndex;
+	int factoryIndex;
 
 	Music music;
 	Sound sound;

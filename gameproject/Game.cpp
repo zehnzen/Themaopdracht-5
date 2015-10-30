@@ -135,13 +135,17 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 		if (inFactory) {
 			for (auto const & p : factoryButtons) {
 				if (p->getClicked(mPosition)) {
-					sf::Vector2f location = currentPlayerBuildings->at(0)->getTilePosition();
+					sf::Vector2f location = currentPlayerBuildings->at(factoryIndex)->getTilePosition();
 					// kijken of hij wel daar mag worden gedropt
-
 					markField(2, 2, false, location, sf::Color::Green);
 					if (checkSpawn(location) != location) {
 						sf::Vector2f loc = checkSpawn(location);
-						currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+						// checken of de speler geld genoeg heeft:
+						if (((playerB.getActive()) ? playerB.getMoney() : playerR.getMoney()) >= 500) {
+							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - 500) : playerR.setMoney(playerR.getMoney() - 500);
+							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+						}
+						//----------------------------------
 						for (auto const & t : terrainContainer) {
 							if (t->checkClicked(loc)) {
 								t->setFree(false);
@@ -160,7 +164,11 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 			unitControl(mPosition, currentPlayerUnits, enemyPlayerUnits, color);
 			for (const auto & p : *currentPlayerBuildings) {
 				if (p->checkClicked(mPosition)) {
-					inFactory = true;
+					inFactory = true;			//============================================================================================================
+					auto ip = std::find(currentPlayerBuildings->begin(), currentPlayerBuildings->end(), p);
+					if (ip != currentPlayerBuildings->end()) {
+						factoryIndex = std::distance(currentPlayerBuildings->begin(), ip);
+					}
 				}
 			}
 		}
