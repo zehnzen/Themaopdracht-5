@@ -17,6 +17,7 @@ Game::Game() :
 		loadMenu();
 		initText();
 		makePlayfield();
+		makeLevel();
 		music.play(musicID::MENUTHEME);
 		music.setVolume(7);
 }
@@ -97,6 +98,51 @@ void Game::makePlayfield() {
 		}
 	}
 };
+
+void Game::makeLevel() {
+	// 1 = niks
+	// 2 = resource
+
+	// 3 = unit blauw
+	// 4 = dragon blauw
+	// 5 = factory blauw
+
+	// 6 = unit rood
+	// 7 = dragon rood
+	// 8 = factory rood
+
+	int i = 0;
+	try {
+		std::ifstream input("level1.txt");
+		while(true) {
+			char c = reader.read(input);
+
+			switch (c) {
+			case '1': break;
+			case '2': spawnResource(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
+				//Blauw:
+			case '3': playerB.setActive(true); playerR.setActive(false); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
+			case '4': playerB.setActive(true); playerR.setActive(false); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '5': playerB.setActive(true); playerR.setActive(false); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+				// Rood:
+			case '6': playerB.setActive(false); playerR.setActive(true); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '7': playerB.setActive(false); playerR.setActive(true); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '8': playerB.setActive(false); playerR.setActive(true); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			}
+			i++;
+		}
+	}
+	catch (endOfFile & end) {
+		std::cout << end.what();
+	}
+	catch (std::exception & problem) {
+		std::cout << problem.what();
+		char c;
+		std::cin >> c;
+		exit(0);
+	}
+	playerB.setActive(true); playerR.setActive(false);
+}
 
 void Game::handleLeftClick(sf::Vector2f mPosition) {
 	std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, *enemyPlayerUnits;
@@ -505,11 +551,11 @@ void Game::HUD() {
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(510, 40);
 	window.draw(text);
-<<<<<<< HEAD
-	if (unitSelected) {
-		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-		text.setString("units " + units->at(unitIndex)->getName());
-=======
+//<<<<<<< HEAD
+//	if (unitSelected) {
+//		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+//		text.setString("units " + units->at(unitIndex)->getName());
+//=======
 	if (unitSelected)
 	{
 		std::vector<std::unique_ptr<Unit>> * units;
@@ -524,7 +570,7 @@ void Game::HUD() {
 		
 		//std::cout << units->at(unitIndex)->getHP();
 		text.setString("unit: ");
->>>>>>> master
+//>>>>>>> master
 		text.setPosition(510, 80);
 		window.draw(text);
 		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));

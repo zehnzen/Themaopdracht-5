@@ -21,6 +21,7 @@
 #include "UnitButton.h"
 #include "PlayerButton.h"
 #include "Resource.h"
+#include "ReadInput.h"
 
 class Game {
 public:
@@ -37,6 +38,7 @@ private:
 
 	void loadTextures();
 	void makePlayfield();
+	void Game::makeLevel();			// maakt het level speelklaar door units en buildings op hun plek te zetten.
 
 	void handleLeftClick(sf::Vector2f);
 	void handleRightClick();
@@ -104,6 +106,8 @@ private:
 
 	int playfieldX = 10;
 	int playfieldY = 8;
+
+	ReadInput reader;
 };
 
 
