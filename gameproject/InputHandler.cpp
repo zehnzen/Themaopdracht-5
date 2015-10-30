@@ -24,7 +24,6 @@ void InputHandler::processInput(CommandQueue & queue) {//QUEUE meegeven
 			break;
 		case sf::Event::LostFocus:
 			command.id = commandID::OPENMENU;
-			//inMenu = true;
 			break;
 		case sf::Event::Closed:
 			window.close();
@@ -37,7 +36,6 @@ void InputHandler::processInput(CommandQueue & queue) {//QUEUE meegeven
 }
 
 void InputHandler::handleKeypress(Command & comm, sf::Keyboard::Key key, bool b) {
-	//Deze commands alleen bij indrukken
 	if (!b) {
 		if (key == sf::Keyboard::W) {
 			comm.id = commandID::SPAWNUNIT;
