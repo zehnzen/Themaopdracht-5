@@ -17,6 +17,7 @@
 #include "Sound.h"
 #include "MenuButton.h"
 #include "UnitButton.h"
+#include "PlayerButton.h"
 
 
 class Game {
@@ -43,16 +44,19 @@ private:
 	Player getActivePlayer();
 
 	void unitControl(std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, sf::Color color);		// afhandeling van de acties van de units
+
 	void markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
 	void markRange(int range, int index, sf::Color color);
-	bool checkWalkSpawn(sf::Vector2f);		// aan de hand van de markering van de tiles kijken of een unit mag lopen
+
+	bool checkWalk(sf::Vector2f);		// aan de hand van de markering van de tiles kijken of een unit mag lopen
 	sf::Vector2f checkSpawn(sf::Vector2f pos);
 	bool checkAttack(sf::Vector2f);
+
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 	void spawnFactory(sf::Vector2f);
 
-	bool checkSpaceFree(sf::Vector2f pos);
+	bool checkSpaceFree(sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
 
 	sf::RenderWindow window;
 	static const sf::Time timePerFrame;
@@ -67,7 +71,10 @@ private:
 
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	std::vector<std::unique_ptr<MenuButton>> menuContainer;
+
 	std::vector<std::unique_ptr<UnitButton>> factoryButtons;
+
+	std::vector<std::unique_ptr<PlayerButton>> playerButtons;
 
 	textureHolder textures;
 
