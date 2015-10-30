@@ -18,12 +18,10 @@ public:
 
 	int getAttackrange();
 
-	bool checkWalk(sf::Vector2f pos);
-
 	void walk(sf::Vector2f pos);
 	int attack();
 
-	virtual void action();											// dit is de actie die je unit uit kan voeren
+	void resource();											// dit is de actie die je unit uit kan voeren
 	
 protected:
 	int walklimit = 2, attackrange = 3, turnWalklimit = walklimit, turnAttackrange = attackrange;

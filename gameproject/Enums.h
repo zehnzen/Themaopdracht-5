@@ -4,7 +4,7 @@
 #define _Enums_H
 
 enum class textureID { GRASS, ROAD, UNIT, DRAGON, 
-	FACTORY, 
+	FACTORY, RESOURCE, 
 	BACKGROUND, START, OPTION, EXIT, MUTE, BACK,
 	ENDTURN
 };

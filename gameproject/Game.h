@@ -18,6 +18,7 @@
 #include "MenuButton.h"
 #include "UnitButton.h"
 #include "PlayerButton.h"
+#include "Resource.h"
 
 
 class Game {
@@ -55,6 +56,7 @@ private:
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 	void spawnFactory(sf::Vector2f);
+	void spawnResource(sf::Vector2f);
 
 	bool checkSpaceFree(sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
 
@@ -68,6 +70,8 @@ private:
 
 	std::vector<std::unique_ptr<Building>> buildingBContainer;
 	std::vector<std::unique_ptr<Building>> buildingRContainer;
+
+	std::vector<std::unique_ptr<Resource>> resourceContainer;
 
 	std::vector<std::unique_ptr<Terrain>> terrainContainer;
 	std::vector<std::unique_ptr<MenuButton>> menuContainer;

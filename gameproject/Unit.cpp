@@ -40,26 +40,6 @@ void Unit::resetTurn() {
 	turnAttackrange = attackrange;
 }
 
-bool Unit::checkWalk(sf::Vector2f pos) {
-	bool b = false;
-
-	if ((pos.x - sprite.getPosition().x >= -TILESIZE * walklimit) && (pos.x - sprite.getPosition().x <= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE) && (pos.y - sprite.getPosition().y >= 0))) {		// rechts
-		b = true;
-	}
-	else if ((pos.x - sprite.getPosition().x <= TILESIZE * walklimit + TILESIZE) && (pos.x - sprite.getPosition().x >= 0) && ((pos.y - sprite.getPosition().y <= TILESIZE) && (pos.y - sprite.getPosition().y >= 0))) {		// links
-		b = true;
-	}
-	else if ((pos.y - sprite.getPosition().y >= -TILESIZE * walklimit) && (pos.y - sprite.getPosition().y <= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omhoog
-		b = true;
-	}
-	else if ((pos.y - sprite.getPosition().y <= TILESIZE * walklimit + TILESIZE) && (pos.y - sprite.getPosition().y >= 0) && ((pos.x - sprite.getPosition().x <= TILESIZE) && (pos.x - sprite.getPosition().x >= 0))) {		// omlaag
-		b = true;
-	}
-
-	return b;
-}
-
-
 void Unit::walk(sf::Vector2f pos) {
 	sf::Vector2f newPos = V2fModulo(pos, TILESIZE);
 	sf::Vector2f previous = getTilePosition();
@@ -94,9 +74,11 @@ int Unit::attack() {
 	oldSelected = false;
 	selected = false;
 	sprite.setColor(side);
+
 	turnAttackrange = 0;
 	return attackpoints;
 }
 
-void Unit::action() {
+void Unit::resource() {
+	turnAttackrange = 0;
 }
