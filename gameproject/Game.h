@@ -106,6 +106,7 @@ private:
 	bool unitSelected = false;
 	bool allySelected = false;
 	int unitIndex;
+	int enemyIndex;
 	int factoryIndex;
 
 	Music music;

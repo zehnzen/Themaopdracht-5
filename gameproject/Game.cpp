@@ -280,8 +280,7 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 
 				auto ip = std::find(currentPlayerUnits->begin(), currentPlayerUnits->end(), p);
 				if (ip != currentPlayerUnits->end()) {
-					unitIndex = std::distance(currentPlayerUnits->begin(), ip);
-
+					enemyIndex = std::distance(currentPlayerUnits->begin(), ip);
 				}
 				break;
 			}
@@ -343,7 +342,6 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		// resources verkrijgen:
 		for (auto const & r : resourceContainer) {
 			if (r->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
-				//if (checkAttack(mPosition) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of unit naast resource staat
 				if (checkAttack(mPosition) && checkResource(mPosition, currentPlayerUnits->at(unitIndex)->getTilePosition()) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of unit naast resource staat
 					(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() + r->getMoney()) : playerR.setMoney(playerR.getMoney() + r->getMoney());
 					currentPlayerUnits->at(unitIndex)->resource();
@@ -362,6 +360,15 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 	else {
 		unitSelected = false;
 		allySelected = false;
+		/*for (auto const & q : *enemyPlayerUnits) {
+			if (q->checkClicked(mPosition)) {
+				auto it = std::find((playerR.getActive())? unitBContainer.begin() : unitRContainer.begin(), (playerB.getActive()) ? unitBContainer.end() : unitRContainer.end(), q);
+				if (it != ((playerR.getActive()) ? unitBContainer.end() : unitRContainer.end())) {
+					enemyIndex = std::distance((playerR.getActive()) ? unitBContainer.begin() : unitRContainer.begin(), it);
+					break;
+				}
+			}
+		} */
 	}
 }
 
@@ -697,31 +704,31 @@ void Game::HUD() {
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(ScreenWidth - 140, 40);
 	window.draw(text);
-	//	if (unitSelected) {
-	//		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-	//		text.setString("units " + units->at(unitIndex)->getName());
 
-	if (unitSelected)
-	{
+	text.setPosition(ScreenWidth - 140, 80);
+	if (unitSelected) {
 		std::vector<std::unique_ptr<Unit>> * units;
-		if (allySelected)
-		{
+		if (allySelected) {
 			units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+			text.setString(units->at(unitIndex)->getName() + ":");
+			window.draw(text);
+			text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
+			text.setPosition(ScreenWidth - 140, 110);
+			window.draw(text);
+			text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
+			text.setPosition(ScreenWidth - 140, 140);
 		}
-		else
-		{
+		else {
 			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
+			text.setString(units->at(enemyIndex)->getName() + ":");
+			window.draw(text);
+			text.setString("HP:" + std::to_string(units->at(enemyIndex)->getHP()));
+			text.setPosition(ScreenWidth - 140, 110);
+			window.draw(text);
+			text.setString("DP: " + std::to_string(units->at(enemyIndex)->getDP()));
+			text.setPosition(ScreenWidth - 140, 140);
 		}
-		text.setString("unit: ");
-		text.setPosition(ScreenWidth - 140, 80);
-
-		window.draw(text);
-		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
-		text.setPosition(ScreenWidth - 140, 110);
-		window.draw(text);
-		text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
-		text.setPosition(ScreenWidth - 140, 140);
 		window.draw(text);
 	}
 	if (inFactory && onUnitButton) {
