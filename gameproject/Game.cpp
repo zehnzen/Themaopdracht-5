@@ -621,18 +621,20 @@ void Game::HUD() {
 
 	if (unitSelected)
 	{
+		std::string name;
 		std::vector<std::unique_ptr<Unit>> * units;
-		if (allySelected)
-		{
+		if (allySelected) {
 			units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+		//	name = units->at(unitIndex)->getName();
 		}
-		else
-		{
+		else {
 			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
+		//	name = units->at(unitIndex)->getName();
 		}
 		//std::cout << "unitindex: " << unitIndex << "\n";
-		text.setString("unit: ");
+		//text.setString(name);
+		text.setString(units->at(unitIndex)->getName());
 		text.setPosition(ScreenWidth - 140, 80);
 
 		window.draw(text);

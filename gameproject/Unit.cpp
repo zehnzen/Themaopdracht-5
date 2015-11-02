@@ -14,6 +14,7 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 	walklimit = 2;
 	attackrange = 3;
 	resetTurn();
+	unitName = "Unit";
 
 	numFrames = 1;
 }
@@ -30,8 +31,7 @@ int Unit::getWalklimit() {
 	return turnWalklimit;
 }
 
-std::string Unit::getName()
-{
+std::string Unit::getName() {
 	return unitName;
 }
 
