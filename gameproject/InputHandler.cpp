@@ -66,6 +66,6 @@ void InputHandler::handleMouse(Command & comm, sf::Mouse::Button button) {
 		comm.id = commandID::LEFTCLICK;
 	}
 	else if (button == sf::Mouse::Right) {
-		comm.id = commandID::RIGHTCLICK;
+		comm.id = commandID::SWITCHPLAYER;
 	}
 }

@@ -39,6 +39,9 @@ char ReadInput::read(std::ifstream & input) {
 	else if (s == "Hr") {
 		return '0';
 	}
+	else if (s == "G") {
+		return '!';
+	}
 	else if (s == "") {
 		throw endOfFile();
 	}

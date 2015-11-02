@@ -22,6 +22,7 @@
 #include "PlayerButton.h"
 #include "Resource.h"
 #include "ReadInput.h"
+#include "HolyGrail.h"
 
 class Game {
 public:
@@ -64,8 +65,10 @@ private:
 	void spawnFactory(sf::Vector2f);
 	void spawnHQ(sf::Vector2f);
 	void spawnResource(sf::Vector2f);
+	void spawnGrail(sf::Vector2f);
 
 	bool checkSpaceFree(sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
+	void checkReckoning();
 
 	sf::RenderWindow window;
 	InputHandler input;
@@ -74,6 +77,7 @@ private:
 
 	Player playerB;
 	Player playerR;
+	std::shared_ptr<HolyGrail> holy;
 	std::vector<std::unique_ptr<Unit>> unitBContainer;
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 

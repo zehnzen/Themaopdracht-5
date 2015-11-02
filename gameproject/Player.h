@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "Unit.h"
+#include "CommandQueue.h"
 
 class Player {
 public:
@@ -14,6 +15,7 @@ public:
 	bool getActive();
 	void setActive(bool);
 	int getPoints();
+	void substractPoints(CommandQueue & queue);
 	int getMoney();
 	void setMoney(int mon);
 	void setUnitSelected(bool usel);

@@ -8,18 +8,18 @@
 const sf::Time Game::timePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() :
-	window	(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window", 1 << 2),
-	input	{window},
-	playerB	{ sf::Color::Blue, true},
-	playerR	{ sf::Color::Red, false}
-	{
-		loadTextures();
-		loadMenu();
-		initText();
-		makePlayfield();
-		makeLevel();
-		music.play(musicID::MENUTHEME);
-		music.setVolume(7);
+	window(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML window", 1 << 2),
+	input{ window },
+	playerB{ sf::Color::Blue, true },
+	playerR{ sf::Color::Red, false }
+{
+	loadTextures();
+	loadMenu();
+	initText();
+	makePlayfield();
+	makeLevel();
+	music.play(musicID::MENUTHEME);
+	music.setVolume(7);
 }
 
 void Game::initText() {
@@ -36,7 +36,6 @@ void Game::loadMenu() {
 	struct buttonVal {
 		textureID id;
 		sf::Vector2f pos;
-		sf::Vector2f movingDirection;
 	};
 	inMenu = true;
 	//de val1, 2 en 3 worden buiten scherm getekend(800, 100, 1200) en komen dan naar binnen bewegen
@@ -68,13 +67,13 @@ void Game::loadMenu() {
 }
 
 void Game::loadTextures() {
-
 	textures.load(textureID::GRASS, "images//grass.jpg");
 	textures.load(textureID::ROAD, "images//road.jpg");
 	textures.load(textureID::UNIT, "images//unit.jpg");
 	textures.load(textureID::DRAGON, "images//dragon.png");
 	textures.load(textureID::FACTORY, "images//factory2.png");
 	textures.load(textureID::HEADQUARTER, "images//headquarter.jpg");
+	textures.load(textureID::HOLYGRAIL, "images//holygrail.png");
 	textures.load(textureID::ENDTURN, "images//endTurn.png");
 	textures.load(textureID::RESOURCE, "images//resourcepoint.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
@@ -117,6 +116,7 @@ void Game::makeLevel() {
 			switch (c) {
 			case '1': break;
 			case '2': spawnResource(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
+			case '!': spawnGrail(terrainContainer.at(i)->getTilePosition()); break;
 				//Blauw:
 			case '3': playerB.setActive(true); playerR.setActive(false); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
 			case '4': playerB.setActive(true); playerR.setActive(false); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
@@ -176,9 +176,7 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 	else {
 		for (auto const & p : playerButtons) {
 			if (p->getClicked(mPosition)) {
-				if (p->handleClick() == buttonID::ENDTURN) {
-					switchPlayer();
-				}
+				p->handleClick(cQueue);
 			}
 		}
 		if (inFactory) {
@@ -346,6 +344,7 @@ Player Game::getActivePlayer() {
 }
 
 void Game::switchPlayer() {
+	checkReckoning();
 	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
 	if (unitSelected) { 
 		unitSelected = false;
@@ -402,6 +401,12 @@ void Game::spawnHQ(sf::Vector2f pos) {
 			t->setFree(false);
 		}
 	}
+}
+
+void Game::spawnGrail(sf::Vector2f pos) {
+	std::shared_ptr<HolyGrail> grail(new HolyGrail(textureID::HOLYGRAIL, textures, pos));
+	holy = grail;
+	terrainContainer.at(findTerrainIndex(pos))->setFree(false);
 }
 
 void Game::spawnResource(sf::Vector2f pos) {
@@ -488,6 +493,27 @@ bool Game::checkSpaceFree(sf::Vector2f pos) {
 	return true;
 }
 
+void Game::checkReckoning() {
+	sf::Vector2f pos = holy->getTilePosition();
+	sf::Color active = getActivePlayer().getPlayer();
+	std::vector<std::unique_ptr<Unit>>* currentUnits = (playerB.getActive() ? &unitBContainer : &unitRContainer);
+	for (auto const & unit : *currentUnits) {
+		sf::Vector2f unitPos = unit->getTilePosition();
+		if ((pos.x - TILESIZE == unitPos.x) && (pos.y == unitPos.y)) {
+			holy->Reckoning(cQueue, active);
+		}
+		if ((pos.x + TILESIZE == unitPos.x) && (pos.y == unitPos.y)) {
+			holy->Reckoning(cQueue, active);
+		}
+		if ((pos.x == unitPos.x) && (pos.y - TILESIZE == unitPos.y)) {
+			holy->Reckoning(cQueue, active);
+		}
+		if ((pos.x == unitPos.x) && (pos.y + TILESIZE == unitPos.y)) {
+			holy->Reckoning(cQueue, active);
+		}
+	}	
+}
+
 void Game::markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
 	int index = findTerrainIndex(position);
 	if (clear) {
@@ -572,6 +598,12 @@ void Game::processCommands() {
 			break;
 		case commandID::EXITGAME:
 			window.close();
+			break;
+		case commandID::DMGBLUE:
+			playerB.substractPoints(cQueue);
+			break;
+		case commandID::DMGRED:
+			playerR.substractPoints(cQueue);
 			break;
 		}
 	}
@@ -679,6 +711,7 @@ void Game::render() {
 				p->draw(window);
 			}
 		}
+		holy->draw(window);
 		HUD();
 	}
 	window.display();

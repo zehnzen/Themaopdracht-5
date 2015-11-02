@@ -6,14 +6,15 @@ PlayerButton::PlayerButton(textureID id, const textureHolder& textures, sf::Vect
 	Button{ id, textures, pos }
 {}
 
-buttonID PlayerButton::handleClick() {
-	return buttonID::NONE;
+void PlayerButton::handleClick(CommandQueue & queue) {
 }
 
 EndTurnButton::EndTurnButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
 	PlayerButton{ id, textures, pos }
 {}
 
-buttonID EndTurnButton::handleClick() {
-	return buttonID::ENDTURN;
+void EndTurnButton::handleClick(CommandQueue & queue) {
+	Command command;
+	command.id = commandID::SWITCHPLAYER;
+	queue.push(command);
 }

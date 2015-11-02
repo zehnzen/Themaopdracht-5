@@ -131,6 +131,7 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HolyGrail.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="Music.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HolyGrail.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuButton.cpp" />
