@@ -54,15 +54,15 @@ void Game::loadMenu() {
 		menuContainer.push_back(std::move(menubutton));
 	}
 
-	buttonVal val10{ textureID::DRAGON, sf::Vector2f(500, 400) };
+	buttonVal val10{ textureID::DRAGON, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 100) };
 	std::unique_ptr<UnitButton> dragonButton(new DragonButton(val10.id, textures, val10.pos));
 	factoryButtons.push_back(std::move(dragonButton));
 
-	buttonVal val11{ textureID::UNIT, sf::Vector2f(550, 400) };
+	buttonVal val11{ textureID::UNIT, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 100) };
 	std::unique_ptr<UnitButton> unitButton(new UnitButton(val11.id, textures, val11.pos));
 	factoryButtons.push_back(std::move(unitButton));
 
-	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(50, 410) };
+	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(ScreenWidth - 120, ScreenHeight - 200) };
 	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(val20.id, textures, val20.pos));
 	playerButtons.push_back(std::move(playerButton));
 }
@@ -87,14 +87,8 @@ void Game::loadTextures() {
 void Game::makePlayfield() {
 	for (float y = 0; y < playfieldY; y++) {
 		for (float x = 0; x < playfieldX; x++) {
-			if (x == 3 || x == 6) {
-				std::unique_ptr<Terrain> terrain(new Terrain(textureID::ROAD, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
-				terrainContainer.push_back(std::move(terrain));
-			}
-			else {
-				std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
-				terrainContainer.push_back(std::move(terrain));
-			}
+			std::unique_ptr<Terrain> terrain(new Terrain(textureID::GRASS, textures, sf::Vector2f{ x * TILESIZE, y * TILESIZE }));
+			terrainContainer.push_back(std::move(terrain));
 		}
 	}
 };
@@ -113,7 +107,7 @@ void Game::makeLevel() {
 
 	int i = 0;
 	try {
-		std::ifstream input("level1.txt");
+		std::ifstream input("level.txt");
 		while(true) {
 			char c = reader.read(input);
 
@@ -286,7 +280,8 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		// resources verkrijgen:
 		for (auto const & r : resourceContainer) {
 			if (r->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
-				if (checkAttack(mPosition) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of de resource niet uitgeput is
+				//if (checkAttack(mPosition) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of unit naast resource staat
+				if (checkAttack(mPosition) && checkResource(mPosition, currentPlayerUnits->at(unitIndex)->getTilePosition()) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of unit naast resource staat
 					(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() + r->getMoney()) : playerR.setMoney(playerR.getMoney() + r->getMoney());
 					currentPlayerUnits->at(unitIndex)->resource();
 				}
@@ -415,6 +410,38 @@ bool Game::checkAttack(sf::Vector2f pos) {
 	return false;
 }
 
+bool Game::checkResource(sf::Vector2f pos, sf::Vector2f unitPos) {
+	int index = findTerrainIndex(pos);
+	int uIndex = findTerrainIndex(unitPos);
+
+	if (index - 1 == uIndex) {
+		return true;
+	}
+	if (index + 1 == uIndex) {
+		return true;
+	}
+	if (index - playfieldX == uIndex) {
+		return true;
+	}
+	if (index + playfieldX == uIndex) {
+		return true;
+	}
+	return false;
+}
+
+int Game::findTerrainIndex(sf::Vector2f pos) {
+	int index = 0;
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			auto it = std::find(terrainContainer.begin(), terrainContainer.end(), t);
+			if (it != terrainContainer.end()) {
+				index = std::distance(terrainContainer.begin(), it);
+			}
+		}
+	}
+	return index;
+}
+
 bool Game::checkSpaceFree(sf::Vector2f pos) {
 	for (auto const & t : terrainContainer) {
 		if ((t->checkClicked(pos)) && (!(t->getFree()))) {			// checken of dit terrain vakje wel vrij is
@@ -425,16 +452,7 @@ bool Game::checkSpaceFree(sf::Vector2f pos) {
 }
 
 void Game::markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color) {					// mark the field in order to show a units walking limit
-	int index;
-	for (auto const & t : terrainContainer) {
-		if ((t->getTilePosition().x == position.x) && (t->getTilePosition().y == position.y)) {
-
-			auto it = std::find(terrainContainer.begin(), terrainContainer.end(), t);
-			if (it != terrainContainer.end()) {
-				index = std::distance(terrainContainer.begin(), it);
-			}
-		}
-	}
+	int index = findTerrainIndex(position);
 	if (clear) {
 		markRange(attackrange, index, sf::Color::White);
 	}
@@ -546,10 +564,10 @@ void Game::updateAnimation(sf::Time dt) {
 void Game::HUD() {
 	text.setColor(getActivePlayer().getPlayer());								//stel de tekstkleur in op de kleur van de huidige speler
 	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
-	text.setPosition(510, 0);
+	text.setPosition(ScreenWidth - 140, 0);
 	window.draw(text);
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
-	text.setPosition(510, 40);
+	text.setPosition(ScreenWidth - 140, 40);
 	window.draw(text);
 //<<<<<<< HEAD
 //	if (unitSelected) {
@@ -571,13 +589,13 @@ void Game::HUD() {
 		//std::cout << units->at(unitIndex)->getHP();
 		text.setString("unit: ");
 //>>>>>>> master
-		text.setPosition(510, 80);
+		text.setPosition(ScreenWidth - 140, 80);
 		window.draw(text);
 		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
-		text.setPosition(510, 110);
+		text.setPosition(ScreenWidth - 140, 110);
 		window.draw(text);
 		text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
-		text.setPosition(510, 140);
+		text.setPosition(ScreenWidth - 140, 140);
 		window.draw(text);
 	}
 }

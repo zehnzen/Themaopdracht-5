@@ -55,6 +55,9 @@ private:
 	bool checkWalk(sf::Vector2f);		// aan de hand van de markering van de tiles kijken of een unit mag lopen
 	sf::Vector2f checkSpawn(sf::Vector2f pos);
 	bool checkAttack(sf::Vector2f);
+	bool checkResource(sf::Vector2f, sf::Vector2f);
+
+	int findTerrainIndex(sf::Vector2f);
 
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
@@ -104,8 +107,8 @@ private:
 	sf::Font font;
 	sf::Text text;
 
-	int playfieldX = 10;
-	int playfieldY = 8;
+	int playfieldX = 18;
+	int playfieldY = 11;
 
 	ReadInput reader;
 };

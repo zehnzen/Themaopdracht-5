@@ -5,7 +5,7 @@
 MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
 	Button{id, textures, pos}
 {
-	numFrames = 220;
+	numFrames = 300;
 }
 
 void MenuButton::update(sf::Time dt) {
