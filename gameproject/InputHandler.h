@@ -14,7 +14,7 @@ public:
 
 private:
 	void handleKeypress(Command & comm, sf::Keyboard::Key, bool);
-	void handleMouse(Command & comm, sf::Mouse::Button);
+	void handleMouseClick(Command & comm, sf::Mouse::Button);
 	
 	sf::RenderWindow & window;
 };

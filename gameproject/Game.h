@@ -43,6 +43,7 @@ private:
 
 	void handleLeftClick(sf::Vector2f);
 	void handleRightClick();
+	void handleMouseEnter(sf::Vector2f);
 	void initText();
 
 	void switchPlayer();
@@ -109,6 +110,9 @@ private:
 
 	bool inMenu = false;
 	bool inFactory = false;
+	bool onUnitButton = false;
+
+	int unitCost = 0;
 
 	sf::Font font;
 	sf::Text text;

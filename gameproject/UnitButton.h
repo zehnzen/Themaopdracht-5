@@ -16,6 +16,8 @@ public:
 
 	int getCostMoney();
 
+	void handleMouse();
+
 protected:
 	int cost = 100;
 };

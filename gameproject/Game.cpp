@@ -53,19 +53,19 @@ void Game::loadMenu() {
 		menuContainer.push_back(std::move(menubutton));
 	}
 
-	buttonVal val10{ textureID::DRAGON, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 100) };
+	buttonVal val10{ textureID::DRAGON, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 200) };
 	std::unique_ptr<UnitButton> dragonButton(new DragonButton(val10.id, textures, val10.pos));
 	factoryButtons.push_back(std::move(dragonButton));
 
-	buttonVal val11{ textureID::UNIT, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 100) };
+	buttonVal val11{ textureID::UNIT, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 200) };
 	std::unique_ptr<UnitButton> unitButton(new UnitButton(val11.id, textures, val11.pos));
 	factoryButtons.push_back(std::move(unitButton));
 
-	buttonVal val12{ textureID::SOLDIER, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 50) };
+	buttonVal val12{ textureID::SOLDIER, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 150) };
 	std::unique_ptr<UnitButton> soldierButton(new SoldierButton(val12.id, textures, val12.pos));
 	factoryButtons.push_back(std::move(soldierButton));
 
-	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(ScreenWidth - 120, ScreenHeight - 200) };
+	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(ScreenWidth - 120, 200) };
 	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(val20.id, textures, val20.pos));
 	playerButtons.push_back(std::move(playerButton));
 }
@@ -231,6 +231,17 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 
 void Game::handleRightClick() {
 	switchPlayer();
+}
+
+void Game::handleMouseEnter(sf::Vector2f mPosition) {
+	for (auto const & p : factoryButtons) {
+		if (p->getClicked(mPosition)) {
+			onUnitButton = true;
+			unitCost = p->getCostMoney();
+			break;
+		}
+		else onUnitButton = false;
+	}
 }
 
 void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, std::vector<std::unique_ptr<Unit>> * enemyPlayerUnits, std::vector<std::unique_ptr<Building>> * enemyPlayerBuildings, sf::Color color) {			// het afhandelen van de movement, aanvallen en actions van de units
@@ -592,6 +603,9 @@ void Game::processCommands() {
 		case commandID::RIGHTCLICK:
 			handleRightClick();
 			break;
+		case commandID::ENTERED:
+			handleMouseEnter(c.pos);
+			break;
 		case commandID::SPAWNUNIT:
 			spawnUnit(c.pos);
 			break;
@@ -691,6 +705,12 @@ void Game::HUD() {
 		text.setPosition(ScreenWidth - 140, 140);
 		window.draw(text);
 	}
+	if (inFactory && onUnitButton) {
+		text.setColor(sf::Color::Yellow);
+		text.setString("cost: " + std::to_string(unitCost));
+		text.setPosition(ScreenWidth - 140, 325);
+		window.draw(text);
+	} 
 }
 
 void Game::render() {

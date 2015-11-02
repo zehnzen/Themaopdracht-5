@@ -17,6 +17,10 @@ Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::C
 int UnitButton::getCostMoney() {
 	return cost;
 }
+
+void UnitButton::handleMouse() {
+	// hier wat hij moet doen
+}
 //---------------------------------------------------------------------------------------------------
 
 DragonButton::DragonButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
