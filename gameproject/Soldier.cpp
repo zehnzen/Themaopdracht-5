@@ -3,15 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include "Soldier.h"
 
-Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	Unit{ id, textures, pos, color }
+Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) :
+	Unit{ id, textures, pos, color, scale }
 {
-	hitpoints = 100;
-	attackpoints = 10;
-	walklimit = 1;
-	sprite.setColor(color);
-	unitName = "Soldier";
+	hitpoints = 80;
+	attackpoints = 30;
+	walklimit = 3;
+	attackrange = 4;
+	resetTurn();
 
-	numFrames = 5;
-	repeat = true;
+	unitName = "Soldier";
+	numFrames = 6;
 }
