@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Bomber.h"
 
-Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) :
+Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) :
 	Unit{ id, textures, pos, color, scale }
 {
 	hitpoints = 150;

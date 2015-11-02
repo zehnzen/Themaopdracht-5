@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Soldier.h"
 
-Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) :
+Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) :
 	Unit{ id, textures, pos, color, scale }
 {
 	hitpoints = 80;

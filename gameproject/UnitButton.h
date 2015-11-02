@@ -12,7 +12,7 @@ class UnitButton : public Button {
 public:
 	UnitButton(textureID, const textureHolder& textures, sf::Vector2f pos);
 
-	virtual Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale);
+	virtual Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale);
 
 	int getCostMoney();
 
@@ -25,7 +25,7 @@ class DragonButton : public UnitButton {
 public:
 	DragonButton(textureID, const textureHolder& textures, sf::Vector2f pos);
 
-	Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) override;
+	Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) override;
 };
 
 //---------------------------------------------------------------------------------------------------
@@ -33,6 +33,6 @@ class SoldierButton : public UnitButton {
 public:
 	SoldierButton(textureID, const textureHolder& textures, sf::Vector2f pos);
 
-	Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) override;
+	Unit* bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) override;
 };
 #endif

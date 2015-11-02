@@ -24,6 +24,15 @@ int	Player::getPoints() {
 	return points;
 }
 
+void Player::substractPoints(CommandQueue & queue) {
+	points -= 10; //Momenteel de standaard value die per unit rond de resource van de vijand wordt afgetrokken.
+	if (points <= 0) {
+		Command command;
+		command.id = commandID::EXITGAME;
+		queue.push(command);
+	}
+}
+
 int Player::getMoney() {
 	return money;
 }

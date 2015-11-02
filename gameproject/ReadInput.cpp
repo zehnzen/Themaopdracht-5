@@ -15,6 +15,9 @@ char ReadInput::read(std::ifstream & input) {
 	else if (s == "R") {
 		return '2';
 	}
+	else if (s == "G") {
+		return '3';
+	}
 	//---------------------------------------------------------
 	else if (s == "Ub") {
 		return 'a';

@@ -8,7 +8,7 @@
 
 class Unit : public PlayerObject{
 public:
-	Unit(textureID, const textureHolder& textures, sf::Vector2f, sf::Color, int scale);
+	Unit(textureID, const textureHolder& textures, sf::Vector2f, sf::Color, float scale);
 
 	void setPosition(sf::Vector2f pos) override;
 

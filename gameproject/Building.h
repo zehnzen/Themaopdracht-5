@@ -8,9 +8,10 @@
 
 class Building : public PlayerObject {
 public:
-	Building(textureID, const textureHolder& textures, sf::Vector2f, sf::Color);
-
 	virtual void checkAction(CommandQueue & command);
+
+protected:
+	Building(textureID, const textureHolder& textures, sf::Vector2f, sf::Color);
 };
 
 class Headquarters : public Building {
