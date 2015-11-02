@@ -6,7 +6,6 @@ Resource::Resource(textureID id, const textureHolder& textures, sf::Vector2f pos
 	GameObject(id, textures, pos)
 {
 	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE, TILESIZE));
-	sprite.setColor(sf::Color::Yellow);
 	repeat = true;
 
 	setPosition(pos);
