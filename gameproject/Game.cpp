@@ -64,6 +64,8 @@ void Game::loadMenu() {
 	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(ScreenWidth - 120, ScreenHeight - 200) };
 	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(val20.id, textures, val20.pos));
 	playerButtons.push_back(std::move(playerButton));
+
+	wonButon = std::shared_ptr<PlayerButton>{ new WonButton{ textureID::WON, textures, sf::Vector2f{ 0,0 } } };
 }
 
 void Game::loadTextures() {
@@ -82,6 +84,7 @@ void Game::loadTextures() {
 	textures.load(textureID::EXIT, "images//exit.png");
 	textures.load(textureID::MUTE, "images//muteSound.png");
 	textures.load(textureID::BACK, "images//back.png");
+	textures.load(textureID::WON, "images//HALLO.jpg");
 }
 
 void Game::makePlayfield() {
@@ -144,6 +147,11 @@ void Game::makeLevel() {
 }
 
 void Game::handleLeftClick(sf::Vector2f mPosition) {
+	if (matchEnd) {
+		if (wonButon->getClicked(mPosition)) {
+			wonButon->handleClick(cQueue);
+		}
+	}
 	std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, *enemyPlayerUnits;
 	std::vector<std::unique_ptr<Building>> * currentPlayerBuildings, *enemyPlayerBuildings;
 	sf::Color color;
@@ -562,6 +570,10 @@ void Game::run() {
 	}
 }
 
+bool Game::getExit() {
+	return gameEnd;
+}
+
 void Game::processCommands() {
 	while (!cQueue.isEmpty()) {
 		Command c = cQueue.pop();
@@ -604,6 +616,13 @@ void Game::processCommands() {
 			break;
 		case commandID::DMGRED:
 			playerR.substractPoints(cQueue);
+			break;
+		case commandID::WON:
+			matchEnd = true;
+			break;
+		case commandID::NEWGAME:
+			gameEnd = false;
+			window.close();
 			break;
 		}
 	}
@@ -677,6 +696,14 @@ void Game::HUD() {
 	}
 }
 
+void Game::winText() {
+	text.setPosition(sf::Vector2f{ 70, 30 });
+	text.setColor(getActivePlayer().getPlayer());
+	text.setString("YOU SUCK");
+	text.setCharacterSize(150);
+	window.draw(text);
+}
+
 void Game::render() {
 	window.clear();
 	if (inMenu) {
@@ -684,7 +711,11 @@ void Game::render() {
 			p->draw(window);
 		}
 	}
-	else {
+	else if (matchEnd) {
+		wonButon->draw(window);
+		winText();
+	}
+	else	{
 		for (const auto & p : playerButtons) {
 			p->draw(window);
 		}

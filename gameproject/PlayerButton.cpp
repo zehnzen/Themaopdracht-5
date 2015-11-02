@@ -18,3 +18,14 @@ void EndTurnButton::handleClick(CommandQueue & queue) {
 	command.id = commandID::SWITCHPLAYER;
 	queue.push(command);
 }
+
+WonButton::WonButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
+	PlayerButton{ id, textures, pos }
+{}
+
+void WonButton::handleClick(CommandQueue & queue) {
+	Command command;
+	command.id = commandID::NEWGAME;
+	queue.push(command);
+}
+

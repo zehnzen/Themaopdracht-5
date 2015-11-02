@@ -28,7 +28,7 @@ void Player::substractPoints(CommandQueue & queue) {
 	points -= 10; //Momenteel de standaard value die per unit rond de resource van de vijand wordt afgetrokken.
 	if (points <= 0) {
 		Command command;
-		command.id = commandID::EXITGAME;
+		command.id = commandID::WON;
 		queue.push(command);
 	}
 }
