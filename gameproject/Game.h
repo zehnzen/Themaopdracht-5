@@ -62,6 +62,7 @@ private:
 
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
+	void spawnSoldier(sf::Vector2f);
 	void spawnFactory(sf::Vector2f);
 	void spawnHQ(sf::Vector2f);
 	void spawnResource(sf::Vector2f);

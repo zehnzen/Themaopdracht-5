@@ -1,2 +1,6 @@
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit
+<<<<<<< HEAD
 Debug|Win32|D:\GIT\Themaopdracht-5\|
+=======
+Debug|Win32|C:\Users\Remco\Documents\GitHub\Themaopdracht-5\Themaopdracht-5\|
+>>>>>>> 4c3ef6d79130ab0da4db7101f9ce9311e8c84b2c

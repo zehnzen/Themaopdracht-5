@@ -6,7 +6,7 @@
 #include "Terrain.h"
 
 
-Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
+Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) :
 	PlayerObject( id, textures, pos, color)
 {
 	setPosition(pos);
@@ -15,7 +15,12 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 	attackrange = 3;
 	resetTurn();
 
-	numFrames = 1;
+	numFrames = 8;
+
+	sprite.setScale(scale, 1.f);
+	if (scale < 0.f) {
+		sprite.setOrigin(50.f, 0.f);
+	}
 }
 
 void Unit::setPosition(sf::Vector2f pos) {
@@ -30,11 +35,9 @@ int Unit::getWalklimit() {
 	return turnWalklimit;
 }
 
-std::string Unit::getName()
-{
+std::string Unit::getName() {
 	return unitName;
 }
-
 
 int Unit::getAttackrange() {
 	return turnAttackrange;
