@@ -74,6 +74,7 @@ void Game::loadTextures() {
 	textures.load(textureID::UNIT, "images//unit.jpg");
 	textures.load(textureID::DRAGON, "images//dragon.png");
 	textures.load(textureID::FACTORY, "images//factory2.png");
+	textures.load(textureID::HEADQUARTER, "images//headquarter.jpg");
 	textures.load(textureID::ENDTURN, "images//endTurn.png");
 	textures.load(textureID::RESOURCE, "images//resourcepoint.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
@@ -205,10 +206,10 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 			}
 		}		
 		else {
-			unitControl(mPosition, currentPlayerUnits, enemyPlayerUnits, color);
+			unitControl(mPosition, currentPlayerUnits, enemyPlayerUnits, enemyPlayerBuildings, color);
 			for (const auto & p : *currentPlayerBuildings) {
 				if (p->checkClicked(mPosition)) {
-					inFactory = true;			//============================================================================================================
+					p->checkAction(cQueue);
 					auto ip = std::find(currentPlayerBuildings->begin(), currentPlayerBuildings->end(), p);
 					if (ip != currentPlayerBuildings->end()) {
 						factoryIndex = std::distance(currentPlayerBuildings->begin(), ip);
@@ -223,7 +224,7 @@ void Game::handleRightClick() {
 	switchPlayer();
 }
 
-void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, std::vector<std::unique_ptr<Unit>> * enemyPlayerUnits, sf::Color color) {			// het afhandelen van de movement, aanvallen en actions van de units
+void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>> * currentPlayerUnits, std::vector<std::unique_ptr<Unit>> * enemyPlayerUnits, std::vector<std::unique_ptr<Building>> * enemyPlayerBuildings, sf::Color color) {			// het afhandelen van de movement, aanvallen en actions van de units
 	if (!unitSelected) {
 		markField(unitWalklimit, unitAttackrange, true, unitPosition, sf::Color::White);
 		for (auto const & p : *currentPlayerUnits) {
@@ -259,7 +260,21 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		}
 	}
 	else if (unitSelected && allySelected) {
-		// aanvallen:
+		// lopen:
+		if (checkWalk(mPosition)) {
+			for (auto const & t : terrainContainer) {
+				if (t->checkClicked(currentPlayerUnits->at(unitIndex)->getTilePosition())) {
+					t->setFree(true);								// terrain weer vrijgeven
+				}
+			}
+			currentPlayerUnits->at(unitIndex)->walk(mPosition);		// lopen
+			for (auto const & t : terrainContainer) {
+				if (t->checkClicked(mPosition)) {
+					t->setFree(false);								// terrain bezetten
+				}
+			}
+		}
+		// aanvallen enemyUnits:
 		int i = 0;
 		for (auto const & q : *enemyPlayerUnits) {
 			i++;
@@ -277,6 +292,26 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 				break;
 			}
 		}
+		// aanvallen Buildings:
+		i = 0;
+		for (auto const & q : *enemyPlayerBuildings) {
+			i++;
+			if (q->checkClicked(mPosition)) {
+				if (checkAttack(mPosition)) {
+					if (q->damage(currentPlayerUnits->at(unitIndex)->attack())) {
+						for (auto const & t : terrainContainer) {
+							if (t->checkClicked(q->getTilePosition())) {
+								t->setFree(true);
+							}
+						}
+						q->checkAction(cQueue);
+						enemyPlayerBuildings->erase(enemyPlayerBuildings->begin() + i - 1);
+					}
+				}
+				break;
+			}
+		}
+
 		// resources verkrijgen:
 		for (auto const & r : resourceContainer) {
 			if (r->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
@@ -288,23 +323,11 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 				break;
 			}
 		}
-		// lopen:
-		if (checkWalk(mPosition)) {
-			for (auto const & t : terrainContainer) {
-				if (t->checkClicked(currentPlayerUnits->at(unitIndex)->getTilePosition())) {
-					t->setFree(true);								// terrain weer vrijgeven
-				}
-			}
-			currentPlayerUnits->at(unitIndex)->walk(mPosition);		// lopen
-			for (auto const & t : terrainContainer) {
-				if (t->checkClicked(mPosition)) {
-					t->setFree(false);								// terrain bezetten
-				}
-			}
-		}
 		currentPlayerUnits->at(unitIndex)->setSelected(false);
 		unitSelected = false;
 		allySelected = false;
+		unitIndex = 0;												// errorverhelpend anders raakt de HUD in de stress. info JP
+		std::cout << "deselected unit\n";
 
 		markField(unitWalklimit, unitAttackrange, true, unitPosition, sf::Color::White);
 	}
@@ -358,7 +381,17 @@ void Game::spawnUnit(sf::Vector2f pos) {
 }
 
 void Game::spawnFactory(sf::Vector2f pos) {
-	std::unique_ptr<Building> building(new Building(textureID::FACTORY, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	std::unique_ptr<Building> building(new Factory(textureID::FACTORY, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	(playerB.getActive()) ? buildingBContainer.push_back(std::move(building)) : buildingRContainer.push_back(std::move(building));
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			t->setFree(false);
+		}
+	}
+}
+
+void Game::spawnHQ(sf::Vector2f pos) {
+	std::unique_ptr<Building> building(new Headquarters(textureID::HEADQUARTER, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? buildingBContainer.push_back(std::move(building)) : buildingRContainer.push_back(std::move(building));
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
@@ -521,11 +554,20 @@ void Game::processCommands() {
 		case commandID::SPAWNFACTORY:
 			spawnFactory(c.pos);
 			break;
+		case commandID::SPAWNHQ:
+			spawnHQ(c.pos);
+			break;
 		case commandID::SPAWNRESOURCE:
 			spawnResource(c.pos);
 			break;
 		case commandID::SWITCHPLAYER:
 			switchPlayer();
+			break;
+		case commandID::OPENFACTORY:
+			inFactory = true;
+			break;
+		case commandID::EXITGAME:
+			window.close();
 			break;
 		}
 	}
@@ -569,11 +611,10 @@ void Game::HUD() {
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
 	text.setPosition(ScreenWidth - 140, 40);
 	window.draw(text);
-//<<<<<<< HEAD
-//	if (unitSelected) {
-//		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-//		text.setString("units " + units->at(unitIndex)->getName());
-//=======
+	//	if (unitSelected) {
+	//		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+	//		text.setString("units " + units->at(unitIndex)->getName());
+
 	if (unitSelected)
 	{
 		std::vector<std::unique_ptr<Unit>> * units;
@@ -583,13 +624,13 @@ void Game::HUD() {
 		}
 		else
 		{
+			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
 		}
-		
-		//std::cout << units->at(unitIndex)->getHP();
+		//std::cout << "unitindex: " << unitIndex << "\n";
 		text.setString("unit: ");
-//>>>>>>> master
 		text.setPosition(ScreenWidth - 140, 80);
+
 		window.draw(text);
 		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
 		text.setPosition(ScreenWidth - 140, 110);
