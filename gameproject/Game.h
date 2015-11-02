@@ -28,12 +28,14 @@ class Game {
 public:
 	Game();
 	void run();
+	bool getExit();
 
 private:
 	void processCommands();
 	void updateAnimation(sf::Time);
 	void render();
 	void HUD();
+	void winText();
 
 	void loadMenu();
 
@@ -94,6 +96,7 @@ private:
 	std::vector<std::unique_ptr<UnitButton>> factoryButtons;
 
 	std::vector<std::unique_ptr<PlayerButton>> playerButtons;
+	std::shared_ptr<PlayerButton> wonButon;
 
 	textureHolder textures;
 
@@ -113,6 +116,8 @@ private:
 	bool onUnitButton = false;
 
 	int unitCost = 0;
+	bool matchEnd = false;
+	bool gameEnd = true;
 
 	sf::Font font;
 	sf::Text text;

@@ -4,7 +4,11 @@
 #include "Game.h"
 
 int main() {
-	Game game;
-	game.run();
+	bool exit = false;
+	while (!exit) {
+		Game game;
+		game.run();
+		exit = game.getExit();
+	}
 	return 0;
 }

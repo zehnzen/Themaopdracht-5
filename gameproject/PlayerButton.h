@@ -20,5 +20,12 @@ public:
 	void handleClick(CommandQueue & queue) override;
 };
 
+class WonButton : public PlayerButton {
+public:
+	WonButton(textureID, const textureHolder& textures, sf::Vector2f);
+
+	void handleClick(CommandQueue & queue) override;
+};
+
 
 #endif
