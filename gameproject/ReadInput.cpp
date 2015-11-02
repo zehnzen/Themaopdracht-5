@@ -15,29 +15,37 @@ char ReadInput::read(std::ifstream & input) {
 	else if (s == "R") {
 		return '2';
 	}
+	//---------------------------------------------------------
 	else if (s == "Ub") {
-		return '3';
+		return 'a';
 	}
 	else if (s == "Db") {
-		return '4';
+		return 'b';
+	}
+	else if (s == "Sb") {
+		return 'c';
 	}
 	else if (s == "Fb") {
-		return '5';
+		return 'd';
 	}
 	else if (s == "Hb") {
-		return '6';
+		return 'e';
 	}
+	//----------------------------------------------------------
 	else if (s == "Ur") {
-		return '7';
+		return 'z';
 	}
 	else if (s == "Dr") {
-		return '8';
+		return 'y';
+	}
+	else if (s == "Sr") {
+		return 'x';
 	}
 	else if (s == "Fr") {
-		return '9';
+		return 'w';
 	}
 	else if (s == "Hr") {
-		return '0';
+		return 'v';
 	}
 	else if (s == "") {
 		throw endOfFile();

@@ -62,17 +62,21 @@ void Game::loadMenu() {
 	std::unique_ptr<UnitButton> unitButton(new UnitButton(val11.id, textures, val11.pos));
 	factoryButtons.push_back(std::move(unitButton));
 
+	buttonVal val12{ textureID::SOLDIER, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 50) };
+	std::unique_ptr<UnitButton> soldierButton(new SoldierButton(val12.id, textures, val12.pos));
+	factoryButtons.push_back(std::move(soldierButton));
+
 	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(ScreenWidth - 120, ScreenHeight - 200) };
 	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(val20.id, textures, val20.pos));
 	playerButtons.push_back(std::move(playerButton));
 }
 
 void Game::loadTextures() {
-
 	textures.load(textureID::GRASS, "images//grass.jpg");
 	textures.load(textureID::ROAD, "images//road.jpg");
 	textures.load(textureID::UNIT, "images//unit.jpg");
 	textures.load(textureID::DRAGON, "images//dragon.png");
+	textures.load(textureID::SOLDIER, "images//sonic.jpg");
 	textures.load(textureID::FACTORY, "images//factory2.png");
 	textures.load(textureID::HEADQUARTER, "images//headquarter.jpg");
 	textures.load(textureID::ENDTURN, "images//endTurn.png");
@@ -118,15 +122,17 @@ void Game::makeLevel() {
 			case '1': break;
 			case '2': spawnResource(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
 				//Blauw:
-			case '3': playerB.setActive(true); playerR.setActive(false); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
-			case '4': playerB.setActive(true); playerR.setActive(false); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '5': playerB.setActive(true); playerR.setActive(false); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '6': playerB.setActive(true); playerR.setActive(false); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'a': playerB.setActive(true); playerR.setActive(false); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
+			case 'b': playerB.setActive(true); playerR.setActive(false); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'c': playerB.setActive(true); playerR.setActive(false); spawnSoldier(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'd': playerB.setActive(true); playerR.setActive(false); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'e': playerB.setActive(true); playerR.setActive(false); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
 				// Rood:
-			case '7': playerB.setActive(false); playerR.setActive(true); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '8': playerB.setActive(false); playerR.setActive(true); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '9': playerB.setActive(false); playerR.setActive(true); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '0': playerB.setActive(false); playerR.setActive(true); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'z': playerB.setActive(false); playerR.setActive(true); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'y': playerB.setActive(false); playerR.setActive(true); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'x': playerB.setActive(false); playerR.setActive(true); spawnSoldier(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'w': playerB.setActive(false); playerR.setActive(true); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'v': playerB.setActive(false); playerR.setActive(true); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
 			}
 			i++;
 		}
@@ -384,6 +390,16 @@ void Game::spawnUnit(sf::Vector2f pos) {
 	}
 }
 
+void Game::spawnSoldier(sf::Vector2f pos) {
+	std::unique_ptr<Unit> unit(new Soldier(textureID::SOLDIER, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+	for (auto const & t : terrainContainer) {
+		if (t->checkClicked(pos)) {
+			t->setFree(false);
+		}
+	}
+}
+
 void Game::spawnFactory(sf::Vector2f pos) {
 	std::unique_ptr<Building> building(new Factory(textureID::FACTORY, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? buildingBContainer.push_back(std::move(building)) : buildingRContainer.push_back(std::move(building));
@@ -631,7 +647,6 @@ void Game::HUD() {
 			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
 		}
-		//std::cout << "unitindex: " << unitIndex << "\n";
 		text.setString("unit: ");
 		text.setPosition(ScreenWidth - 140, 80);
 

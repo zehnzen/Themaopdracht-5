@@ -3,7 +3,7 @@
 #ifndef _Enums_H
 #define _Enums_H
 
-enum class textureID { GRASS, ROAD, UNIT, DRAGON, 
+enum class textureID { GRASS, ROAD, UNIT, DRAGON, SOLDIER, 
 	FACTORY, HEADQUARTER, RESOURCE,
 	BACKGROUND, START, OPTION, EXIT, MUTE, BACK,
 	ENDTURN

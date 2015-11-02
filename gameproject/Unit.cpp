@@ -30,8 +30,7 @@ int Unit::getWalklimit() {
 	return turnWalklimit;
 }
 
-std::string Unit::getName()
-{
+std::string Unit::getName() {
 	return unitName;
 }
 
