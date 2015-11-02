@@ -24,14 +24,20 @@ char ReadInput::read(std::ifstream & input) {
 	else if (s == "Fb") {
 		return '5';
 	}
-	else if (s == "Ur") {
+	else if (s == "Hb") {
 		return '6';
 	}
-	else if (s == "Dr") {
+	else if (s == "Ur") {
 		return '7';
 	}
-	else if (s == "Fr") {
+	else if (s == "Dr") {
 		return '8';
+	}
+	else if (s == "Fr") {
+		return '9';
+	}
+	else if (s == "Hr") {
+		return '0';
 	}
 	else if (s == "") {
 		throw endOfFile();
@@ -39,7 +45,7 @@ char ReadInput::read(std::ifstream & input) {
 	
 	// DIT MOET TOCH GVD IN EEN SWITCH KUNNEN ?!!!!!!!!!!!!
 	//switch (s) {
-		//case "#": return 1; break;
+	//	case "#": return 1; break;
 	//}
 	throw unknownCharacter(s);
 }

@@ -101,10 +101,12 @@ void Game::makeLevel() {
 	// 3 = unit blauw
 	// 4 = dragon blauw
 	// 5 = factory blauw
+	// 6 = headquater blauw
 
-	// 6 = unit rood
-	// 7 = dragon rood
-	// 8 = factory rood
+	// 7 = unit rood
+	// 8 = dragon rood
+	// 9 = factory rood
+	// 0 = headquarter rood
 
 	int i = 0;
 	try {
@@ -119,10 +121,12 @@ void Game::makeLevel() {
 			case '3': playerB.setActive(true); playerR.setActive(false); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
 			case '4': playerB.setActive(true); playerR.setActive(false); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
 			case '5': playerB.setActive(true); playerR.setActive(false); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '6': playerB.setActive(true); playerR.setActive(false); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
 				// Rood:
-			case '6': playerB.setActive(false); playerR.setActive(true); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '7': playerB.setActive(false); playerR.setActive(true); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case '8': playerB.setActive(false); playerR.setActive(true); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '7': playerB.setActive(false); playerR.setActive(true); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '8': playerB.setActive(false); playerR.setActive(true); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '9': playerB.setActive(false); playerR.setActive(true); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case '0': playerB.setActive(false); playerR.setActive(true); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
 			}
 			i++;
 		}
