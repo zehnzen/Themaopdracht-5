@@ -76,7 +76,7 @@ void Game::loadTextures() {
 	textures.load(textureID::ROAD, "images//road.jpg");
 	textures.load(textureID::UNIT, "images//unit.jpg");
 	textures.load(textureID::DRAGON, "images//dragon.png");
-	textures.load(textureID::SOLDIER, "images//sonic.jpg");
+	textures.load(textureID::SOLDIER, "images//soldier1.png");
 	textures.load(textureID::FACTORY, "images//factory2.png");
 	textures.load(textureID::HEADQUARTER, "images//headquarter.jpg");
 	textures.load(textureID::ENDTURN, "images//endTurn.png");
@@ -199,7 +199,7 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 						int cost = p->getCostMoney();
 						if (((playerB.getActive()) ? playerB.getMoney() : playerR.getMoney()) >= cost) {
 							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - cost) : playerR.setMoney(playerR.getMoney() - cost);
-							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
+							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color, ((playerB.getActive()) ? 1 : -1))));
 							for (auto const & t : terrainContainer) {
 								if (t->checkClicked(loc)) {
 									t->setFree(false);
@@ -371,7 +371,7 @@ void Game::switchPlayer() {
 }
 
 void Game::spawnBomber(sf::Vector2f pos) {
-	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer(), ((playerB.getActive()) ? 1 : -1)));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
@@ -381,7 +381,7 @@ void Game::spawnBomber(sf::Vector2f pos) {
 }
 
 void Game::spawnUnit(sf::Vector2f pos) {
-	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer(), ((playerB.getActive()) ? 1 : -1)));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
@@ -391,7 +391,7 @@ void Game::spawnUnit(sf::Vector2f pos) {
 }
 
 void Game::spawnSoldier(sf::Vector2f pos) {
-	std::unique_ptr<Unit> unit(new Soldier(textureID::SOLDIER, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
+	std::unique_ptr<Unit> unit(new Soldier(textureID::SOLDIER, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer(), ((playerB.getActive()) ? 1 : -1)));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {

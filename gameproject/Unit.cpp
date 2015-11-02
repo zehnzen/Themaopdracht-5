@@ -6,7 +6,7 @@
 #include "Terrain.h"
 
 
-Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
+Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) :
 	PlayerObject( id, textures, pos, color)
 {
 	setPosition(pos);
@@ -15,7 +15,9 @@ Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Co
 	attackrange = 3;
 	resetTurn();
 
-	numFrames = 1;
+	numFrames = 7;
+
+	sprite.setScale( (float)scale, (float)1 );		// al dan niet het plaatje flippen  (1 = niet flippen, -1 = flippen)
 }
 
 void Unit::setPosition(sf::Vector2f pos) {

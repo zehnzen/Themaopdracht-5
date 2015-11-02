@@ -8,9 +8,9 @@ UnitButton::UnitButton(textureID id, const textureHolder & textures, sf::Vector2
 	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE, TILESIZE));
 }
 
-Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
+Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) {
 	std::cout << "Unit returned\n";
-	return new Unit(textureID::UNIT, textures, pos, color);
+	return new Unit(textureID::UNIT, textures, pos, color, scale);
 }
 
 int UnitButton::getCostMoney() {
@@ -25,9 +25,9 @@ DragonButton::DragonButton(textureID id, const textureHolder & textures, sf::Vec
 	numFrames = 5;
 }
 
-Unit* DragonButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
+Unit* DragonButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) {
 	std::cout << "Bomber returned\n";
-	return new Bomber(textureID::DRAGON, textures, pos, color);
+	return new Bomber(textureID::DRAGON, textures, pos, color, scale);
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -38,8 +38,8 @@ SoldierButton::SoldierButton(textureID id, const textureHolder & textures, sf::V
 	numFrames = 5;
 }
 
-Unit* SoldierButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
+Unit* SoldierButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, int scale) {
 	std::cout << "Soldier returned\n";
-	return new Soldier(textureID::SOLDIER, textures, pos, color);
+	return new Soldier(textureID::SOLDIER, textures, pos, color, scale);
 }
 
