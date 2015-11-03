@@ -131,6 +131,8 @@ private:
 	int playfieldX = 18;
 	int playfieldY = 11;
 
+	int counter = 0, turn = 1;
+
 	ReadInput reader;
 };
 

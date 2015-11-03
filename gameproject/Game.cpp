@@ -408,6 +408,10 @@ Player Game::getActivePlayer() {
 
 void Game::switchPlayer() {
 	checkReckoning();
+	counter += 1;
+	if (counter % 2 == 0) {
+		turn += 1;
+	}
 	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
 	if (unitSelected) { 
 		unitSelected = false;
@@ -734,6 +738,10 @@ void Game::updateAnimation(sf::Time dt) {
 }
 
 void Game::HUD() {
+	text.setColor(sf::Color::Green);								//stel de tekstkleur in op de kleur van de huidige speler
+	text.setString("Turn #" + std::to_string(turn));	//schrijf hoeveel health de speler heeft
+	text.setPosition(ScreenWidth - 140, 250);
+	window.draw(text);
 	text.setColor(getActivePlayer().getPlayer());								//stel de tekstkleur in op de kleur van de huidige speler
 	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
 	text.setPosition(ScreenWidth - 140, 0);
