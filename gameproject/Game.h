@@ -22,6 +22,7 @@
 #include "Resource.h"
 #include "ReadInput.h"
 #include "HolyGrail.h"
+#include "UnitHandling.h"
 
 class Game {
 public:
@@ -50,7 +51,7 @@ private:
 	void switchPlayer();
 	Player getActivePlayer();
 
-	void unitControl(sf::Vector2f, std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, std::vector<std::unique_ptr<Building>> * ePBuildings, sf::Color color);		// afhandeling van de acties van de units
+	//void unitControl(sf::Vector2f, std::vector<std::unique_ptr<Unit>> * cPUnits, std::vector<std::unique_ptr<Unit>> * ePUnits, std::vector<std::unique_ptr<Building>> * ePBuildings, sf::Color color);		// afhandeling van de acties van de units
 
 	void markField(int walklimit, int attackrange, bool clear, sf::Vector2f position, sf::Color color);		// mark the field (1 terrain) in order to show a units walking limit
 	void markRange(int range, int index, sf::Color color);
@@ -76,6 +77,7 @@ private:
 	sf::RenderWindow window;
 	InputHandler input;
 	CommandQueue cQueue;
+	UnitHandling unitHandler;
 	static const sf::Time timePerFrame;
 
 	Player playerB;
@@ -102,8 +104,8 @@ private:
 	sf::Vector2f unitPosition;			// nodig voor het deselecteren van de tiles
 	int unitWalklimit;					// nodig voor het deselecteren van de tiles
 	int unitAttackrange;
-	int unitIndex;
-	int enemyIndex;
+	//int unitIndex;
+	//int enemyIndex;
 	int factoryIndex;
 
 	Music music;
@@ -112,11 +114,11 @@ private:
 	bool inMenu = false;
 	bool inFactory = false;
 	bool onUnitButton = false;
-	bool unitSelected = false;
+	//bool unitSelected = false;
 	bool onBuildingB = false;
 	bool onBuildingR = false;
 	bool onResource = false;
-	bool allySelected = false;
+	//bool allySelected = false;
 
 	int unitCost = 0;
 	int health = 0;

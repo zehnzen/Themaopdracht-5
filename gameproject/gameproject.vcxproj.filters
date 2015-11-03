@@ -90,6 +90,9 @@
     <ClInclude Include="SubUnits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UnitHandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SubUnits.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitHandling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

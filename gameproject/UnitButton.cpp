@@ -66,7 +66,6 @@ ScoutButton::ScoutButton(textureID id, const textureHolder & textures, sf::Vecto
 	cost = 200;
 	numFrames = 37;
 	duration = sf::seconds(5);
-	//NUMFRAMES OPZOEKEN
 }
 
 Unit* ScoutButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
