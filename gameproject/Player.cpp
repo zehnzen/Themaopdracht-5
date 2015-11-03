@@ -59,3 +59,13 @@ void Player::setUnitAttacks(int attacks) {
 void Player::diffUnitAttacks(int attacks) {
 	unitAttacks += attacks;
 }
+
+int Player::getUnitWalks() {
+	return unitWalks;
+}
+void Player::resetUnitWalks() {
+	unitWalks = 0;
+}
+void Player::diffUnitWalks(int steps) {
+	unitWalks += steps;
+}
