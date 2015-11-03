@@ -82,7 +82,7 @@ void Game::loadTextures() {
 	textures.load(textureID::HEADQUARTER, "images//headquarter.png");
 	textures.load(textureID::HOLYGRAIL, "images//holygrail.png");
 	textures.load(textureID::ENDTURN, "images//endTurn.png");
-	textures.load(textureID::RESOURCE, "images//resourcepoint2.png");
+	textures.load(textureID::RESOURCE, "images//resourcepoint.png");
 	textures.load(textureID::BACKGROUND, "images//background.jpg");
 	textures.load(textureID::START, "images//start.png");
 	textures.load(textureID::OPTION, "images//option.png");
@@ -207,6 +207,7 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 						if (((playerB.getActive()) ? playerB.getMoney() : playerR.getMoney()) >= cost) {
 							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - cost) : playerR.setMoney(playerR.getMoney() - cost);
 							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color, ((playerB.getActive()) ? 1.f : -1.f))));
+							(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
 							for (auto const & t : terrainContainer) {
 								if (t->checkClicked(loc)) {
 									t->setFree(false);
@@ -342,6 +343,7 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 			i++;
 			if (q->checkClicked(mPosition)) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
 				if (checkAttack(mPosition)) {
+					(playerB.getActive()) ? playerB.diffUnitAttacks(-1) : playerR.diffUnitAttacks(-1);
 					if (q->damage(currentPlayerUnits->at(unitIndex)->attack())) {		// hij krijgt true mee als hij geen hp meer heeft, dus dan moet je hem verwijderen uit de container
 						for (auto const & t : terrainContainer) {
 							if (t->checkClicked(q->getTilePosition())) {
@@ -361,6 +363,7 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 			if (q->checkClicked(mPosition)) {
 				if (checkAttack(mPosition)) {
 					if (q->damage(currentPlayerUnits->at(unitIndex)->attack())) {
+						(playerB.getActive()) ? playerB.diffUnitAttacks(-1) : playerR.diffUnitAttacks(-1);
 						for (auto const & t : terrainContainer) {
 							if (t->checkClicked(q->getTilePosition())) {
 								t->setFree(true);
@@ -378,6 +381,7 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 		for (auto const & r : resourceContainer) {
 			if (r->checkClicked(V2f_from_V2i(sf::Mouse::getPosition(window)))) {		// check of vijand wordt aangeklikt en dus of er een aanval moet komen
 				if (checkAttack(mPosition) && checkResource(mPosition, currentPlayerUnits->at(unitIndex)->getTilePosition()) && currentPlayerUnits->at(unitIndex)->getAttackrange() > 0) {			// checken of unit naast resource staat
+					(playerB.getActive()) ? playerB.diffUnitAttacks(-1) : playerR.diffUnitAttacks(-1);
 					(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() + r->getMoney()) : playerR.setMoney(playerR.getMoney() + r->getMoney());
 					currentPlayerUnits->at(unitIndex)->resource();
 				}
@@ -410,14 +414,18 @@ void Game::switchPlayer() {
 		markField(units->at(unitIndex)->getWalklimit(), units->at(unitIndex)->getAttackrange(), true, units->at(unitIndex)->getTilePosition(), sf::Color::White);
 	}
 	playerB.setActive(!playerB.getActive());
+	playerB.setUnitAttacks(0);
 	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
 		p->setSelected(false);
 		p->resetTurn();
+		playerB.diffUnitAttacks(1);
 	}
 	playerR.setActive(!playerR.getActive());
+	playerR.setUnitAttacks(0);
 	for (auto const & p : unitRContainer) {						// alle units van R deselecteren
 		p->setSelected(false);
 		p->resetTurn();
+		playerR.diffUnitAttacks(1);
 	}
 	inFactory = false;
 }
@@ -425,6 +433,7 @@ void Game::switchPlayer() {
 void Game::spawnBomber(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer(), ((playerB.getActive()) ? 1.f : -1.f)));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+	(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
 			t->setFree(false);
@@ -435,6 +444,7 @@ void Game::spawnBomber(sf::Vector2f pos) {
 void Game::spawnUnit(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Unit(textureID::UNIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer(), ((playerB.getActive()) ? 1.f : -1.f)));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+	(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
 			t->setFree(false);
@@ -445,6 +455,7 @@ void Game::spawnUnit(sf::Vector2f pos) {
 void Game::spawnSoldier(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Soldier(textureID::SOLDIER, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer(), ((playerB.getActive()) ? 1.f : -1.f)));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
+	(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
 			t->setFree(false);
@@ -728,21 +739,28 @@ void Game::HUD() {
 	text.setPosition(ScreenWidth - 140, 0);
 	window.draw(text);
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
-	text.setPosition(ScreenWidth - 140, 40);
+	text.setPosition(ScreenWidth - 140, 30);
 	window.draw(text);
 
-	text.setPosition(ScreenWidth - 140, 80);
+	// HIER hoeveel stappen de units nog kunnen zetten en hoeveel aanvallen:
+	text.setString("attacks: " + std::to_string(getActivePlayer().getUnitAttacks()));	//schrijf hoeveel health de speler heeft
+	text.setPosition(ScreenWidth - 140, 60);
+	window.draw(text);
+	//----------------------------------------------------------------------------------
+
+
 	if (unitSelected) {
+		text.setPosition(ScreenWidth - 140, 100);
 		std::vector<std::unique_ptr<Unit>> * units;
 		if (allySelected) {
 			units = &(playerB.getActive() ? unitBContainer : unitRContainer);
 			text.setString(units->at(unitIndex)->getName() + ":");
 			window.draw(text);
 			text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
-			text.setPosition(ScreenWidth - 140, 110);
+			text.setPosition(ScreenWidth - 140, 130);
 			window.draw(text);
 			text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
-			text.setPosition(ScreenWidth - 140, 140);
+			text.setPosition(ScreenWidth - 140, 160);
 		}
 		else {
 			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
@@ -750,10 +768,10 @@ void Game::HUD() {
 			text.setString(units->at(enemyIndex)->getName() + ":");
 			window.draw(text);
 			text.setString("HP:" + std::to_string(units->at(enemyIndex)->getHP()));
-			text.setPosition(ScreenWidth - 140, 110);
+			text.setPosition(ScreenWidth - 140, 130);
 			window.draw(text);
 			text.setString("DP: " + std::to_string(units->at(enemyIndex)->getDP()));
-			text.setPosition(ScreenWidth - 140, 140);
+			text.setPosition(ScreenWidth - 140, 160);
 		}
 		window.draw(text);
 	}
@@ -766,13 +784,13 @@ void Game::HUD() {
 	if (onBuildingB || onBuildingR) {
 		text.setColor(sf::Color::Yellow);
 		text.setString("HP: " + std::to_string(health));
-		text.setPosition(ScreenWidth - 140, 325);
+		text.setPosition(ScreenWidth - 140, 300);
 		window.draw(text);
 	}
 	if (onResource) {
 		text.setColor(sf::Color::Yellow);
 		text.setString("money: " + std::to_string(resourceMoney));
-		text.setPosition(ScreenWidth - 140, 325);
+		text.setPosition(ScreenWidth - 140, 300);
 		window.draw(text);
 	}
 }

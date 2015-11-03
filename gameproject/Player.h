@@ -20,7 +20,9 @@ public:
 	void setMoney(int mon);
 	void setUnitSelected(bool usel);
 	bool getUnitSelected();
-
+	int getUnitAttacks();
+	void setUnitAttacks(int attacks);
+	void diffUnitAttacks(int attacks);
 
 private:
 	bool active;
@@ -28,6 +30,7 @@ private:
 	sf::Color side;
 	int points = 100;
 	int money = 1000;
+	int unitAttacks = 0;
 };
 
 

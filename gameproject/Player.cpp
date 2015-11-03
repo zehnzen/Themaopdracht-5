@@ -48,3 +48,14 @@ void Player::setUnitSelected(bool usel) {
 bool Player::getUnitSelected() {
 	return unitSelected;
 }
+
+int Player::getUnitAttacks() {
+	return unitAttacks;
+}
+void Player::setUnitAttacks(int attacks) {
+	unitAttacks = attacks;
+}
+
+void Player::diffUnitAttacks(int attacks) {
+	unitAttacks += attacks;
+}
