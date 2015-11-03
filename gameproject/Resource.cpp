@@ -56,12 +56,13 @@ bool Resource::makeSelected(sf::Vector2f pos) {
 }
 
 int Resource::getMoney() {
+	int earned = 20;
 	if (resourceMoney > 0) {
-		resourceMoney -= 100;
-		return 100;
+		earned = 100;
+		resourceMoney -= earned;
 	}
-	else {
+	if(resourceMoney <= 0) {
 		sprite.setColor(sf::Color::Black);
-		return 0;
 	}
+	return earned;
 }
