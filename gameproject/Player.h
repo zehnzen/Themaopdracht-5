@@ -23,6 +23,10 @@ public:
 	int getUnitAttacks();
 	void setUnitAttacks(int attacks);
 	void diffUnitAttacks(int attacks);
+	int getUnitWalks();
+	void resetUnitWalks();
+	void diffUnitWalks(int steps);
+
 
 private:
 	bool active;
@@ -31,6 +35,8 @@ private:
 	int points = 100;
 	int money = 1000;
 	int unitAttacks = 0;
+	int unitWalks = 0;
+
 };
 
 
