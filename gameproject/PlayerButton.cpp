@@ -3,14 +3,14 @@
 #include "PlayerButton.h"
 
 PlayerButton::PlayerButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
-	Button{ id, textures, pos }
+	Button( id, textures, pos )
 {}
 
 void PlayerButton::handleClick(CommandQueue & queue) {
 }
 
 EndTurnButton::EndTurnButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
-	PlayerButton{ id, textures, pos }
+	PlayerButton( id, textures, pos )
 {}
 
 void EndTurnButton::handleClick(CommandQueue & queue) {
@@ -20,7 +20,7 @@ void EndTurnButton::handleClick(CommandQueue & queue) {
 }
 
 WonButton::WonButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
-	PlayerButton{ id, textures, pos }
+	PlayerButton( id, textures, pos )
 {}
 
 void WonButton::handleClick(CommandQueue & queue) {

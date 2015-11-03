@@ -11,7 +11,7 @@ Building::Building(textureID id, const textureHolder& textures, sf::Vector2f pos
 void Building::checkAction(CommandQueue & queue) {}
 
 Headquarters::Headquarters(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color):
-	Building{ id, textures, pos, color }
+	Building( id, textures, pos, color )
 {}
 
 void Headquarters::checkAction(CommandQueue & queue) {
@@ -23,7 +23,7 @@ void Headquarters::checkAction(CommandQueue & queue) {
 }
 
 Factory::Factory(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
-	Building{ id, textures, pos, color }
+	Building( id, textures, pos, color )
 {}
 
 void Factory::checkAction(CommandQueue & queue) {
