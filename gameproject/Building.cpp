@@ -5,8 +5,6 @@
 Building::Building(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	PlayerObject(id, textures, pos, color)
 {
-	//setPosition(pos);
-
 	numFrames = 1;
 }
 
@@ -19,7 +17,7 @@ Headquarters::Headquarters(textureID id, const textureHolder& textures, sf::Vect
 void Headquarters::checkAction(CommandQueue & queue) {
 	if (hitpoints <= 0) {
 		Command command;
-		command.id = commandID::EXITGAME;
+		command.id = commandID::WON;
 		queue.push(command);
 	}
 }

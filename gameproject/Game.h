@@ -22,17 +22,20 @@
 #include "PlayerButton.h"
 #include "Resource.h"
 #include "ReadInput.h"
+#include "HolyGrail.h"
 
 class Game {
 public:
 	Game();
 	void run();
+	bool getExit();
 
 private:
 	void processCommands();
 	void updateAnimation(sf::Time);
 	void render();
 	void HUD();
+	void winText();
 
 	void loadMenu();
 
@@ -42,6 +45,7 @@ private:
 
 	void handleLeftClick(sf::Vector2f);
 	void handleRightClick();
+	void handleMouseEnter(sf::Vector2f);
 	void initText();
 
 	void switchPlayer();
@@ -61,11 +65,14 @@ private:
 
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
+	void spawnSoldier(sf::Vector2f);
 	void spawnFactory(sf::Vector2f);
 	void spawnHQ(sf::Vector2f);
 	void spawnResource(sf::Vector2f);
+	void spawnGrail(sf::Vector2f);
 
 	bool checkSpaceFree(sf::Vector2f pos);		// checken of plek vrij is zodat de units weten of ze hierheen zouden kunnen verplaatsen
+	void checkReckoning();
 
 	sf::RenderWindow window;
 	InputHandler input;
@@ -74,6 +81,7 @@ private:
 
 	Player playerB;
 	Player playerR;
+	std::shared_ptr<HolyGrail> holy;
 	std::vector<std::unique_ptr<Unit>> unitBContainer;
 	std::vector<std::unique_ptr<Unit>> unitRContainer;
 
@@ -88,15 +96,15 @@ private:
 	std::vector<std::unique_ptr<UnitButton>> factoryButtons;
 
 	std::vector<std::unique_ptr<PlayerButton>> playerButtons;
+	std::shared_ptr<PlayerButton> wonButon;
 
 	textureHolder textures;
 
 	sf::Vector2f unitPosition;			// nodig voor het deselecteren van de tiles
 	int unitWalklimit;					// nodig voor het deselecteren van de tiles
 	int unitAttackrange;
-	bool unitSelected = false;
-	bool allySelected = false;
 	int unitIndex;
+	int enemyIndex;
 	int factoryIndex;
 
 	Music music;
@@ -104,6 +112,18 @@ private:
 
 	bool inMenu = false;
 	bool inFactory = false;
+	bool onUnitButton = false;
+	bool unitSelected = false;
+	bool onBuildingB = false;
+	bool onBuildingR = false;
+	bool onResource = false;
+	bool allySelected = false;
+
+	int unitCost = 0;
+	int health = 0;
+	int resourceMoney = 0;
+	bool matchEnd = false;
+	bool gameEnd = true;
 
 	sf::Font font;
 	sf::Text text;
@@ -111,7 +131,7 @@ private:
 	int playfieldX = 18;
 	int playfieldY = 11;
 
-	int turn = 0;
+	int turn = 1, counter = 0;
 
 	ReadInput reader;
 };

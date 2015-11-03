@@ -8,7 +8,7 @@
 
 class Unit : public PlayerObject{
 public:
-	Unit(textureID, const textureHolder& textures, sf::Vector2f, sf::Color);
+	Unit(textureID, const textureHolder& textures, sf::Vector2f, sf::Color, float scale);
 
 	void setPosition(sf::Vector2f pos) override;
 
@@ -27,7 +27,7 @@ public:
 protected:
 	int walklimit = 2, attackrange = 3, turnWalklimit = walklimit, turnAttackrange = attackrange;
 	int attackpoints = 20;
-	std::string unitName = "unit";
+	std::string unitName;
 };
 
 #endif

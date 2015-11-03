@@ -90,6 +90,9 @@
     <ClInclude Include="ReadInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HolyGrail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomber.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReadInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyGrail.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

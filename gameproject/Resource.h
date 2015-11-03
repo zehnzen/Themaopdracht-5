@@ -13,7 +13,7 @@ public:
 	void setOldSelected(bool);
 
 	bool getSelected();
-	int getHP();
+	int getResourceMoney();
 
 	bool makeSelected(sf::Vector2f pos);
 	bool checkClicked(sf::Vector2f pos);

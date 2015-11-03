@@ -20,7 +20,10 @@ void InputHandler::processInput(CommandQueue & queue) {//QUEUE meegeven
 			handleKeypress(command, event.key.code, false);
 			break;
 		case sf::Event::MouseButtonPressed:
-			handleMouse(command, event.mouseButton.button);
+			handleMouseClick(command, event.mouseButton.button);
+			break;
+		case sf::Event::MouseMoved:
+			command.id = commandID::ENTERED;
 			break;
 		case sf::Event::LostFocus:
 			command.id = commandID::OPENMENU;
@@ -61,11 +64,11 @@ void InputHandler::handleKeypress(Command & comm, sf::Keyboard::Key key, bool b)
 	}
 }
 
-void InputHandler::handleMouse(Command & comm, sf::Mouse::Button button) {
+void InputHandler::handleMouseClick(Command & comm, sf::Mouse::Button button) {
 	if (button == sf::Mouse::Left) {
 		comm.id = commandID::LEFTCLICK;
 	}
 	else if (button == sf::Mouse::Right) {
-		comm.id = commandID::RIGHTCLICK;
+		comm.id = commandID::SWITCHPLAYER;
 	}
 }
