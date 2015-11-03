@@ -213,6 +213,8 @@ void Game::handleLeftClick(sf::Vector2f mPosition) {
 							(playerB.getActive()) ? playerB.setMoney(playerB.getMoney() - cost) : playerR.setMoney(playerR.getMoney() - cost);
 							currentPlayerUnits->push_back(std::unique_ptr<Unit>(p->bAction(textures, loc, color)));
 							(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
+							(playerB.getActive()) ? playerB.diffUnitWalks(1) : playerR.diffUnitWalks(1);
+
 							for (auto const & t : terrainContainer) {
 								if (t->checkClicked(loc)) {
 									t->setFree(false);
@@ -339,6 +341,9 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 			currentPlayerUnits->at(unitIndex)->walk(mPosition);		// lopen
 			for (auto const & t : terrainContainer) {
 				if (t->checkClicked(mPosition)) {
+					if(currentPlayerUnits->at(unitIndex)->getWalklimit() == 1) {
+						(playerB.getActive()) ? playerB.diffUnitWalks(-1) : playerR.diffUnitWalks(-1);
+					}
 					t->setFree(false);								// terrain bezetten
 				}
 			}
@@ -416,6 +421,10 @@ Player Game::getActivePlayer() {
 
 void Game::switchPlayer() {
 	checkReckoning();
+	counter += 1;
+	if (counter % 2 == 0) {
+		turn += 1;
+	}
 	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
 	if (unitSelected) { 
 		unitSelected = false;
@@ -423,17 +432,22 @@ void Game::switchPlayer() {
 	}
 	playerB.setActive(!playerB.getActive());
 	playerB.setUnitAttacks(0);
+	playerB.resetUnitWalks();
 	for (auto const & p : unitBContainer) {						// alle units van B deselecteren
 		p->setSelected(false);
 		p->resetTurn();
 		playerB.diffUnitAttacks(1);
+		playerB.diffUnitWalks(1);
+
 	}
 	playerR.setActive(!playerR.getActive());
 	playerR.setUnitAttacks(0);
+	playerR.resetUnitWalks();
 	for (auto const & p : unitRContainer) {						// alle units van R deselecteren
 		p->setSelected(false);
 		p->resetTurn();
 		playerR.diffUnitAttacks(1);
+		playerR.diffUnitWalks(1);
 	}
 	inFactory = false;
 }
@@ -442,6 +456,8 @@ void Game::spawnBomber(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Bomber(textureID::DRAGON, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
 	(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
+	(playerB.getActive()) ? playerB.diffUnitWalks(1) : playerR.diffUnitWalks(1);
+
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
 			t->setFree(false);
@@ -453,6 +469,7 @@ void Game::spawnUnit(sf::Vector2f pos) {
 	std::unique_ptr<Unit> unit(new Recruit(textureID::RECRUIT, textures, V2fModulo(pos, TILESIZE), getActivePlayer().getPlayer()));
 	(playerB.getActive()) ? unitBContainer.push_back(std::move(unit)) : unitRContainer.push_back(std::move(unit));
 	(playerB.getActive()) ? playerB.diffUnitAttacks(1) : playerR.diffUnitAttacks(1);
+	(playerB.getActive()) ? playerB.diffUnitWalks(1) : playerR.diffUnitWalks(1);
 	for (auto const & t : terrainContainer) {
 		if (t->checkClicked(pos)) {
 			t->setFree(false);
@@ -742,18 +759,27 @@ void Game::updateAnimation(sf::Time dt) {
 }
 
 void Game::HUD() {
+	text.setColor(sf::Color::Green);								//stel de tekstkleur in op de kleur van de huidige speler
+	text.setString("Turn #" + std::to_string(turn));	//schrijf hoeveel health de speler heeft
+	text.setPosition(ScreenWidth - 140, 250);
+	window.draw(text);
 	text.setColor(getActivePlayer().getPlayer());								//stel de tekstkleur in op de kleur van de huidige speler
 	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
 	text.setPosition(ScreenWidth - 140, 0);
 	window.draw(text);
 	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
-	text.setPosition(ScreenWidth - 140, 30);
+	text.setPosition(ScreenWidth - 140, 25);
 	window.draw(text);
 
 	// HIER hoeveel stappen de units nog kunnen zetten en hoeveel aanvallen:
-	text.setString("attacks: " + std::to_string(getActivePlayer().getUnitAttacks()));	//schrijf hoeveel health de speler heeft
-	text.setPosition(ScreenWidth - 140, 60);
+	text.setString("attacks: " + std::to_string(getActivePlayer().getUnitAttacks()));	//schrijf hoeveel units nog kunnen aanvallen
+	text.setPosition(ScreenWidth - 140, 50);
 	window.draw(text);
+
+	text.setString("walks left: " + std::to_string(getActivePlayer().getUnitWalks()));	//schrijf hoeveel units er nog kunnen lopen
+	text.setPosition(ScreenWidth - 140, 75);
+	window.draw(text);
+	//--------------------
 	//----------------------------------------------------------------------------------
 
 
