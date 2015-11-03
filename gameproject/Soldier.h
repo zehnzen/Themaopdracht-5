@@ -8,7 +8,7 @@
 
 class Soldier : public Unit {
 public:
-	Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale);
+	Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color);
 };
 
 #endif
