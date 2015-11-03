@@ -128,7 +128,7 @@ private:
 	sf::Font font;
 	sf::Text text;
 
-	int playfieldX = 18;
+	int playfieldX = 19;
 	int playfieldY = 11;
 
 	ReadInput reader;

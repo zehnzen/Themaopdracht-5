@@ -75,10 +75,10 @@ void Game::loadMenu() {
 void Game::loadTextures() {
 	textures.load(textureID::GRASS, "images//grass.jpg");
 	textures.load(textureID::ROAD, "images//road.jpg");
-	textures.load(textureID::UNIT, "images//unit2.png");
-	textures.load(textureID::DRAGON, "images//dragon.png");
-	textures.load(textureID::SOLDIER, "images//soldier2.png");
-	textures.load(textureID::FACTORY, "images//factory2.png");
+	textures.load(textureID::UNIT, "images//unit.png");
+	textures.load(textureID::DRAGON, "images//monster2.png");
+	textures.load(textureID::SOLDIER, "images//soldier.png");
+	textures.load(textureID::FACTORY, "images//factory.png");
 	textures.load(textureID::HEADQUARTER, "images//headquarter.png");
 	textures.load(textureID::HOLYGRAIL, "images//holygrail.png");
 	textures.load(textureID::ENDTURN, "images//endTurn.png");
