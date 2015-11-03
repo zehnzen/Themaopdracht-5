@@ -6,12 +6,12 @@ UnitButton::UnitButton(textureID id, const textureHolder & textures, sf::Vector2
 	Button{ id, textures, pos }
 {
 	sprite.setTextureRect(sf::IntRect(0, 0, TILESIZE, TILESIZE));
-	numFrames = 8;
+	
 }
 
-Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) {
-	std::cout << "Unit returned\n";
-	return new Unit(textureID::UNIT, textures, pos, color, scale);
+Unit* UnitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
+	std::cout << "WRONG UNITBUTTON";
+	return new Recruit(textureID::RECRUIT, textures, pos, color);
 }
 
 int UnitButton::getCostMoney() {
@@ -23,6 +23,18 @@ void UnitButton::handleMouse() {
 }
 //---------------------------------------------------------------------------------------------------
 
+RecruitButton::RecruitButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
+	UnitButton{ id, textures, pos }
+{
+	numFrames = 8;
+}
+
+Unit* RecruitButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
+	std::cout << "Unit returned\n";
+	return new Recruit(textureID::RECRUIT, textures, pos, color);
+}
+
+
 DragonButton::DragonButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	UnitButton{ id, textures, pos }
 {
@@ -30,9 +42,9 @@ DragonButton::DragonButton(textureID id, const textureHolder & textures, sf::Vec
 	numFrames = 5;
 }
 
-Unit* DragonButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) {
+Unit* DragonButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
 	std::cout << "Bomber returned\n";
-	return new Bomber(textureID::DRAGON, textures, pos, color, scale);
+	return new Bomber(textureID::DRAGON, textures, pos, color);
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -43,8 +55,23 @@ SoldierButton::SoldierButton(textureID id, const textureHolder & textures, sf::V
 	numFrames = 6;
 }
 
-Unit* SoldierButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) {
+Unit* SoldierButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
 	std::cout << "Soldier returned\n";
-	return new Soldier(textureID::SOLDIER, textures, pos, color, scale);
+	return new Soldier(textureID::SOLDIER, textures, pos, color);
 }
+
+ScoutButton::ScoutButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
+	UnitButton{ id, textures, pos }
+{
+	cost = 200;
+	numFrames = 37;
+	duration = sf::seconds(5);
+	//NUMFRAMES OPZOEKEN
+}
+
+Unit* ScoutButton::bAction(const textureHolder& textures, sf::Vector2f pos, sf::Color color) {
+	std::cout << "Scout returned\n";
+	return new Scout(textureID::SCOUT, textures, pos, color);
+}
+
 

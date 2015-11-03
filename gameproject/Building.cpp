@@ -27,8 +27,10 @@ Factory::Factory(textureID id, const textureHolder& textures, sf::Vector2f pos, 
 {}
 
 void Factory::checkAction(CommandQueue & queue) {
-	Command command;
-	command.id = commandID::OPENFACTORY;
-	queue.push(command);
+	if (!(hitpoints <= 0)) {
+		Command command;
+		command.id = commandID::OPENFACTORY;
+		queue.push(command);
+	}
 }
 

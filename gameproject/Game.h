@@ -11,8 +11,7 @@
 #include "Terrain.h"
 #include "Enums.h"
 #include "Unit.h"
-#include "Soldier.h"
-#include "Bomber.h"
+#include "SubUnits.h"
 #include "Building.h"
 #include "Player.h"
 #include "Music.h"
@@ -128,7 +127,7 @@ private:
 	sf::Font font;
 	sf::Text text;
 
-	int playfieldX = 18;
+	int playfieldX = 19;
 	int playfieldY = 11;
 
 	int counter = 0, turn = 1;

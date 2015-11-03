@@ -6,19 +6,15 @@
 #include "Terrain.h"
 
 
-Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color, float scale) :
+Unit::Unit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	PlayerObject( id, textures, pos, color)
 {
 	setPosition(pos);
 
-	walklimit = 2;
-	attackrange = 3;
 	resetTurn();
 
-	numFrames = 8;
-
-	sprite.setScale(scale, 1.f);
-	if (scale < 0.f) {
+	if (color == sf::Color::Red) {
+		sprite.setScale(-1.f, 1.f);
 		sprite.setOrigin(50.f, 0.f);
 	}
 
@@ -84,9 +80,6 @@ int Unit::attack() {
 	oldSelected = false;
 	selected = false;
 	sprite.setColor(side);
-	if (turnAttackrange <= 0) {
-		return 0;
-	}
 	turnAttackrange = 0;
 	return attackpoints;
 }
