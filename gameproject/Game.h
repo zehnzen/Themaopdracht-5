@@ -103,8 +103,6 @@ private:
 	sf::Vector2f unitPosition;			// nodig voor het deselecteren van de tiles
 	int unitWalklimit;					// nodig voor het deselecteren van de tiles
 	int unitAttackrange;
-	bool unitSelected = false;
-	bool allySelected = false;
 	int unitIndex;
 	int enemyIndex;
 	int factoryIndex;
@@ -115,8 +113,15 @@ private:
 	bool inMenu = false;
 	bool inFactory = false;
 	bool onUnitButton = false;
+	bool unitSelected = false;
+	bool onBuildingB = false;
+	bool onBuildingR = false;
+	bool onResource = false;
+	bool allySelected = false;
 
 	int unitCost = 0;
+	int health = 0;
+	int resourceMoney = 0;
 	bool matchEnd = false;
 	bool gameEnd = true;
 

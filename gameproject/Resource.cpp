@@ -12,8 +12,8 @@ Resource::Resource(textureID id, const textureHolder& textures, sf::Vector2f pos
 	numFrames = 1;
 }
 
-int Resource::getHP() {
-	return hitpoints;
+int Resource::getResourceMoney() {
+	return resourceMoney;
 }
 
 bool Resource::damage(int points) {

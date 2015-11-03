@@ -242,13 +242,48 @@ void Game::handleRightClick() {
 }
 
 void Game::handleMouseEnter(sf::Vector2f mPosition) {
-	for (auto const & p : factoryButtons) {
-		if (p->getClicked(mPosition)) {
-			onUnitButton = true;
-			unitCost = p->getCostMoney();
-			break;
+	if (inFactory) {
+		for (auto const & p : factoryButtons) {
+			if (p->getClicked(mPosition)) {
+				onUnitButton = true;
+				unitCost = p->getCostMoney();
+				break;
+			}
+			else onUnitButton = false;
 		}
-		else onUnitButton = false;
+	}
+
+	else {
+		for (auto const & p : resourceContainer) {
+			if (p->checkClicked(mPosition)) {
+				onBuildingB = false;
+				onBuildingR = false;
+				onResource = true;
+				resourceMoney = p->getResourceMoney();
+				break;
+			}
+			else onResource = false;
+		}
+		for (auto const & p : buildingBContainer) {
+			if (p->checkClicked(mPosition)) {
+				onResource = false;
+				onBuildingR = false;
+				onBuildingB = true;
+				health = p->getHP();
+				break;
+			}
+			else onBuildingB = false;
+		}
+		for (auto const & p : buildingRContainer) {
+			if (p->checkClicked(mPosition)) {
+				onResource = false;
+				onBuildingB = false;
+				onBuildingR = true;
+				health = p->getHP();
+				break;
+			}
+			else onBuildingR = false;
+		}
 	}
 }
 
@@ -278,9 +313,9 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 				unitSelected = true;
 				allySelected = false;
 
-				auto ip = std::find(currentPlayerUnits->begin(), currentPlayerUnits->end(), p);
-				if (ip != currentPlayerUnits->end()) {
-					enemyIndex = std::distance(currentPlayerUnits->begin(), ip);
+				auto ip = std::find(enemyPlayerUnits->begin(), enemyPlayerUnits->end(), p);
+				if (ip != enemyPlayerUnits->end()) {
+					enemyIndex = std::distance(enemyPlayerUnits->begin(), ip);
 				}
 				break;
 			}
@@ -360,15 +395,6 @@ void Game::unitControl(sf::Vector2f mPosition, std::vector<std::unique_ptr<Unit>
 	else {
 		unitSelected = false;
 		allySelected = false;
-		/*for (auto const & q : *enemyPlayerUnits) {
-			if (q->checkClicked(mPosition)) {
-				auto it = std::find((playerR.getActive())? unitBContainer.begin() : unitRContainer.begin(), (playerB.getActive()) ? unitBContainer.end() : unitRContainer.end(), q);
-				if (it != ((playerR.getActive()) ? unitBContainer.end() : unitRContainer.end())) {
-					enemyIndex = std::distance((playerR.getActive()) ? unitBContainer.begin() : unitRContainer.begin(), it);
-					break;
-				}
-			}
-		} */
 	}
 }
 
@@ -736,7 +762,19 @@ void Game::HUD() {
 		text.setString("cost: " + std::to_string(unitCost));
 		text.setPosition(ScreenWidth - 140, 325);
 		window.draw(text);
-	} 
+	}
+	if (onBuildingB || onBuildingR) {
+		text.setColor(sf::Color::Yellow);
+		text.setString("HP: " + std::to_string(health));
+		text.setPosition(ScreenWidth - 140, 325);
+		window.draw(text);
+	}
+	if (onResource) {
+		text.setColor(sf::Color::Yellow);
+		text.setString("money: " + std::to_string(resourceMoney));
+		text.setPosition(ScreenWidth - 140, 325);
+		window.draw(text);
+	}
 }
 
 void Game::winText() {
