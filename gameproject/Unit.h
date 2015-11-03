@@ -27,7 +27,7 @@ public:
 protected:
 	int walklimit = 2, attackrange = 3, turnWalklimit = walklimit, turnAttackrange = attackrange;
 	int attackpoints = 20;
-	std::string unitName;
+	std::string unitName = "unit";
 };
 
 #endif

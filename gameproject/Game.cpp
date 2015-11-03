@@ -45,7 +45,7 @@ void Game::loadMenu() {
 	buttonVal val3{ textureID::OPTION,		sf::Vector2f(ScreenWidth + 40,	330) };
 	buttonVal val4{ textureID::EXIT,		sf::Vector2f(ScreenWidth + 80,	400) };
 	buttonVal val5{ textureID::MUTE,		sf::Vector2f(ScreenWidth,		ScreenHeight + 10) };
-	buttonVal val6{ textureID::BACK,		sf::Vector2f(ScreenWidth,	ScreenHeight + 10) };
+	buttonVal val6{ textureID::BACK,		sf::Vector2f(ScreenWidth,		ScreenHeight + 10) };
 
 	std::array<buttonVal, 6> menus{ val1, val2, val3, val4, val5, val6 };
 
@@ -347,6 +347,7 @@ Player Game::getActivePlayer() {
 
 void Game::switchPlayer() {
 	std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
+	turn += 1; // de aantal beurten die in HUD() wordt weergegeven
 	if (unitSelected) { 
 		unitSelected = false;
 		markField(units->at(unitIndex)->getWalklimit(), units->at(unitIndex)->getAttackrange(), true, units->at(unitIndex)->getTilePosition(), sf::Color::White);
@@ -608,35 +609,38 @@ void Game::updateAnimation(sf::Time dt) {
 }
 
 void Game::HUD() {
+	text.setColor(sf::Color::Green);
+	text.setString("Turn #" + std::to_string(turn));											//de aantal beurten die verstreken zijn
+	text.setPosition(ScreenWidth - 140, 320);
+	window.draw(text);
+
 	text.setColor(getActivePlayer().getPlayer());								//stel de tekstkleur in op de kleur van de huidige speler
-	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
+	text.setString("Points");													//schrijft hoeveel punten de speler heeft van de holy grail
 	text.setPosition(ScreenWidth - 140, 0);
 	window.draw(text);
-	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
+	text.setString("Money: " + std::to_string(getActivePlayer().getMoney()));   //schrijf hoeveel geld de speler heeft
 	text.setPosition(ScreenWidth - 140, 40);
 	window.draw(text);
+	text.setString("Health: " + std::to_string(getActivePlayer().getPoints()));	//schrijf hoeveel health de speler heeft
+	text.setPosition(ScreenWidth - 140, 80);
+	window.draw(text);
+	
 	//	if (unitSelected) {
 	//		std::vector<std::unique_ptr<Unit>> * units = &(playerB.getActive() ? unitBContainer : unitRContainer);
 	//		text.setString("units " + units->at(unitIndex)->getName());
 
 	if (unitSelected)
 	{
-		std::string name;
 		std::vector<std::unique_ptr<Unit>> * units;
 		if (allySelected) {
 			units = &(playerB.getActive() ? unitBContainer : unitRContainer);
-		//	name = units->at(unitIndex)->getName();
 		}
 		else {
 			playerB.getActive() ? text.setColor(playerR.getPlayer()) : text.setColor(playerB.getPlayer());
 			units = &(playerB.getActive() ? unitRContainer : unitBContainer);
-		//	name = units->at(unitIndex)->getName();
 		}
-		//std::cout << "unitindex: " << unitIndex << "\n";
-		//text.setString(name);
 		text.setString(units->at(unitIndex)->getName());
 		text.setPosition(ScreenWidth - 140, 80);
-
 		window.draw(text);
 		text.setString("HP:" + std::to_string(units->at(unitIndex)->getHP()));
 		text.setPosition(ScreenWidth - 140, 110);
@@ -644,6 +648,8 @@ void Game::HUD() {
 		text.setString("DP: " + std::to_string(units->at(unitIndex)->getDP()));
 		text.setPosition(ScreenWidth - 140, 140);
 		window.draw(text);
+
+
 	}
 }
 
