@@ -7,10 +7,10 @@
  *
  * @brief	Constructor.
  *
- * @param	id			The identifier.
- * @param	textures	The textures.
- * @param	pos			The position.
- * @param	color   	The color.
+ * @param	id			The identifier of the PlayerObject.
+ * @param	textures	The textures of the PlayerObject.
+ * @param	pos			The position of the PlayerObject on the screen.
+ * @param	color   	The color of the PlayerObject (tells which player owns this object, red/blue).
  **************************************************************************************************/
 
 PlayerObject::PlayerObject(textureID id, const textureHolder & textures, sf::Vector2f pos, sf::Color color):
@@ -25,9 +25,9 @@ PlayerObject::PlayerObject(textureID id, const textureHolder & textures, sf::Vec
 /**********************************************************************************************//**
  * @fn	int PlayerObject::getHP()
  *
- * @brief	Gets the hp.
+ * @brief	Gets the hitpoints.
  *
- * @return	The hp.
+ * @return	The hitpoints.
  **************************************************************************************************/
 
 int PlayerObject::getHP() {
@@ -37,11 +37,11 @@ int PlayerObject::getHP() {
 /**********************************************************************************************//**
  * @fn	bool PlayerObject::damage(int points)
  *
- * @brief	Damages.
+ * @brief	Damages the PlayerObject.
  *
- * @param	points	The points.
+ * @param	points	The damage points.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if PlayerObject ran out of hitpoints, false if not.
  **************************************************************************************************/
 
 bool PlayerObject::damage(int points) {
@@ -56,11 +56,11 @@ bool PlayerObject::damage(int points) {
 /**********************************************************************************************//**
  * @fn	bool PlayerObject::checkClicked(sf::Vector2f pos)
  *
- * @brief	Check clicked.
+ * @brief	Check if the PlayerObject is being clicked on.
  *
- * @param	pos	The position.
+ * @param	pos	The position of the mouse.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if clicked on, false if not.
  **************************************************************************************************/
 
 bool PlayerObject::checkClicked(sf::Vector2f pos) {
@@ -70,9 +70,9 @@ bool PlayerObject::checkClicked(sf::Vector2f pos) {
 /**********************************************************************************************//**
  * @fn	void PlayerObject::setSelected(bool b)
  *
- * @brief	Sets a selected.
+ * @brief	Sets the PlayerObject to being selected.
  *
- * @param	b	true to b.
+ * @param	b	true if selected, false if not.
  **************************************************************************************************/
 
 void PlayerObject::setSelected(bool b) {
@@ -88,9 +88,9 @@ void PlayerObject::setSelected(bool b) {
 /**********************************************************************************************//**
  * @fn	void PlayerObject::setOldSelected(bool b)
  *
- * @brief	Sets old selected.
+ * @brief	Sets wheither or not the PlayerObject used to be selected.
  *
- * @param	b	true to b.
+ * @param	b	true if selected, false if not.
  **************************************************************************************************/
 
 void PlayerObject::setOldSelected(bool b) {
@@ -100,9 +100,9 @@ void PlayerObject::setOldSelected(bool b) {
 /**********************************************************************************************//**
  * @fn	bool PlayerObject::getSelected()
  *
- * @brief	Gets the selected.
+ * @brief	Gets wheither or not the PlayerObject is selected.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if selected, false if not.
  **************************************************************************************************/
 
 bool PlayerObject::getSelected() {
@@ -112,11 +112,11 @@ bool PlayerObject::getSelected() {
 /**********************************************************************************************//**
  * @fn	bool PlayerObject::makeSelected(sf::Vector2f pos)
  *
- * @brief	Makes a selected.
+ * @brief	Makes the PlayerObject selected or unselected.
  *
- * @param	pos	The position.
+ * @param	pos	The position of the mouse.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if selected, false if not.
  **************************************************************************************************/
 
 bool PlayerObject::makeSelected(sf::Vector2f pos) {

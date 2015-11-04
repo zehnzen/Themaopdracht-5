@@ -159,23 +159,25 @@ void Game::makeLevel() {
 		std::ifstream input("level.txt");
 		while(true) {
 			char c = reader.read(input);
+			sf::Vector2f pos = terrainContainer.at(i)->getTilePosition();
+			terrainContainer.at(i)->setFree(false);
 
 			switch (c) {
-			case '1': break;
-			case '2': spawnResource(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
-			case '3': spawnGrail(terrainContainer.at(i)->getTilePosition()); break;
+			case '1': terrainContainer.at(i)->setFree(true);			break;
+			case '2': spawnResource(pos);								break;
+			case '3': spawnGrail(pos);									break;
 				//Blauw:
-			case 'a': playerB.setActive(true); playerR.setActive(false); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false);	break;
-			case 'b': playerB.setActive(true); playerR.setActive(false); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'c': playerB.setActive(true); playerR.setActive(false); spawnSoldier(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'd': playerB.setActive(true); playerR.setActive(false); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'e': playerB.setActive(true); playerR.setActive(false); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'a':	setActivePlayer(true); spawnUnit(pos);			break;
+			case 'b':	setActivePlayer(true); spawnBomber(pos);		break;
+			case 'c':	setActivePlayer(true); spawnSoldier(pos);		break;
+			case 'd':	setActivePlayer(true); spawnFactory(pos);		break;
+			case 'e':	setActivePlayer(true); spawnHQ(pos);			break;
 				// Rood:
-			case 'z': playerB.setActive(false); playerR.setActive(true); spawnUnit(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'y': playerB.setActive(false); playerR.setActive(true); spawnBomber(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'x': playerB.setActive(false); playerR.setActive(true); spawnSoldier(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'w': playerB.setActive(false); playerR.setActive(true); spawnFactory(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
-			case 'v': playerB.setActive(false); playerR.setActive(true); spawnHQ(terrainContainer.at(i)->getTilePosition()); terrainContainer.at(i)->setFree(false); break;
+			case 'z':	setActivePlayer(false); spawnUnit(pos);			break;
+			case 'y':	setActivePlayer(false); spawnBomber(pos);		break;
+			case 'x':	setActivePlayer(false); spawnSoldier(pos);		break;
+			case 'w':	setActivePlayer(false); spawnFactory(pos);		break;
+			case 'v':	setActivePlayer(false); spawnHQ(pos);			break;
 			}
 			i++;
 		}
@@ -190,6 +192,18 @@ void Game::makeLevel() {
 		exit(0);
 	}
 	playerB.setActive(true); playerR.setActive(false);
+}
+
+/**********************************************************************************************//**
+ * @fn	void Game::setActivePlayer(bool blue)
+ *
+ * @brief	Sets active player.
+ *
+ * @param	blue	true is player is blue, false if red.
+ **************************************************************************************************/
+
+void Game::setActivePlayer(bool blue) {
+	playerB.setActive(blue); playerR.setActive(!blue);
 }
 
 /**********************************************************************************************//**

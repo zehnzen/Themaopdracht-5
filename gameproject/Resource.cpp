@@ -7,9 +7,9 @@
  *
  * @brief	Constructor.
  *
- * @param	id			The identifier.
- * @param	textures	The textures.
- * @param	pos			The position.
+ * @param	id			The identifier of the Resource.
+ * @param	textures	The textures of the Resource.
+ * @param	pos			The position of the Resource on the screen.
  **************************************************************************************************/
 
 Resource::Resource(textureID id, const textureHolder& textures, sf::Vector2f pos) :
@@ -25,9 +25,9 @@ Resource::Resource(textureID id, const textureHolder& textures, sf::Vector2f pos
 /**********************************************************************************************//**
  * @fn	int Resource::getResourceMoney()
  *
- * @brief	Gets resource money.
+ * @brief	Gets the money left in the resource.
  *
- * @return	The resource money.
+ * @return	The money left in the resource.
  **************************************************************************************************/
 
 int Resource::getResourceMoney() {
@@ -37,11 +37,11 @@ int Resource::getResourceMoney() {
 /**********************************************************************************************//**
  * @fn	bool Resource::damage(int points)
  *
- * @brief	Damages.
+ * @brief	Damages the resource.
  *
- * @param	points	The points.
+ * @param	points	The damage points.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if no more hitpoints, false if not.
  **************************************************************************************************/
 
 bool Resource::damage(int points) {
@@ -56,11 +56,11 @@ bool Resource::damage(int points) {
 /**********************************************************************************************//**
  * @fn	bool Resource::checkClicked(sf::Vector2f pos)
  *
- * @brief	Check clicked.
+ * @brief	Check wheiter or not the resource is clicked on.
  *
- * @param	pos	The position.
+ * @param	pos	The position of the mouse.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if clicked on, false if not.
  **************************************************************************************************/
 
 bool Resource::checkClicked(sf::Vector2f pos) {
@@ -70,9 +70,9 @@ bool Resource::checkClicked(sf::Vector2f pos) {
 /**********************************************************************************************//**
  * @fn	void Resource::setSelected(bool b)
  *
- * @brief	Sets a selected.
+ * @brief	Sets the resource to being selected or unselected.
  *
- * @param	b	true to b.
+ * @param	b	true if selected, false if not.
  **************************************************************************************************/
 
 void Resource::setSelected(bool b) {
@@ -82,9 +82,9 @@ void Resource::setSelected(bool b) {
 /**********************************************************************************************//**
  * @fn	void Resource::setOldSelected(bool b)
  *
- * @brief	Sets old selected.
+ * @brief	Sets if the resource used to be selected or not.
  *
- * @param	b	true to b.
+ * @param	b	true if selected, false if not.
  **************************************************************************************************/
 
 void Resource::setOldSelected(bool b) {
@@ -94,9 +94,9 @@ void Resource::setOldSelected(bool b) {
 /**********************************************************************************************//**
  * @fn	bool Resource::getSelected()
  *
- * @brief	Gets the selected.
+ * @brief	Gets wheiter or not the resource is selected.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if selected, false if not.
  **************************************************************************************************/
 
 bool Resource::getSelected() {
@@ -106,11 +106,11 @@ bool Resource::getSelected() {
 /**********************************************************************************************//**
  * @fn	bool Resource::makeSelected(sf::Vector2f pos)
  *
- * @brief	Makes a selected.
+ * @brief	Makes the resource selected or unselected (depends on the mouseposition).
  *
- * @param	pos	The position.
+ * @param	pos	The position of the mouse.
  *
- * @return	true if it succeeds, false if it fails.
+ * @return	true if selected, false if not.
  **************************************************************************************************/
 
 bool Resource::makeSelected(sf::Vector2f pos) {
@@ -130,9 +130,9 @@ bool Resource::makeSelected(sf::Vector2f pos) {
 /**********************************************************************************************//**
  * @fn	int Resource::getMoney()
  *
- * @brief	Gets the money.
+ * @brief	Gets money from the resource.
  *
- * @return	The money.
+ * @return	The money gotton from the resource.
  **************************************************************************************************/
 
 int Resource::getMoney() {
