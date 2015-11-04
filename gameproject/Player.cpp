@@ -41,14 +41,6 @@ void Player::setMoney(int mon) {
 	money = mon;
 }
 
-void Player::setUnitSelected(bool usel) {
-	unitSelected = usel;
-}
-
-bool Player::getUnitSelected() {
-	return unitSelected;
-}
-
 int Player::getUnitAttacks() {
 	return unitAttacks;
 }

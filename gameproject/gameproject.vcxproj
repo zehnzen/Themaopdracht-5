@@ -138,7 +138,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerButton.h" />
     <ClInclude Include="PlayerObject.h" />
-    <ClInclude Include="ReadInput.h" />
+    <ClInclude Include="ReadText.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="ResourceIdentifier.h" />
@@ -163,7 +163,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerButton.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
-    <ClCompile Include="ReadInput.cpp" />
+    <ClCompile Include="ReadText.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Terrain.cpp" />

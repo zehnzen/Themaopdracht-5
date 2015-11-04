@@ -53,24 +53,19 @@ void Game::loadMenu() {
 		menuContainer.push_back(std::move(menubutton));
 	}
 
-	buttonVal val10{ textureID::DRAGON, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 200) };
-	std::unique_ptr<UnitButton> dragonButton(new DragonButton(val10.id, textures, val10.pos));
+	std::unique_ptr<UnitButton> dragonButton(new DragonButton(textureID::DRAGON, textures, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 200)));
 	factoryButtons.push_back(std::move(dragonButton));
 
-	buttonVal val11{ textureID::RECRUIT, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 200) };
-	std::unique_ptr<UnitButton> recruitButton(new RecruitButton(val11.id, textures, val11.pos));
+	std::unique_ptr<UnitButton> recruitButton(new RecruitButton(textureID::RECRUIT, textures, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 200)));
 	factoryButtons.push_back(std::move(recruitButton));
 
-	buttonVal val12{ textureID::SOLDIER, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 150) };
-	std::unique_ptr<UnitButton> soldierButton(new SoldierButton(val12.id, textures, val12.pos));
+	std::unique_ptr<UnitButton> soldierButton(new SoldierButton(textureID::SOLDIER, textures, sf::Vector2f(ScreenWidth - 130, ScreenHeight - 150)));
 	factoryButtons.push_back(std::move(soldierButton));
 
-	buttonVal val13{ textureID::SCOUT, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 150) };
-	std::unique_ptr<UnitButton> scoutButton(new ScoutButton(val13.id, textures, val13.pos));
+	std::unique_ptr<UnitButton> scoutButton(new ScoutButton(textureID::SCOUT, textures, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 150)));
 	factoryButtons.push_back(std::move(scoutButton));
 
-	buttonVal val20{ textureID::ENDTURN, sf::Vector2f(ScreenWidth - 120, 200) };
-	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(val20.id, textures, val20.pos));
+	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(textureID::ENDTURN, textures, sf::Vector2f(ScreenWidth - 120, 200)));
 	playerButtons.push_back(std::move(playerButton));
 
 	wonButon = std::shared_ptr<PlayerButton>{ new WonButton{ textureID::WON, textures, sf::Vector2f{ 0,0 } } };

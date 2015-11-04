@@ -1,4 +1,4 @@
-window//File MenuButton.cpp
+//File MenuButton.cpp
 
 #include "MenuButton.h"
 
