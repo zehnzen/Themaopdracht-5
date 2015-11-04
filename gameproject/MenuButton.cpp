@@ -2,11 +2,29 @@
 
 #include "MenuButton.h"
 
+/**********************************************************************************************//**
+ * @fn	MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos)
+ *
+ * @brief	Constructor.
+ *
+ * @param	id			The identifier of the MenuButton.
+ * @param	textures	The textures of the MenuButton.
+ * @param	pos			The position of the MenuButton on the screen.
+ **************************************************************************************************/
+
 MenuButton::MenuButton(textureID id, const textureHolder& textures, sf::Vector2f pos) :
 	Button{id, textures, pos}
 {
 	numFrames = 300;
 }
+
+/**********************************************************************************************//**
+ * @fn	void MenuButton::update(sf::Time dt)
+ *
+ * @brief	Makes animation of the sprites possible.
+ *
+ * @param	dt	The delta time.
+ **************************************************************************************************/
 
 void MenuButton::update(sf::Time dt) {
 	sf::Time timePerFrame = duration / (float)numFrames;
@@ -24,6 +42,18 @@ void MenuButton::update(sf::Time dt) {
 	}
 }
 
+/**********************************************************************************************//**
+ * @fn	int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<MenuButton>>& container, Music & music)
+ *
+ * @brief	Handles the mouse events.
+ *
+ * @param	pos				 	The position of the mouse.
+ * @param [in,out]	window   	The window of the game.
+ * @param [in,out]	container	The container of the mousebuttons.
+ * @param [in,out]	music	 	The music.
+ *
+ * @return	An int.
+ **************************************************************************************************/
 
 int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<MenuButton>>& container, Music & music) {
 

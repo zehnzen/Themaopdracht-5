@@ -3,6 +3,18 @@
 #include <SFML/Graphics.hpp>
 #include "ReadText.h"
 
+/**********************************************************************************************//**
+ * @fn	char ReadInput::read(std::ifstream & input)
+ *
+ * @brief	Reads the given input.
+ *
+ * @exception	endOfFile			Thrown when an end of file error condition occurs.
+ * @exception	unknownCharacter	Thrown when an unknown character error condition occurs.
+ *
+ * @param [in,out]	input	The input to read.
+ *
+ * @return	A char.
+ **************************************************************************************************/
 
 char ReadText::read(std::ifstream & input) {
 	std::string s;
@@ -53,10 +65,6 @@ char ReadText::read(std::ifstream & input) {
 	else if (s == "") {
 		throw endOfFile();
 	}
-	
-	// DIT MOET TOCH GVD IN EEN SWITCH KUNNEN ?!!!!!!!!!!!!
-	//switch (s) {
-	//	case "#": return 1; break;
-	//}
+
 	throw unknownCharacter(s);
 }

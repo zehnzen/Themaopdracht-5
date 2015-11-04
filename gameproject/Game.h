@@ -62,6 +62,8 @@ private:
 
 	int findTerrainIndex(sf::Vector2f);
 
+	void setActivePlayer(bool blue);
+
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
 	void spawnSoldier(sf::Vector2f);
