@@ -49,17 +49,6 @@ int UnitButton::getCostMoney() {
 }
 
 /**********************************************************************************************//**
- * @fn	void UnitButton::handleMouse()
- *
- * @brief	Handles the mouse event.
- **************************************************************************************************/
-
-void UnitButton::handleMouse() {
-	// hier wat hij moet doen
-}
-//---------------------------------------------------------------------------------------------------
-
-/**********************************************************************************************//**
  * @fn	RecruitButton::RecruitButton(textureID id, const textureHolder & textures, sf::Vector2f pos)
  *
  * @brief	Constructor.

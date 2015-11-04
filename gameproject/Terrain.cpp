@@ -41,8 +41,7 @@ void Terrain::changeColor(sf::Color col) {
  **************************************************************************************************/
 
 sf::Color Terrain::getColor() {
-	sf::Color color = sprite.getColor();
-	return color;
+	return sprite.getColor();
 }
 
 /**********************************************************************************************//**

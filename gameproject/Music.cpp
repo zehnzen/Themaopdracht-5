@@ -35,9 +35,8 @@ void Music::play(musicID id) {
 
 		music.setVolume(volume);
 		music.setLoop(true);
-		music.play();
-
-		setPaused(playing);
+		if (!paused) { music.play(); }
+		
 		lastPlayed = id;
 	}
 }
@@ -50,19 +49,6 @@ void Music::play(musicID id) {
 
 void Music::stop() {
 	music.stop();
-}
-
-/**********************************************************************************************//**
- * @fn	void Music::setPaused(bool paused)
- *
- * @brief	Pauses the music.
- *
- * @param	paused	true if paused.
- **************************************************************************************************/
-
-void Music::setPaused(bool paused) {
-	if (paused) { music.pause(); }
-	else { music.play(); }
 }
 
 /**********************************************************************************************//**
@@ -79,15 +65,15 @@ void Music::setVolume(float vol) {
 }
 
 /**********************************************************************************************//**
- * @fn	bool Music::getPlaying()
+ * @fn	bool Music::getPaused()
  *
- * @brief	Gets wheither or not the music is playing.
+ * @brief	Gets wheither or not the music is paused.
  *
- * @return	true if music is playing, false if not.
+ * @return	true if music is paused, false if not.
  **************************************************************************************************/
 
-bool Music::getPlaying() {
-	return playing;
+bool Music::getPaused() {
+	return paused;
 }
 
 /**********************************************************************************************//**
@@ -97,7 +83,6 @@ bool Music::getPlaying() {
  **************************************************************************************************/
 
 void Music::togglePlaying() {
-	if (playing) { playing = false; }
-	else { playing = true; }
-	setPaused(playing);
+	if (paused) { paused = false; music.play();}
+	else { paused = true; music.pause(); }
 }

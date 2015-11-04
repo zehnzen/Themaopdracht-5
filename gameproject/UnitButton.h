@@ -13,8 +13,6 @@ public:
 
 	int getCostMoney();
 
-	void handleMouse();
-
 protected:
 	UnitButton(textureID, const textureHolder& textures, sf::Vector2f pos);
 

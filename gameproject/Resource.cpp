@@ -35,25 +35,6 @@ int Resource::getResourceMoney() {
 }
 
 /**********************************************************************************************//**
- * @fn	bool Resource::damage(int points)
- *
- * @brief	Damages the resource.
- *
- * @param	points	The damage points.
- *
- * @return	true if no more hitpoints, false if not.
- **************************************************************************************************/
-
-bool Resource::damage(int points) {
-	hitpoints = hitpoints - points;
-	if (hitpoints <= 0) {
-		hitpoints = 0;
-		return true;
-	}
-	return false;
-}
-
-/**********************************************************************************************//**
  * @fn	bool Resource::checkClicked(sf::Vector2f pos)
  *
  * @brief	Check wheiter or not the resource is clicked on.

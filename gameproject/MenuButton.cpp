@@ -87,7 +87,6 @@ int MenuButton::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::ve
 		if (id == textureID::BACK) {
 
 			for (it = menuPosition.begin(); it < menuPosition.end() - 1; ++it, ++i) {
-
 				if (i <= 3) {
 					container[i]->LoadedInScreen = true;
 					container[i]->setPosition(menuPosition[i]);
