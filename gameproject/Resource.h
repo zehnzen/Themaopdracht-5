@@ -18,15 +18,12 @@ public:
 	bool makeSelected(sf::Vector2f pos);
 	bool checkClicked(sf::Vector2f pos);
 
-	bool damage(int points);
-
 	int getMoney();			// geeft geld terug zolang de resource nog niet uitgeput is
 
 protected:
 	bool selected = false;
 	bool oldSelected = false;
 
-	int hitpoints = 100;
 	int resourceMoney = 800;
 };
 

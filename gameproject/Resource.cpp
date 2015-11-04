@@ -16,15 +16,6 @@ int Resource::getResourceMoney() {
 	return resourceMoney;
 }
 
-bool Resource::damage(int points) {
-	hitpoints = hitpoints - points;
-	if (hitpoints <= 0) {
-		hitpoints = 0;
-		return true;
-	}
-	return false;
-}
-
 bool Resource::checkClicked(sf::Vector2f pos) {
 	return sprite.getGlobalBounds().contains(pos);
 }

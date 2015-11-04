@@ -19,9 +19,8 @@ void Music::play(musicID id) {
 
 		music.setVolume(volume);
 		music.setLoop(true);
-		music.play();
-
-		setPaused(playing);
+		if (!paused) { music.play(); }
+		
 		lastPlayed = id;
 	}
 }
@@ -30,22 +29,16 @@ void Music::stop() {
 	music.stop();
 }
 
-void Music::setPaused(bool paused) {
-	if (paused) { music.pause(); }
-	else { music.play(); }
-}
-
 void Music::setVolume(float vol) {
 	volume = vol;
 	music.setVolume(volume);
 }
 
-bool Music::getPlaying() {
-	return playing;
+bool Music::getPaused() {
+	return paused;
 }
 
 void Music::togglePlaying() {
-	if (playing) { playing = false; }
-	else { playing = true; }
-	setPaused(playing);
+	if (paused) { paused = false; music.play();}
+	else { paused = true; music.pause(); }
 }

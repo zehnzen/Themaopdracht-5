@@ -18,11 +18,6 @@ int UnitButton::getCostMoney() {
 	return cost;
 }
 
-void UnitButton::handleMouse() {
-	// hier wat hij moet doen
-}
-//---------------------------------------------------------------------------------------------------
-
 RecruitButton::RecruitButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	UnitButton{ id, textures, pos }
 {

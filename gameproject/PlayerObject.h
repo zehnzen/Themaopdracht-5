@@ -8,7 +8,7 @@
 class PlayerObject : public GameObject {
 public:
 	void setSelected(bool);
-	void setOldSelected(bool);
+	void setOldSelected(bool); //Kan eruit gehaald worden (misschien)
 
 	bool getSelected();
 	int getHP();
@@ -24,7 +24,7 @@ protected:
 	sf::Color side;
 
 	bool selected = false;
-	bool oldSelected = false;
+	bool oldSelected = false;// naar kijken
 
 	int hitpoints = 100;
 };
