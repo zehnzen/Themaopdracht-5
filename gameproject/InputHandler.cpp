@@ -3,9 +3,25 @@
 #include "InputHandler.h"
 #include "V2Functions.h"
 
+/**********************************************************************************************//**
+ * @fn	InputHandler::InputHandler(sf::RenderWindow & window)
+ *
+ * @brief	Constructor.
+ *
+ * @param [in,out]	window	The window of the game.
+ **************************************************************************************************/
+
 InputHandler::InputHandler(sf::RenderWindow & window):
 	window { window}
 {}
+
+/**********************************************************************************************//**
+ * @fn	void InputHandler::processInput(CommandQueue & queue)
+ *
+ * @brief	Process the input described by queue.
+ *
+ * @param [in,out]	queue	The queue.
+ **************************************************************************************************/
 
 void InputHandler::processInput(CommandQueue & queue) {//QUEUE meegeven
 	sf::Event event;
@@ -38,6 +54,16 @@ void InputHandler::processInput(CommandQueue & queue) {//QUEUE meegeven
 	}
 }
 
+/**********************************************************************************************//**
+ * @fn	void InputHandler::handleKeypress(Command & comm, sf::Keyboard::Key key, bool b)
+ *
+ * @brief	Handles the input in the keyboard.
+ *
+ * @param [in,out]	comm	The commands.
+ * @param	key				The key that is being pressed/released.
+ * @param	b				true means the key is being pressed, false is released.
+ **************************************************************************************************/
+
 void InputHandler::handleKeypress(Command & comm, sf::Keyboard::Key key, bool b) {
 	if (!b) {
 		if (key == sf::Keyboard::W) {
@@ -63,6 +89,15 @@ void InputHandler::handleKeypress(Command & comm, sf::Keyboard::Key key, bool b)
 		}
 	}
 }
+
+/**********************************************************************************************//**
+ * @fn	void InputHandler::handleMouseClick(Command & comm, sf::Mouse::Button button)
+ *
+ * @brief	Handles the mouse clicks.
+ *
+ * @param [in,out]	comm	The commands.
+ * @param	button			The mousebutton that is pressed.
+ **************************************************************************************************/
 
 void InputHandler::handleMouseClick(Command & comm, sf::Mouse::Button button) {
 	if (button == sf::Mouse::Left) {
