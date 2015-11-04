@@ -3,6 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include "SubUnits.h"
 
+/**********************************************************************************************//**
+ * @fn	Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color)
+ *
+ * @brief	Constructor.
+ *
+ * @param	id			The identifier.
+ * @param	textures	The textures.
+ * @param	pos			The position.
+ * @param	color   	The color.
+ **************************************************************************************************/
+
 Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	Unit{ id, textures, pos, color }
 {
@@ -15,6 +26,17 @@ Soldier::Soldier(textureID id, const textureHolder& textures, sf::Vector2f pos, 
 	unitName = "Soldier";
 	numFrames = 6;
 }
+
+/**********************************************************************************************//**
+ * @fn	Recruit::Recruit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color)
+ *
+ * @brief	Constructor.
+ *
+ * @param	id			The identifier.
+ * @param	textures	The textures.
+ * @param	pos			The position.
+ * @param	color   	The color.
+ **************************************************************************************************/
 
 Recruit::Recruit(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	Unit{ id, textures, pos, color }
@@ -29,6 +51,17 @@ Recruit::Recruit(textureID id, const textureHolder& textures, sf::Vector2f pos, 
 	numFrames = 8;
 }
 
+/**********************************************************************************************//**
+ * @fn	Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color)
+ *
+ * @brief	Constructor.
+ *
+ * @param	id			The identifier.
+ * @param	textures	The textures.
+ * @param	pos			The position.
+ * @param	color   	The color.
+ **************************************************************************************************/
+
 Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	Unit{ id, textures, pos, color}
 {
@@ -41,6 +74,17 @@ Bomber::Bomber(textureID id, const textureHolder& textures, sf::Vector2f pos, sf
 	unitName = "Bomber";
 	numFrames = 5;
 }
+
+/**********************************************************************************************//**
+ * @fn	Scout::Scout(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color)
+ *
+ * @brief	Constructor.
+ *
+ * @param	id			The identifier.
+ * @param	textures	The textures.
+ * @param	pos			The position.
+ * @param	color   	The color.
+ **************************************************************************************************/
 
 Scout::Scout(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::Color color) :
 	Unit{ id, textures, pos, color }
