@@ -1,2 +1,6 @@
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit
+<<<<<<< HEAD
 Debug|Win32|C:\Users\Zehna\Documents\Visual Studio 2015\Projects\Themaopdracht-5\|
+=======
+Debug|Win32|D:\GIT\Themaopdracht-5\|
+>>>>>>> c07779db462467cc39993a932a815915b1596fcb
