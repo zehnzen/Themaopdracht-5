@@ -107,30 +107,6 @@ void Player::setMoney(int mon) {
 }
 
 /**********************************************************************************************//**
- * @fn	void Player::setUnitSelected(bool usel)
- *
- * @brief	Sets wheither a unit is selected or not.
- *
- * @param	usel	true if unit is selected, false if not.
- **************************************************************************************************/
-
-void Player::setUnitSelected(bool usel) {
-	unitSelected = usel;
-}
-
-/**********************************************************************************************//**
- * @fn	bool Player::getUnitSelected()
- *
- * @brief	Gets if a unit is selected.
- *
- * @return	true if unit is selected, false if not.
- **************************************************************************************************/
-
-bool Player::getUnitSelected() {
-	return unitSelected;
-}
-
-/**********************************************************************************************//**
  * @fn	int Player::getUnitAttacks()
  *
  * @brief	Gets the number unit attacks left.
