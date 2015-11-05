@@ -20,7 +20,7 @@
 #include "UnitButton.h"
 #include "PlayerButton.h"
 #include "Resource.h"
-#include "ReadInput.h"
+#include "ReadText.h"
 #include "HolyGrail.h"
 
 class Game {
@@ -134,7 +134,7 @@ private:
 
 	int counter = 0, turn = 1;
 
-	ReadInput reader;
+	ReadText reader;
 };
 
 
