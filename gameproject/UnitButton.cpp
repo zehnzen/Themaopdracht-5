@@ -61,7 +61,7 @@ int UnitButton::getCostMoney() {
 RecruitButton::RecruitButton(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	UnitButton{ id, textures, pos }
 {
-	numFrames = 8;
+	numFrames = 5;
 }
 
 /**********************************************************************************************//**
@@ -165,7 +165,7 @@ ScoutButton::ScoutButton(textureID id, const textureHolder & textures, sf::Vecto
 	UnitButton{ id, textures, pos }
 {
 	cost = 200;
-	numFrames = 37;
+	numFrames = 5;
 	duration = sf::seconds(5);
 	//NUMFRAMES OPZOEKEN
 }
