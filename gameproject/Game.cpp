@@ -81,7 +81,7 @@ void Game::loadMenu() {
 	std::unique_ptr<UnitButton> scoutButton(new ScoutButton(textureID::SCOUT, textures, sf::Vector2f(ScreenWidth - 80, ScreenHeight - 150)));
 	factoryButtons.push_back(std::move(scoutButton));
 
-	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(textureID::ENDTURN, textures, sf::Vector2f(ScreenWidth - 120, 200)));
+	std::unique_ptr<EndTurnButton> playerButton(new EndTurnButton(textureID::ENDTURN, textures, sf::Vector2f(ScreenWidth - 140, 200)));
 
 	playerButtons.push_back(std::move(playerButton));
 

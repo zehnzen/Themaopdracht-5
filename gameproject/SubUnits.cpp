@@ -97,5 +97,4 @@ Scout::Scout(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::
 
 	unitName = "Scout";
 	numFrames = 5;
-	//duration = sf::seconds(5);
 }
