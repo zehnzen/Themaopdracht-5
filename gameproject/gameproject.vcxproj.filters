@@ -81,13 +81,13 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ReadInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HolyGrail.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SubUnits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -146,13 +146,13 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ReadInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HolyGrail.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SubUnits.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

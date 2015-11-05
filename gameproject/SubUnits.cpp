@@ -48,7 +48,7 @@ Recruit::Recruit(textureID id, const textureHolder& textures, sf::Vector2f pos, 
 	resetTurn();
 
 	unitName = "Recruit";
-	numFrames = 8;
+	numFrames = 5;
 }
 
 /**********************************************************************************************//**
@@ -96,6 +96,6 @@ Scout::Scout(textureID id, const textureHolder& textures, sf::Vector2f pos, sf::
 	resetTurn();
 
 	unitName = "Scout";
-	numFrames = 37;
-	duration = sf::seconds(5);
+	numFrames = 5;
+	//duration = sf::seconds(5);
 }
