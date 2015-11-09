@@ -1,38 +1,62 @@
 c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\vc140.pdb
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\vc140.idb
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\button.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\commandqueue.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\game.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameobject.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\holygrail.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\inputhandler.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\main.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\menubutton.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\music.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\player.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\playerbutton.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\playerobject.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\readinput.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\resource.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\soldier.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\sound.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\terrain.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\unit.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\unitbutton.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\v2functions.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\bomber.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\building.obj
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\subunits.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\vc140.pdb
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\vc140.idb
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\building.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\button.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\commandqueue.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\game.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\gameobject.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\holygrail.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\inputhandler.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\main.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\menubutton.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\player.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\playerbutton.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\playerobject.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\readinput.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\resource.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\sound.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\terrain.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\unit.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\unitbutton.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\v2functions.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\subunits.obj
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\gameproject\debug\music.obj
 c:\users\waila\documents\github\themaopdracht-5\debug\gameproject.ilk
 c:\users\waila\documents\github\themaopdracht-5\debug\gameproject.exe
 c:\users\waila\documents\github\themaopdracht-5\debug\gameproject.pdb
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\cl.command.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\cl.read.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\cl.write.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link-cvtres.read.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link-cvtres.write.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link-rc.read.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link-rc.write.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link.command.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link.read.1.tlog
-c:\users\waila\documents\github\themaopdracht-5\gameproject\debug\gameproject.tlog\link.write.1.tlog
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\debug\gameproject.ilk
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\debug\gameproject.exe
+c:\users\zehna\documents\visual studio 2015\projects\themaopdracht-5\debug\gameproject.pdb
+d:\git\themaopdracht-5\gameproject\debug\building.obj
+d:\git\themaopdracht-5\gameproject\debug\button.obj
+d:\git\themaopdracht-5\gameproject\debug\commandqueue.obj
+d:\git\themaopdracht-5\gameproject\debug\game.obj
+d:\git\themaopdracht-5\gameproject\debug\gameobject.obj
+d:\git\themaopdracht-5\gameproject\debug\holygrail.obj
+d:\git\themaopdracht-5\gameproject\debug\inputhandler.obj
+d:\git\themaopdracht-5\gameproject\debug\main.obj
+d:\git\themaopdracht-5\gameproject\debug\menubutton.obj
+d:\git\themaopdracht-5\gameproject\debug\music.obj
+d:\git\themaopdracht-5\gameproject\debug\player.obj
+d:\git\themaopdracht-5\gameproject\debug\playerbutton.obj
+d:\git\themaopdracht-5\gameproject\debug\playerobject.obj
+d:\git\themaopdracht-5\gameproject\debug\readinput.obj
+d:\git\themaopdracht-5\gameproject\debug\resource.obj
+d:\git\themaopdracht-5\gameproject\debug\sound.obj
+d:\git\themaopdracht-5\gameproject\debug\subunits.obj
+d:\git\themaopdracht-5\gameproject\debug\terrain.obj
+d:\git\themaopdracht-5\gameproject\debug\unit.obj
+d:\git\themaopdracht-5\gameproject\debug\unitbutton.obj
+d:\git\themaopdracht-5\gameproject\debug\v2functions.obj
+d:\git\themaopdracht-5\gameproject\debug\vc140.idb
+d:\git\themaopdracht-5\gameproject\debug\vc140.pdb
+d:\git\themaopdracht-5\debug\gameproject.pdb
+d:\git\themaopdracht-5\debug\gameproject.exe
+d:\git\themaopdracht-5\debug\gameproject.ilk
+d:\git\themaopdracht-5\gameproject\debug\gameproject.tlog\cl.command.1.tlog
+d:\git\themaopdracht-5\gameproject\debug\gameproject.tlog\cl.read.1.tlog
+d:\git\themaopdracht-5\gameproject\debug\gameproject.tlog\cl.write.1.tlog
+d:\git\themaopdracht-5\gameproject\debug\gameproject.tlog\link.command.1.tlog
+d:\git\themaopdracht-5\gameproject\debug\gameproject.tlog\link.read.1.tlog
+d:\git\themaopdracht-5\gameproject\debug\gameproject.tlog\link.write.1.tlog
