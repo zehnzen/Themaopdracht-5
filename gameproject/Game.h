@@ -20,7 +20,7 @@
 #include "UnitButton.h"
 #include "PlayerButton.h"
 #include "Resource.h"
-#include "ReadInput.h"
+#include "ReadText.h"
 #include "HolyGrail.h"
 
 class Game {
@@ -61,6 +61,8 @@ private:
 	bool checkResource(sf::Vector2f, sf::Vector2f);
 
 	int findTerrainIndex(sf::Vector2f);
+
+	void setActivePlayer(bool blue);
 
 	void spawnUnit(sf::Vector2f);
 	void spawnBomber(sf::Vector2f);
@@ -132,7 +134,7 @@ private:
 
 	int counter = 0, turn = 1;
 
-	ReadInput reader;
+	ReadText reader;
 };
 
 

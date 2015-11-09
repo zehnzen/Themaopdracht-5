@@ -3,6 +3,16 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 
+/**********************************************************************************************//**
+ * @fn	Button::Button(textureID id, const textureHolder & textures, sf::Vector2f pos)
+ *
+ * @brief	Constructor.
+ *
+ * @param	id			The identifier of the Button.
+ * @param	textures	The textures of the Button.
+ * @param	pos			The position of the Button on the screen.
+ **************************************************************************************************/
+
 Button::Button(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	GameObject(id, textures, pos)
 {
@@ -10,12 +20,17 @@ Button::Button(textureID id, const textureHolder & textures, sf::Vector2f pos) :
 	repeat = true;
 }
 
+/**********************************************************************************************//**
+ * @fn	bool Button::getClicked(sf::Vector2f pos)
+ *
+ * @brief	Gets a clicked.
+ *
+ * @param	pos	The position where is clicked on the screen.
+ *
+ * @return	true if Button is clicked, false if not.
+ **************************************************************************************************/
+
 bool Button::getClicked(sf::Vector2f pos) {
 	return (sprite.getGlobalBounds().contains(pos)) ? true : false;
-}
-
-int Button::handleMouse(sf::Vector2f pos, sf::RenderWindow & window, std::vector<std::unique_ptr<Button>>& container, Music & music)
-{
-	return 0;
 }
 
